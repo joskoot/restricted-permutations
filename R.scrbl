@@ -102,6 +102,7 @@
 @author{Jacob J. A. Koot}
 @(defmodule "R.rkt" #:packages ())
 
+@section{Preface}
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
@@ -114,15 +115,19 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
  #:sep (hspace 3)
  #:row-properties (list 'top-border 'top-border '() '() '() 'bottom-border)]}
 
-@note{This document has no margin notes at the right of the text proper and
+This document has no margin notes at the right of the text proper and
 examples are kept within the margins of plain text.
 This means that much space at the right hand side of the display is not used.
 Especially when you need reading glasses,
 you may want full screen with increased zoom factor,
-but not to an extent that a horizontal scroll bar appears, of course.}
+but not to an extent that a horizontal scroll bar appears, of course.
+May be I have bad customization of Firefox,
+but on my PC it renders a horizontal scroll bar only after eliminating the
+table of contents in the left margin. I suppose you don't want to loose the table of contents.
+I am comfortable with zoom factor 150%.
 
 @section[#:tag "intro"]{Introduction}
-In this docu@(-?)ment the word `permutation' is used in mathematical sense,@(lb)
+In this docu@(-?)ment the word `permutation' is used in mathematical sense,
 id est, such as to mean a bijection of a set onto the same set.
 
 @elemtag["rearrangement" ""]
@@ -1517,7 +1522,6 @@ Returns a list of all subgroups of @nbr[g]. Example:
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
 Returns the conjugation class of @nbr[g] that contains @nbr[p].
-All elements of a conjugation class have the same order and the same cycle structure.
 If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
@@ -1525,14 +1529,15 @@ Two elements a and b of a group @bold{X} are conjugates of each other if:
 @nb{∃c∈@bold{X}: ac = cb}.
 This is an equivalence relation, which defines conjugation classes in @bold{X}.
 Two elements belong to the same class if and only if they are conjugates of each other.
+All elements of a conjugation class of a finite group
+have the same order and the same cycle structure.
+The number of elements in a conjugation class of a finite group
+always is a divisor of the order of the group.
 If element x commutes with all elements of @bold{X} its class consists of x only.
 Reversely, if the class of element x consists of x only, it commutes with all elements.
 In an abelean group every class consists of one element.
-The identity always is lonesome in its class:
-it is a conjugate of itself only.
-The number of elements in a conjugation class of a finite group
-always is a divisor of the order of the group.
-This holds for all finite groups, not only for Gs.}}
+The identity always is lonesome in its class.
+it is a conjugate of itself only.}}
 
 Examples:
 
@@ -1570,7 +1575,7 @@ Returns a list of all conjugation classes of @nbr[g]. Example:
 @defproc[(G-invariant-subg? (g0 G?) (g1 G?)) boolean?]{
 @nbr[g0] is an invariant subgroup of @nbr[g1] if it is a subgroup of @nbr[g1] and
 @nb{∀p∈@nbr[g1]: {pq: q∈@nbr[g0]} = {qp: q∈@nbr[g0]}}.
-The two sets (indicated by means of braces) are called `cosets'.
+The two sets (indicated by curly braces) are called `cosets'.
 
 @note{
 Another way to state that @nbr[g0] is an invariant subgroup of @nbr[g1] is
@@ -1699,8 +1704,8 @@ and to clear the hashes.
 However, the @nbr[P-identity] and the @nbr[G-identity] are not removed.
 @red{Warning}: after clearing the hashes,
 newly constructed @nbsl["P" "P"]s and @nbsl["G" "G"]s
-no longer will be the same (in the sense of @nbr[eq?]),
-not even in the sense of @nbr[equal?] to equivalent
+no longer will be the same (in the sense of @nbr[eq?],
+not even in the sense of @nbr[equal?]) as equivalent
 @nbsl["P" "P"]s and @nbsl["G" "G"]s
 that were constructed before cleaning up.
 @nbrl[G-isomorphism "Isomorphisms"]
@@ -1875,19 +1880,20 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:comment "The following table maps each conjugation class to its name.")
 (code:comment "Check that all classocs refer to distinct conjugation classes.")
+(code:comment "")
 (define (get-class classoc) (G-class (car classoc) cube-symmetries))
 (define name-table
  (let ((classes (map get-class classocs)))
   (cond
    ((set=? classes cube-classes)
-    (printf "Table classocs is ok.~n")
+    (printf "Table classocs is ok, hence the name-table is ok too.~n")
     (make-hash (map cons classes (map cdr classocs))))
    ((error 'cube-symmetries "incorrect classocs table")))))
 (code:comment "")
 (define (get-class-name conj-class) (hash-ref name-table conj-class))
 (define S8 (G-symmetric 8))
 (code:comment "")
-(code:comment "Procedure print-data prints some information about group g")
+(code:comment "Procedure print-data prints some information about group g.")
 (code:comment "")
 (define (print-data g conj-classes name print-classes?)
  (define g-order (G-order g))
@@ -1930,14 +1936,15 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define (divisor? divisor multiple) (zero? (modulo multiple divisor)))
 (print-data cube-symmetries cube-classes "cube-symmetries" #t)
 (code:comment "Subgroup consisting of rotations only:")
-(code:comment "It is an invariant subgroup.")
 (code:comment "")
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
 (define rotations-only (G rotation other-rotation))
-(code:comment "rotation and other-rotation are rotations about 90°,")
-(code:comment "perpendicular to each other and intersecting each other.") 
+(code:comment "rotation and other-rotation are rotations about 90°")
+(code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
 (print-data rotations-only rotation-classes "rotations-only" #f)
+(code:line)
+(code:comment "rotations-only is an invariant subgroup of group cube-symmetries.")
 (G-invariant-subg? rotations-only cube-symmetries)
 (code:comment "Each conjugation class of the group of rotations-only")
 (code:comment "also is a conjugation class of the group of all cube-symmetries")
@@ -2005,40 +2012,34 @@ The following example shows the details:
 (define cube-symmetries (G rotation reflection))
 (define bases (G-bases cube-symmetries))
 (code:line)
-(code:comment "Procedure: (eqv-classes (lst list?) (eq (-> any/c any/c any/c))") 
-(code:comment "           -> (listof list?)") 
-(code:comment "Every sublist shows an equivalence-class") 
-(code:comment "of the elements of lst using equivalence relation eq.") 
-(code:comment "eq must be an equivalence relation for the elements of lst,") 
-(code:comment "but this is not checked.") 
-(code:comment "eq must be defined for all pairs of elements of the lst,") 
-(code:comment "but may be unpredictable for other arguments.") 
-(code:line) 
-(define (eqv-classes lst eq) 
- (define make-immutable-dict 
-  (let-values (((a b c d e f g) (make-custom-hash-types eq))) e))
- (for/fold 
-  ((h (make-immutable-dict)) 
-   #:result (dict-values h)) 
-  ((element (in-list lst))) 
-  (dict-set h element (cons element (dict-ref h element '())))))
-(code:line)
 (define ((make-base-eqv? g) a b)
  (for/or ((p (in-G g)))
-  (equal? a (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
+  (equal? a
+   (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
+(code:line)
+(define (eqv-classes lst eq) (group-by values lst eq))
 (code:line)
 (define base-classes
  (eqv-classes bases (make-base-eqv? cube-symmetries)))
+(code:line)
 (define class-size (/ (length bases) (length base-classes)))
+(code:line)
+(define (pad3 datum) (~s #:align 'right #:min-width 3 datum))
 (begin
- (printf "nr of bases                 ~s~n"   (length bases))
- (printf "nr of base-classes            ~s~n" (length base-classes))
- (printf "all base-classes same size?  ~s~n"
-  (apply = class-size (map length base-classes)))
- (printf "size of each base-class      ~s~n"  class-size))
+ (printf "nr of bases                 ~a~n"
+  (pad3 (length bases)))
+ (printf "nr of base-classes          ~a~n"
+  (pad3 (length base-classes)))
+ (printf "all base-classes same size? ~a~n"
+  (pad3
+   (apply = class-size (map length base-classes))))
+ (printf "size of each base-class     ~a~n"
+  (pad3 class-size)))
+(code:line)
 (code:comment #,(list "Print the base classes in " (nbsl "C" "C-notation") ", one base per line."))
+(code:line)
 (for ((base-class (in-list base-classes)) (i (in-naturals)))
- (printf "base-class ~s~n" (add1 i))
+ (printf " ~nbase-class ~s~n" (add1 i))
  (for ((base (in-list base-class))
        (n (in-naturals (add1 (* class-size i)))))
   (apply printf "~a ~s and ~s~n"
@@ -2048,6 +2049,7 @@ The following example shows the details:
 (code:comment #,(list "Let's check the " @nber["seq" "above statement"]
                       " about the size"))
 (code:comment "of each collection of symmetrically equivalent bases.")
+(code:line)
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
 (define rotations-only (G rotation other-rotation))
 (define order-rotations-only (G-order rotations-only))
@@ -2057,25 +2059,31 @@ The following example shows the details:
    (for/set ((r (in-G rotations-only)))
     (for/set ((b (in-set b))) (P (P-inverse r) b r)))))
  (= n order-rotations-only))
+(code:line)
 (code:comment "Using the rotations only we find the same collections of bases:")
+(code:line)
 (equal?
  (apply set
-  (map set
-   (eqv-classes bases (make-base-eqv? cube-symmetries))))
+  (map set base-classes))
  (apply set
   (map set
    (eqv-classes bases (make-base-eqv? rotations-only)))))
+(code:line)
 (code:comment "This is consistent with the fact that adding the inversion-symmetry to")
 (code:comment "a base of group rotations-only yields the group of all cube-symmetries.")
+(code:line)
 (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
 (eq? cube-symmetries (G rotation other-rotation inversion-symmetry))
+(code:line)
 (code:comment "In fact adding an arbitrary rotation-reflection will do.")
 (code:comment "A rotation-reflection is a reflection or")
 (code:comment "the composition of a rotation with a reflection,")
 (code:comment "or simply the latter when regarding the identity")
 (code:comment "as a rotation about 0°.")
+(code:line)
 (define rotation-reflections
  (remove* (G->list rotations-only) (G->list cube-symmetries)))
+(code:line)
 (for/and ((p (in-list rotation-reflections)))
  (eq? cube-symmetries (G rotation other-rotation p)))]
 
