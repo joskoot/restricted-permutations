@@ -1,4 +1,5 @@
 #lang scribble/manual
+
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
 @(display " │ This may take some minutes and may │\n")
@@ -100,9 +101,21 @@
         
 @title[#:version ""]{Restricted permutations}
 @author{Jacob J. A. Koot}
+
+@note{This document has no margin notes at the right of the text proper and
+examples are kept within the margins of plain text.
+This means that much space at the right hand side of the display is not used.
+Especially when you need reading glasses,
+you may want full screen with increased zoom factor,
+but not to an extent that a horizontal scroll bar appears, of course.
+May be I have bad customization of Firefox,
+but on my PC it renders a horizontal scroll bar only after eliminating the
+table of contents in the left margin.
+I suppose you don't want to loose the table of contents.
+I am comfortable with zoom factor 150%.}
+
 @(defmodule "R.rkt" #:packages ())
 
-@section{Preface}
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
@@ -114,17 +127,6 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
  (@nbhl["H.rkt" "H.rkt"] @(nbsr "H")))
  #:sep (hspace 3)
  #:row-properties (list 'top-border 'top-border '() '() '() 'bottom-border)]}
-
-This document has no margin notes at the right of the text proper and
-examples are kept within the margins of plain text.
-This means that much space at the right hand side of the display is not used.
-Especially when you need reading glasses,
-you may want full screen with increased zoom factor,
-but not to an extent that a horizontal scroll bar appears, of course.
-May be I have bad customization of Firefox,
-but on my PC it renders a horizontal scroll bar only after eliminating the
-table of contents in the left margin. I suppose you don't want to loose the table of contents.
-I am comfortable with zoom factor 150%.
 
 @section[#:tag "intro"]{Introduction}
 In this docu@(-?)ment the word `permutation' is used in mathematical sense,
@@ -251,7 +253,7 @@ in terms of Racket objects are used:
  (list "C" @seclink["C"]{Cycle-representation})
  (list "H" @seclink["H"]{Hash-representation}))]}
 
-@inset{A G is a Racket object representing a @seclink["G"]{finite subgroup of @bold{R}}.}
+A G is a Racket object representing a @seclink["G"]{finite subgroup of @bold{R}}.
 
 @note{Hs are for internal use behind the screen. @red{Advice}: avoid explicit use of Hs.}
 
@@ -372,43 +374,6 @@ For every C, and hence for every @nber["R" "R"], there is exactly one normalized
 (in the sense of @nbr[equal?] and ignoring memory limits)
 See procedure @nbr[C-normalize] for examples.}
 
-With the C-representation it is easy to compute an inverse.
-In the example below, procedure C-inverse accepts a C and
-returns a C representing the inverse, possibly not normalized.
-Normally one uses @nbr[P-inverse] of course.
-Here C-inverse is presented as an example of playing with Cs.
-
-@interaction[
-(require racket "R.rkt")
-(code:line)
-(define (C-inverse c)
- (cond
-  ((null? c) c)
-  ((N? (car c)) (reverse c))
-  (else (map C-inverse (reverse c)))))
-(code:line)
-(define cs (list '()
-                 '((1 2) (3 4))
-                 '(0 1 2)
-                 '(0 2 1)
-                 '(3 4)
-                 '((0 1) (0 1 2))
-                 '((3 4) (0 1 2))
-                 '((3 4) (0 2 1))))
-(define (pad c) (~s #:min-width 15 c))
-(define border "───────────────  ───────────────~n")
-(begin
- (printf border)
- (printf "~a  ~s~n" (pad 'c) 'inverse)
- (printf border)
- (define ok
-  (for/and ((c (in-list cs)))
-   (define inversed-c (C-inverse c))
-   (printf "~a  ~a~n" (pad c) inversed-c)
-   (C-identity? (list c inversed-c))))
- (printf border)
- (printf "ok? ~s~n" ok))]
-
 @deftogether[
  (@defproc[#:kind "predicate" (C?            (x any/c)) boolean?]
   @defproc[#:kind "predicate" (C-normalized? (x any/c)) boolean?])]{
@@ -423,7 +388,14 @@ Examples:}
 (C-normalize '(1 0))
 (C-normalize '(1 2 0))
 (C-normalize '((1 2) (0 3)))
-(C-normalize '((0 1) (1 2)))
+(C-normalize '((0 2) (0 1)))
+(C-normalize '((0 1) (0 2)))
+(C-normalize '((0 1) (0 1 2)))
+(C-normalize '((0 2) (0 1 2)))
+(C-normalize '((1 2) (0 1 2)))
+(C-normalize '((0 1 2) (0 1)))
+(C-normalize '((0 1 2) (0 2)))
+(C-normalize '((0 1 2) (1 2)))
 (C-normalize '((())))
 (C-normalize '(((9))))
 (C-normalize '((1) (2) (3)))
@@ -432,9 +404,7 @@ Examples:}
 (C-normalize '((1 0) (4 2 3)))
 (C-normalize '((0 1 2) (0 1 2)))
 (C-normalize '((0 1 2) (1 2 3)))
-(C-normalize '((0 1 2) (2 3 4)))
-(C-normalize '(((0 1) (1 2)) ((2 3) (4 5))))
-(C-normalize '((4 5) ((0 3) (0 2)) (0 1)))]
+(C-normalize '((0 1 2) (2 3 4)))]
 
 @defproc[(C-identity? (x any/c)) boolean?]{
 Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
@@ -679,20 +649,16 @@ but the result is not a P. Example:
 (code:comment "whereas:")
 (code:line (P? Pabc) (code:comment #,(green "ok:")))
 (code:comment #,(list
- "Racket's "
+ "Racket's procedure "
  (nbr compose)
  " does not return "
  (nbr equal?)
- " results for "
- (nbr eq?)
- " arguments"))
-(code:comment "when called with two or more arguments.")
+ " results for "))
+(code:comment #,(list (nbr eq?) " arguments when called with two or more arguments."))
 (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))
 (code:comment #,(list
  (nbr P)
- " and "
- (nbr P-compose)
- " do, even "
+ " does, even "
  (nbr eq?)
  " when the result represents the same "
  (elemref "R" "R")))
@@ -1208,22 +1174,18 @@ the composition of each element with itself included.} Examples:
 @(example/n (G '(0 1) '(0 1 2)))
 
 Notice that @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].
-Hence:
-
-@(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
-
-Also:
-
+Hence:@(lb)
+@(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))@(lb)
+Also:@(lb)
 @(example (eq? (G '(0 1) '(0 2) '(0 3)) (G-symmetric 4)))
-@(example (eq? (G '(1 2) '(1 3) '(1 4)) (G-symmetric 4 1)))
 
 @red{Warning:} We have:@(lb)
 @(color-example green (eq? (P '((0 1) (1 2))) (P '(0 1) '(1 2))))
 @red{but:}@(lb)
 @(color-example red (eq? (G '((0 1) (1 2))) (G '(0 1) '(1 2))))
 In particular:@(lb)
-@(example (G '((0 1) (1 2))))
-and@(lb)
+@(example/n (G '((0 1) (1 2))))
+@(lb)and@(lb)
 @(example/n (G '(0 1) '(1 2)))
 
 @defidform[#:kind "constant" G-identity]{
@@ -2307,6 +2269,9 @@ Let's check this:
 (for ((p in-C3v))
  (for ((q in-C3v)) (printf " ~s" (hash-ref h (P p q))))
  (newline))
+(code:comment "")
+(code:comment #,(list "Let's show the correspondence of the elements of C"(↓ "3v")))
+(code:comment #,(list "to permutations of the set of C"(↓ "3v")"."))
 (code:comment "")
 (for ((p in-C3v) (row (in-list rows)))
  (printf "   row of ~a corresponds to ~s~n"
