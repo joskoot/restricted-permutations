@@ -396,6 +396,11 @@ Examples:}
 (C-normalize '((0 1 2) (0 1)))
 (C-normalize '((0 1 2) (0 2)))
 (C-normalize '((0 1 2) (1 2)))
+(C-normalize '(0 1 2 3))
+(C-normalize '(1 2 3 0))
+(C-normalize '(2 3 0 1))
+(C-normalize '(3 0 1 2))
+(C-normalize '((0 1) (1 2) (2 3)))
 (C-normalize '((())))
 (C-normalize '(((9))))
 (C-normalize '((1) (2) (3)))
@@ -559,6 +564,7 @@ Examples:}
 (P '(0 1 2 3))
 (P '(1 2 3 0))
 (P '(2 3 0 1))
+(P '(3 0 1 2))
 (P '(0 1) '(1 2) '(2 3))
 (P '(2 3) '(1 2) '(0 1))]
 
@@ -1138,9 +1144,8 @@ written, displayed or printed in
 
 @inset{@nb{@elem[#:style 'tt]{(@nbr[G] @nbr[P-identity] @italic{p} ...)}}}
 
-where each @elem[#:style 'tt @italic{p}] is the written form of a @nbsl["P" "P"].
-The @nbsl["P" "Ps"] are written in @nbrl[P-sort]{sorted} order,
-the first one always being the @nbr[P-identity].
+showing all @nbsl["P" "Ps"] of the G in @nbrl[P-sort]{sorted} order
+and where each @elem[#:style 'tt @italic{p}] is the written form of a @nbsl["P" "P"].
 An exception is made for the @nbr[G-identity], which is written as:
 
 @inset{@nbr[G-identity]}
@@ -1232,7 +1237,8 @@ on the output-@nbr[port].
 Every element is the composition pq
 of element p in the left column and element q in the top row.
 The left column and top row are @nbrl[P-sort "sorted"] and start with the
-@nbrl[P-identity "identity"].}
+@nbrl[P-identity "identity"].
+The columns are aligned.}
 
 @note{For every group @bold{X} with identity e we have: @nb{∀x∈@bold{X}: ex = x = xe}.
 Hence with the identity as the first label for both columns and rows,
@@ -1278,10 +1284,12 @@ are @nbrl[P-fixed-point?]{fixed points} of all elements of the group.
 If the @nbr[lst] has less than two distinct elements, the @nbr[G-identity] is returned.
 The order of the returned G is n! where n is the number of distinct elements of @nbr[lst].
 
-@red{Warning}: @nbr[G-symmetric] is not lazy. Because @nb{12! = 479001600}, @nbr[(> n 12)] or
-@nbr[(> (length (remove-duplicates lst =)) 12)] certainly causes memory problems,
-possibly causing thrashing on virtual memory and slowing down the processor to
-a few per cent of its capacity.}
+@note{@red{Warning}: @nbr[G-symmetric] is not lazy. Because @nb{12! = 479001600},@(lb)
+@nbr[(> n 12)] or
+@nbr[(> (length (remove-duplicates lst =)) 12)]@(lb)
+certainly causes memory problems,
+probably thrashing on virtual memory and slowing down the processor to
+a few per cent of its capacity.}}
 
 Example:
 
@@ -1400,10 +1408,6 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
 (code:line)
 (find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))]
 
-@defproc[(G-bases-stream (g G?)) (stream/c (Setof P?))]{
-Produces a lazy @nbhl["https://docs.racket-lang.org/reference/streams.html" "stream"]
-of all minimal bases of @nbr[g].}
-
 @defproc[(G-order (g G?)) N+?]{
 Returns the order of @nbr[g], id est, its number of elements.
 
@@ -1487,7 +1491,7 @@ Returns the conjugation class of @nbr[g] that contains @nbr[p].
 If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
-Two elements a and b of a group @bold{X} are conjugates of each other if:
+Two elements a and b of a group @bold{X} are conjugates of each other if and only if:
 @nb{∃c∈@bold{X}: ac = cb}.
 This is an equivalence relation, which defines conjugation classes in @bold{X}.
 Two elements belong to the same class if and only if they are conjugates of each other.

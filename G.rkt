@@ -10,8 +10,7 @@
 
 (provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
- G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-bases-stream
- G-subgroups)
+ G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups)
 
 (define (G-print g port mode)
  (fprintf port "~s"
@@ -119,13 +118,6 @@
    (for/list ((base (in-combinations Ps k)) #:when (eq? (apply G base) g))
     (apply seteq base)))
   (if (null? bases) (loop (add1 k)) bases)))
-
-(define (G-bases-stream g)
- (define Ps (set->list (set-remove (G-set g) G-identity)))
- (let loop ((k 1))
-  (define bases-stream
-   (for/stream ((base (in-combinations Ps k)) #:when (eq? (apply G base) g)) (apply seteq base)))
-  (if (stream-empty? bases-stream) (loop (add1 k)) bases-stream)))
 
 (define (G-base g)
  (define Ps (set->list (set-remove (G-set g) G-identity)))
