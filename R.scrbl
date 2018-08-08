@@ -102,18 +102,6 @@
 @title[#:version ""]{Restricted permutations}
 @author{Jacob J. A. Koot}
 
-@note{This document has no margin notes at the right of the text proper and
-examples are kept within the margins of plain text.
-This means that much space at the right hand side of the display is not used.
-Especially when you need reading glasses,
-you may want full screen with increased zoom factor,
-but not to an extent that a horizontal scroll bar appears, of course.
-May be I have bad customization of Firefox,
-but on my PC it renders a horizontal scroll bar only after eliminating the
-table of contents in the left margin.
-I suppose you don't want to loose the table of contents.
-I am comfortable with zoom factor 150%.}
-
 @(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
@@ -128,13 +116,12 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
  #:sep (hspace 3)
  #:row-properties (list 'top-border 'top-border '() '() '() 'bottom-border)]}
 
-@section[#:tag "intro"]{Introduction}
+@section{Introduction}
 In this docu@(-?)ment the word `permutation' is used in mathematical sense,
 id est, such as to mean a bijection of a set onto the same set.
 
 @elemtag["rearrangement" ""]
-@note{
-The word `permutation' often is used for rearrangements.
+@note{The word `permutation' often is used for rearrangements.
 For example, two lists like @nbr[(1 2 0)] and @nbr[(0 1 2)]
 often are called permutations of each other.
 In this docu@(-?)ment they are called rearrange@(-?)ments of each other,
@@ -160,9 +147,9 @@ as a permutation of @bold{N} with the following restriction:
 
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
-`R' is shorthand for `restricted permutation'. @bold{R} is the set of all Rs.
+`R' is shorthand for `restricted permutation'.
+@bold{R} is the set of all Rs.
 (It has nothing to do with the set of real numbers)
-
 Define the composition:
 
 @inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
@@ -268,7 +255,7 @@ Notice that
 
 @inset{
  @racketblock0[
-(λ ([k : Natural]) (code:comment #,(element 'roman (red "This is not an R.")))
+(lambda ([k : Natural]) (code:comment #,(element 'roman (red "This is not an R.")))
  ((if (even? k) add1 sub1) k))]}
 
 can represent a permutation of @bold{N} but does not represent an R
@@ -806,14 +793,13 @@ The computation of the modulus of a large exponent may be somewhat slower, thoug
 (define big-exponents (map (curry + big) exponents))
 (define -big-exponents (map - big-exponents))
 (define p (P '(0 1 2) '(3 4)))
-(define P-expt-p (curry P-expt p))
-(code:line (P-period p) (code:comment "Computes and memorizes all powers (in this case 6 only)"))
+(code:line (P-period p) (code:comment "Computes the order and all powers and memorizes them."))
 (define-syntax timer
  (syntax-rules ()
   ((_ exponents)
    (begin
     (collect-garbage)
-    (time (for-each P-expt-p exponents))))))
+    (time (for-each (curry P-expt p) exponents))))))
 (timer exponents)
 (timer big-exponents)
 (timer -big-exponents)]
@@ -988,6 +974,8 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
   (list
    "corresponding elements are "
    (nbr equal?)
+   ", hence neither "
+   (nbr eq?)
    "."))
 
 @interaction[
@@ -1227,9 +1215,9 @@ Examples:
 (require racket "R.rkt")
 (define c '(0 1))
 (define g (G c))
-(code:line (G-member? c g) (code:comment #,(green "ok")))
+(code:line (G-member? c g)  (code:comment #,(green "ok")))
 (code:line (R-clear-hashes) (code:comment #,(red "caution")))
-(code:line (G-member? c g) (code:comment #,(red "alas")))]
+(code:line (G-member? c g)  (code:comment #,(red "alas")))]
 
 @defproc[(G-print-table (g G?) (port output-port? (current-output-port))) void?]{
 The composition table of @nbr[g] is printed in normalized @nbsl["C" "cycle-notation"]
@@ -1285,9 +1273,9 @@ If the @nbr[lst] has less than two distinct elements, the @nbr[G-identity] is re
 The order of the returned G is n! where n is the number of distinct elements of @nbr[lst].
 
 @note{@red{Warning}: @nbr[G-symmetric] is not lazy. Because @nb{12! = 479001600},@(lb)
-@nbr[(> n 12)] or
+@nbr[(> n 12)] and
 @nbr[(> (length (remove-duplicates lst =)) 12)]@(lb)
-certainly causes memory problems,
+certainly cause memory problems,
 probably thrashing on virtual memory and slowing down the processor to
 a few per cent of its capacity.}}
 
@@ -1432,7 +1420,7 @@ This theorem holds for all finite groups, not only for Gs.}}
 (define g0b (G '(0 1)))
 (code:line (G-equal? g0a g0b) (code:comment #,(green "ok")))
 (code:line (  equal? g0a g0b) (code:comment #,(red "alas")))
-(code:line (G-subg?  g0b g1)  (code:comment #,(red "alas")))]
+(code:line ( G-subg? g0b g1)  (code:comment #,(red "alas")))]
 
 @defproc[(G-proper-subg? (g0 G?) (g1 G?)) boolean?]{
 @nbr[g0] is a proper subgroup of @nbr[g1]
@@ -2044,8 +2032,8 @@ The following example shows the details:
 (code:comment "In fact adding an arbitrary rotation-reflection will do.")
 (code:comment "A rotation-reflection is a reflection or")
 (code:comment "the composition of a rotation with a reflection,")
-(code:comment "or simply the latter when regarding the identity")
-(code:comment "as a rotation about 0°.")
+(code:comment "or simply the latter too when regarding the identity")
+(code:comment "as a rotation about 0° (around arbitrary axis of rotation).")
 (code:line)
 (define rotation-reflections
  (remove* (G->list rotations-only) (G->list cube-symmetries)))
@@ -2159,8 +2147,8 @@ of each element forms an @nbrl[G-invariant-subg? "invariant subgroup"]:
 C@↓{3v} is the group of symmetries of an equilateral triangle,
 with subscript `3' indicating that it has a three-fold axis of rotation and
 subscript `v' indicating it has a vertical plane of reflection containing
-the axis of rotation and one of the vertices (in fact three such reflections
-and assuming the triangle to be located in a horizontal plane)
+the axis of rotation and one of the vertices, in fact three such reflections
+and assuming the triangle to be located in a horizontal plane.
 Naming the vertices 0, 1 and 2 we can map the symmetries isomorphically onto @nber["R" "Rs"]:
 
 @interaction[
@@ -2275,7 +2263,8 @@ Let's check this:
  (newline))
 (code:comment "")
 (code:comment #,(list "Let's show the correspondence of the elements of C"(↓ "3v")))
-(code:comment #,(list "to permutations of the set of C"(↓ "3v")"."))
+(code:comment #,(list "to permutations of the set of C"(↓ "3v")","))
+(code:comment #,(list "representing them by the " @nber["C3v-table" "labels shown above"] "."))
 (code:comment "")
 (for ((p in-C3v) (row (in-list rows)))
  (printf "   row of ~a corresponds to ~s~n"
