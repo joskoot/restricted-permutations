@@ -32,11 +32,12 @@
 @(define-syntax-rule (nber x ...) (nb (elemref    x ...)))
 @(define-syntax-rule (nbrl x ...) (nb (racketlink x ...)))
 @(define-syntax-rule (nbr  x ...) (nb (racket     x ...)))
+@(define (∈) (smaller "∈"))
 
 @(define (make-color-style color)
   (define prop:color (color-property color))
   (define color-style (style #f (list prop:color)))
-  (λ (elem) (element color-style elem)))
+  (lambda (elem) (element color-style elem)))
 
 @(define red   (make-color-style "red"))
 @(define green (make-color-style "green"))
@@ -143,20 +144,21 @@ Let @bold{N} be the set of all natural numbers, 0 included.
 Define a restricted permutation, @nb{say p},
 as a permutation of @bold{N} with the following restriction:
 
-@inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m @⇒ p(k) = k}}
+@inset{@nb{∃m@(∈)@bold{N}: ∀k@(∈)@bold{N}: k≥m @⇒ p(k) = k}}
 
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
 `R' is shorthand for `restricted permutation'.
 @bold{R} is the set of all Rs.
-(It has nothing to do with the set of real numbers)
+It has nothing to do with the set of real numbers.
+
 Define the composition:
 
-@inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
+@inset{@nb{p,q@(∈)@bold{R} → pq@(∈)@bold{R}}}
 
 as usual for functions p and q with compatible range of q and domain of p:
 
-@inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
+@inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
 
 In this docu@(-?)ment @bold{R} always will be associated with this composition,
 thus forming a @nber["group"]{group},
@@ -195,7 +197,7 @@ in the description of procedure @nbr[P-compose].
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
-@inset{@nb{∀k∈@bold{N}: k → k}}
+@inset{@nb{∀k@(∈)@bold{N}: k → k}}
 
 This is the only R with restriction 0.
 It also is the only R of @nbrl[P-order "order"] 1.
@@ -212,11 +214,11 @@ inverses of each other have the same order.}
 
 @note{There is no R with restriction 1.
 If p is a permutation of @bold{N},
-then @nb{[∀k∈@bold{N}: k≥1 @⇒ p(k) = k}] implies @nb{[p(0) = 0]}
-and hence @nb{[∀k∈@bold{N}: p(k) = k]},
+then @nb{[∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}] implies @nb{[p(0) = 0]}
+and hence @nb{[∀k@(∈)@bold{N}: p(k) = k]},
 which means that p is the identity with restriction 0.
 Let a(m) be the number of Rs with restriction m. We have:
-@nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
+@nb{a(0)=1} and @nb{∀m@(∈)@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
 This implies: @nb{a(1) = 0.}
 Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
 where m runs from 0 up to and including n.}
@@ -320,8 +322,8 @@ A C represents an @nber["R" "R"] and is one of the following:
   Every @nbsl["N"]{natural number} that is not part of the single C, is mapped onto itself. 
   The empty list and every single C of one element represent the
   @nber["id"]{identity} of @nber["R"]{@bold{R}}.
-  The @nber["id"]{identity} has order 1.
-  A non-empty single C of n elements represents an @nber["R" "R"] of order n.
+  The @nber["id"]{identity} has @nbrl[P-order "order"] 1.
+  A non-empty single C of n elements represents an @nber["R" "R"] of @nbrl[P-order "order"] n.
   The @racket[reverse] of a single C represents the inverse
   of the @nber["R" "R"] represented by the original single C.}
  @item{
@@ -353,7 +355,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   in increasing order of the first element.
   Sorting is possible because @nber["R" "Rs"] represented by disjunct single Cs
   commute with each other.
-  The order of the represented @nber["R" "R"]
+  The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
 @elemtag["Cs"]{The set of all Cs includes all normalized Cs.
@@ -593,8 +595,8 @@ q
  (and (eq? x z) (eq? y z)))]
 
 @defproc[(P-compose (p (or/c P? C?)) ...) P?]{
-Same as procedure @nbr[P] in the sense of @nbr[free-identifier=?].}
-@(lb)Some checks on the properties of compositions of Ps:
+Same as procedure @nbr[P] in the sense of @nbr[free-identifier=?].@(lb)
+Some checks on the properties of compositions of Ps:}
 
 @interaction[
 (require racket "R.rkt")
@@ -763,10 +765,12 @@ Examples:
 (for/and ((p (in-G (G-symmetric 4))))
  (define period (P-period p))
  (define order (P-order p))
- (for/and ((k (in-range 1 order)))
-  (eq?
-   (vector-ref period (- order k))
-   (P-inverse (vector-ref period k)))))]
+ (and
+  (P-identity? (vector-ref period 0))
+  (for/and ((k (in-range 1 order)))
+   (eq?
+    (vector-ref period (- order k))
+    (P-inverse (vector-ref period k))))))]
 
 @defproc*[(((P-expt (p P?) (k Z?)) P?) ((P-expt (c C?) (k Z?)) P?))]{
 @nbr[(P-expt c k)] is treated as @nbr[(P-expt (P c) k)].
@@ -778,7 +782,7 @@ If the period and order already are available, they are
 recollected from @nbr[p] without computing them again.}
 
 @note{Let x be a group element of finite order m.
-Then @nb{∀k∈@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
+Then @nb{∀k@(∈)@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
 
 Large exponents do no harm.
 The power is computed almost as fast as for small exponents.
@@ -807,8 +811,8 @@ The computation of the modulus of a large exponent may be somewhat slower, thoug
 For every group @bold{X} we have:
 
 @inset{
-∀p∈@bold{X}: ∀k,m∈@bold{Z}: (p@↑{k})@↑{m} = p@↑{km}@(hspace 3)and@(lb)
-∀p∈@bold{X}: ∀k,m∈@bold{Z}: p@↑{k}p@↑{m} = p@↑{k+m}}
+∀p@(∈)@bold{X}: ∀k,m@(∈)@bold{Z}: (p@↑{k})@↑{m} = p@↑{km}@(hspace 3)and@(lb)
+∀p@(∈)@bold{X}: ∀k,m@(∈)@bold{Z}: p@↑{k}p@↑{m} = p@↑{k+m}}
 
 This applies to @nber["R" (bold "R")] too. For example:
 
@@ -859,7 +863,7 @@ Examples:
 
 For every group @bold{X} we have:
 
-@inset{@nb{∀a,b∈@bold{X}: (ab)@(expt-1) = b@(expt-1)a@(expt-1)}}
+@inset{@nb{∀a,b@(∈)@bold{X}: (ab)@(expt-1) = b@(expt-1)a@(expt-1)}}
 
 This applies to @nber["R" @bold{R}] too:
 
@@ -1118,8 +1122,9 @@ Examples:
   (P-order p)
   p))
 (eq? (G-symmetric 4) (list->G (sequence->list (in-R 4))))
- (code:comment "")
-(code:line (time (in-R 256)) (code:comment #,(green "ok")))
+(code:comment "")
+(code:line (define seq (time (in-R 256))) (code:comment #,(green "ok")))
+(code:line (time (sequence-ref seq 1000)) (code:comment "May take some time, but not very much."))
 (code:line (in-R 257) (code:comment #,(red "error")))]
 
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
@@ -1228,7 +1233,7 @@ The left column and top row are @nbrl[P-sort "sorted"] and start with the
 @nbrl[P-identity "identity"].
 The columns are aligned.}
 
-@note{For every group @bold{X} with identity e we have: @nb{∀x∈@bold{X}: ex = x = xe}.
+@note{For every group @bold{X} with identity e we have: @nb{∀x@(∈)@bold{X}: ex = x = xe}.
 Hence with the identity as the first label for both columns and rows,
 the first row and first column of the table proper are the same as the labels.
 Therefore we can omit the labels.} Example:
@@ -1376,7 +1381,7 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
 (code:comment " ")
 (define g (G '(0 1) '(0 1 2)))
 (andmap
- (λ (base) (eq? (apply G (set->list base)) g))
+ (lambda (base) (eq? (apply G (set->list base)) g))
  (G-bases g))]
 
 @elemtag["simplest base"]{To find one of the simplest bases:}
@@ -1394,7 +1399,8 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
   (define m (string-length (~s b)))
   (if (< m n) (values b m) (values base n))))
 (code:line)
-(find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))]
+(find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))
+(find-simple-base (G-symmetric 4))]
 
 @defproc[(G-order (g G?)) N+?]{
 Returns the order of @nbr[g], id est, its number of elements.
@@ -1463,7 +1469,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
   ((subg
     (in-list
      (sort (G-subgroups g)
-      (λ (x y) (< (G-order x) (G-order y)))))))
+      (lambda (x y) (< (G-order x) (G-order y)))))))
   (printf "~a ~a  ~a"
    (~a #:min-width 7 #:align 'center (proper?    subg))
    (~a #:min-width 9 #:align 'center (invariant? subg))
@@ -1480,11 +1486,11 @@ If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
 Two elements a and b of a group @bold{X} are conjugates of each other if and only if:
-@nb{∃c∈@bold{X}: ac = cb}.
+@nb{∃c@(∈)@bold{X}: ac = cb}.
 This is an equivalence relation, which defines conjugation classes in @bold{X}.
 Two elements belong to the same class if and only if they are conjugates of each other.
 All elements of a conjugation class of a finite group
-have the same order and the same cycle structure.
+have the same order and the same normalized cycle structure.
 The number of elements in a conjugation class of a finite group
 always is a divisor of the order of the group.
 If element x commutes with all elements of @bold{X} its class consists of x only.
@@ -1514,21 +1520,23 @@ Returns a list of all conjugation classes of @nbr[g]. Example:
   (printf "Class ~s: " n)
   (for ((p (in-set class))) (printf "~s " (P->C p)))
   (newline)))
-(code:comment "All elements of a conjugation class have the same cycle structure:")
+(code:comment "All elements of a conjugation class")
+(code:comment "have the same normalized cycle structure:")
 (print-G-classes (G '(0 1) '(0 2)))
-(code:comment "There may be more than one class with the same cycle structure.")
+(code:comment "There may be more than one class with.")
+(code:comment "the same normalized cycle structure.")
 (code:comment "Below the two classes:")
 (code:comment "#<seteq: (P '((0 1) (2 3))) (P '((0 3) (1 2)))> and")
 (code:comment "#<seteq: (P '((0 2) (1 3)))>")
 (print-G-classes (G '(1 3) '(0 1 2 3)))
 (print-G-classes (G '((0 1 2 3) (4 5 6 7)) '((0 4 2 6) (1 7 3 5))))
 (code:comment "For a symmetric group two elements belong to the same conjugation")
-(code:comment "class if and only if they have the same cycle structure:")
+(code:comment "class if and only if they have the same normalized cycle structure:")
 (print-G-classes (G-symmetric 4))]}
 
 @defproc[(G-invariant-subg? (g0 G?) (g1 G?)) boolean?]{
 @nbr[g0] is an invariant subgroup of @nbr[g1] if it is a subgroup of @nbr[g1] and
-@nb{∀p∈@nbr[g1]: {pq: q∈@nbr[g0]} = {qp: q∈@nbr[g0]}}.
+@nb{∀p@(∈)@nbr[g1]: {pq: q@(∈)@nbr[g0]} = {qp: q@(∈)@nbr[g0]}}.
 The two sets (indicated by curly braces) are called `cosets'.
 
 @note{
@@ -1564,9 +1572,9 @@ Procedure @nbr[G-isomorphism] returns one only plus its inverse.
 
 @note{@elemtag["iso"]{Two groups @bold{X} and @bold{Y} are isomorphic to each other
 if and only if there is a bijection @nb{ξ: @bold{X} → @bold{Y}} such that:
-@nb{∀p,q∈@bold{X}: ξ(pq) = ξ(p)ξ(q).}
+@nb{∀p,q@(∈)@bold{X}: ξ(pq) = ξ(p)ξ(q).}
 Because ξ is a bijection, we also have:@(↑ (hspace 1))
-@nb{∀a,b∈@bold{Y}: ξ@(expt-1)(ab) = ξ@(expt-1)(a)ξ@(expt-1)(b).}
+@nb{∀a,b@(∈)@bold{Y}: ξ@(expt-1)(ab) = ξ@(expt-1)(a)ξ@(expt-1)(b).}
 Isomorphism is an
 @nbhl["https://en.wikipedia.org/wiki/Equivalence_relation" "equivalence relation."]}}} Examples:
 
@@ -1584,9 +1592,9 @@ Isomorphism is an
 (G-order C4)
 (G-abelean? C4)
 (code:comment "C4 is not isomorphic to V")
-(G-isomorphism V C4)
+(code:line (G-isomorphism V C4) (code:comment #,(red "false")))
 (code:comment "In particular (P '(0 1 2 3)) is not its own inverse:")
-(let ((p (P '(0 1 2 3)))) (eq? (P-inverse p) p))]
+(code:line (let ((p (P '(0 1 2 3)))) (eq? (P-inverse p) p)) (code:comment #,(red "false")))]
 
 @interaction[
 (require racket "R.rkt")
@@ -1598,7 +1606,7 @@ Isomorphism is an
 (eq? (list->G (map p0->p1 (G->list g0))) g1)
 (eq? (list->G (map p1->p0 (G->list g1))) g0)
 (code:comment "If the two Gs are not isomorphic, G-isomorphism returns #f.")
-(G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3)))
+(code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))
 (code:comment "An error is reported if the argument")
 (code:comment "is not in the domain of the isomorphism.")
 (code:line (p1->p0 (P '(0 1))) (code:comment #,(red "alas")))]
@@ -1697,7 +1705,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
   (parameterize ((current-namespace namespace))
    (namespace-require 'racket)
    (namespace-require '"R.rkt"))
-  (λ (expr) (eval expr namespace))))
+  (lambda (expr) (eval expr namespace))))
 (define other-P-identity  (other-eval 'P-identity))
 (define other-G-identity  (other-eval 'G-identity))
 (define other-P-identity? (other-eval 'P-identity?))
@@ -1785,8 +1793,8 @@ Number the vertices of a cube as shown in the following figure:
 @nested[#:style 'inset (image "cube.gif")]
 
 All symmetries of the cube can be found with a
-minimal @nbrl[G-bases "base"] of two elements.
-Below a base is used consisting of @nb{anti-clockwise}
+@nbrl[G-bases "minimal base"] of two elements.
+Below a base is used consisting of anti-clockwise
 rotation about 90° around the vertical axis through the center of the cube, id est,
 @nbr[(P '((0 1 2 3) (4 5 6 7)))], and
 reflection in the diagonal plane containing the vertices 2, 3, 4 and 5,
@@ -1853,7 +1861,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define g-order (G-order g))
  (define in-g (in-G g))
  (printf " ~nInfo about group: ~a~n ~n" name)
- (define classes (sort conj-classes class<?))
+ (define classes (sort conj-classes conj-class<?))
  (printf "Order of the group: ~s~n" g-order)
  (printf "Number of conjugation classes: ~s~n" (length classes))
  (printf
@@ -1878,7 +1886,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
     (printf "~s~n" (P->C p)))))
  (printf " ~n"))
 (code:comment "")
-(define (class<? x y)
+(define (conj-class<? x y)
  (and (not (eq? x y))
   (or
    (eq? (set-first x) P-identity)
@@ -1906,7 +1914,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 
 There are ten conjugation classes, of which five are the conjugation classes
 of subgroup @element['tt "rotations-only"].
-Elements belonging to the same class have the same cycle structure.
+Elements belonging to the same class have the same normalized cycle structure.
 The @nbr[P-identity] always is the only member of its class.
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
 which does not occur in subgroup @element['tt "rotations-only"], is lonesome too.
@@ -1914,7 +1922,7 @@ This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
 The inversion-symmetry, rotations about 180° and reflections in the planes
 containing the centre of the cube and parallel to a side-plane of the cube
-have the same cycle structure.
+have the same normalized cycle structure.
 Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
 Even subgroup @element['tt "rotations-only"] has threefold symmetries.
 In particular, composition of two rotations about 90° with intersecting
@@ -1945,7 +1953,7 @@ Let's check that the inversion-symmetry commutes with all symmetries of the cube
 There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube.
 They can be grouped in 9 collections of symmetrically equivalent bases,
 each collection containing 24 bases.
-Symmetrically equivalent bases have the same cycle structure.
+Symmetrically equivalent bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent bases
 is one less than the number of conjugation classes of group @tt{cube-symmetries}.
 This is no coincidence, because
@@ -2182,8 +2190,8 @@ Therefore every element of a group @bold{X}
 can be associated with one or two permutations of set @bold{X}:
 
 @inset{
-∀x∈@bold{X}: (y∈@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
-∀x∈@bold{X}: (y∈@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
+∀x@(∈)@bold{X}: (y@(∈)@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
+∀x@(∈)@bold{X}: (y@(∈)@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
 
 If the group is abelean, the @nber["rearrangement" "rearrangements"]
 in the rows are the same as those in the columns.
@@ -2244,8 +2252,8 @@ Let's check this:
      (values
       (hash-ref h q)
       (hash-ref h (compose-for-row-or-column p q)))))))
- (define rows    (correspondence-helper (λ (p q) (P p q))))
- (define columns (correspondence-helper (λ (p q) (P q p))))
+ (define rows    (correspondence-helper (lambda (p q) (P p q))))
+ (define columns (correspondence-helper (lambda (p q) (P q p))))
  (values h rows columns))
 (code:comment "")
 (define-values (h rows columns) (correspondence C3v))

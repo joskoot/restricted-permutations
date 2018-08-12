@@ -96,18 +96,17 @@
        inverse))
      (let*
       ((h (P-H-field p))
-       (order (hash-count h))
+       (order (or order (P-order p)))
        (inverted-h (H-inverse h))
        (inverted-p (hash-ref! P-hash inverted-h (λ () (P-constr inverted-h)))))
       (set-P-inverse-field! p inverted-p)
       (set-P-inverse-field! inverted-p p)
-      (set-P-order-field! p order)
       (set-P-order-field! inverted-p order)
       inverted-p))))))
 
 (define (P-order p/c)
  (let ((p (P/C->P p/c)))
-  (or (P-order-field p))
+  (or (P-order-field p)
    (let*
     ((c (P->C p))
      (order
@@ -116,7 +115,7 @@
        ((N? (car c)) (length c))
        (else (apply lcm (map length c))))))
     (set-P-order-field! p order)
-    order)))
+    order))))
 
 (define (P-period p/c)
  (define (P-period p)
