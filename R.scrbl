@@ -149,8 +149,8 @@ as a permutation of @bold{N} with the following restriction:
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
 `R' is shorthand for `restricted permutation'.
-@bold{R} is the set of all Rs.
-It has nothing to do with the set of real numbers.
+In this docu@(-?)ment @bold{R} is the set of all Rs.
+@nb{It has} nothing to do with the set of real numbers.
 
 Define the composition:
 
@@ -160,7 +160,7 @@ as usual for functions p and q with compatible range of q and domain of p:
 
 @inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
 
-In this docu@(-?)ment @bold{R} always will be associated with this composition,
+Set @bold{R} always will be associated with this composition,
 thus forming a @nber["group"]{group},
 in particular a denumerable infinite group.
 As required, the composition is associative.
@@ -170,7 +170,8 @@ although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group, @bold{R} has an isomorphic subgroup.
 
-@note{In fact exactly one such subgroup if the order of the group is 1 and
+@note{In fact exactly one such subgroup if the order of the group
+(= cardinality of the set of the group) is 1 and
 a countably infinite number of them if the order is greater than 1.}
 
 @note{@elemtag["group"]{The present docu@(-?)ment is not an introduction to group theory.
@@ -229,7 +230,7 @@ The latter is the cardinality of a group,
 but it usually is called its @italic{order}.
 The word `order' also is used in the sense of the
 consecution of the elements in a list or vector.
-In most cases it is clear in which meaning the word is used.
+In most cases it is clear with which meaning the word is used.
 Where there is danger of confusion, a phrase is used that avoids confusion.}
 
 An R is an abstract mathematical concept.@(lb)
@@ -330,8 +331,8 @@ A C represents an @nber["R" "R"] and is one of the following:
   A list of Cs.
   Represents the composition of the @nber["R" "Rs"] represented
   by its elements. An element of a list of Cs can be a list of Cs, but
-  superfluous pairs of parentheses are ignored,
-  which is possible because the composition is associative.
+  superfluous pairs of parentheses can be ignored,
+  because the composition is associative.
   The order in which the single Cs appear in the list can be relevant,
   because they are not required to commute with each other.})]
 
@@ -359,7 +360,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   is the least common multiple of the lengths of the single Cs.})]
 
 @elemtag["Cs"]{The set of all Cs includes all normalized Cs.
-For every C, and hence for every @nber["R" "R"], there is exactly one normalized C
+For every @nber["R" "R"], there is exactly one representing normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits)
 See procedure @nbr[C-normalize] for examples.}
 
@@ -511,10 +512,11 @@ module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, it returns the same @seclink["N"]{natural number}
 as the represented @nber["R" "R"], of course.
-Every @nber["R" "R"] can be represented by a P (dis@(-?)re@(-?)gard@(-?)ing memory limits).
+Every @nber["R" "R"] can be represented by a P (when ignoring memory limits).
 Although Ps are procedures,
 those representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
+
 In fact Ps are
 @nbsl["structures" #:doc '(lib "scribblings/reference/reference.scrbl") "structures"]
 with @nbrl[prop:procedure "procedure property"].
@@ -570,25 +572,31 @@ are the same in the sense of @nbr[eq?]
 (require racket "R.rkt")
 (define a (P '(3 4) '(4 5)))
 (define b (P '(4 5 3)))
-(code:comment #,(list "a and b represent the same " (elemref "R" "R") ". Therefore:"))
-(code:line (eq? a b) (code:comment #,(green "ok")))
+(code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
+(code:line (for/and ((k (in-range 10))) (= (a k) (b k))) (code:comment #,(green "ok")))
+(code:comment "Hence:")
+(code:line (eq? a b) (code:comment #,(green "ok")))]
+
+Another example:
+
+@interaction[
+(require racket "R.rkt")
 (define p (P '((0 2) (3 4 5))))
 (define q (P-inverse p))
 q
-(code:comment "p and q are the inverses of each other, hence:")
+(code:comment "Because p and q are the inverses of each other, we have:")
 (and
  (eq? (P-inverse p) q)
  (eq? (P-inverse q) p)
- (P-identity? (P p q))
- (P-identity? (P q p)))]
+ (eq? (P p q) P-identity)
+ (eq? (P q p) P-identity))]
 
 @nbr[P] is associative, of course. For example:
 
 @interaction[
 (require racket "R.rkt")
-(define g (G-symmetric 4))
-(define in-g (in-G g))
-(for*/and ((a in-g) (b in-g) (c in-g))
+(define in-S4 (in-G (G-symmetric 4)))
+(for*/and ((a in-S4) (b in-S4) (c in-S4))
  (define x (P a (P b c)))
  (define y (P (P a b) c))
  (define z (P a b c))
@@ -600,18 +608,21 @@ Some checks on the properties of compositions of Ps:}
 
 @interaction[
 (require racket "R.rkt")
-(define g (G-symmetric 4))
-(define in-g (in-G g))
-(for*/and ((p in-g) (q in-g))
+(define S4 (G-symmetric 4))
+(define in-S4 (in-G S4))
+(for*/and ((p in-S4) (q in-S4))
  (define pq (P-compose p q))
  (define qp (P-compose q p))
- (define max-r (max (P-restriction p) (P-restriction q)))
+ (define restriction
+  (max
+   (P-restriction p)
+   (P-restriction q)))
  (and
-  (G-member? pq g) (G-member? qp g)
+  (G-member? pq S4) (G-member? qp S4)
   (=   (P-order pq) (P-order qp))
   (eq? (P-even? pq) (P-even? qp))
-  (<= 0 (P-restriction pq) max-r)
-  (<= 0 (P-restriction qp) max-r)))]
+  (<= 0 (P-restriction pq) restriction)
+  (<= 0 (P-restriction qp) restriction)))]
 
 @elemtag["P-example"]{
 The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
@@ -758,7 +769,7 @@ Examples:
 @example-table[
 (P-period P-identity)
 (P-period (P '(0 1)))
-(P-period (P '(3 4 5)))]
+(P-period (P '(3 5 7)))]
 
 @interaction[
 (require "R.rkt")
@@ -798,15 +809,15 @@ The computation of the modulus of a large exponent may be somewhat slower, thoug
 (define -big-exponents (map - big-exponents))
 (define p (P '(0 1 2) '(3 4)))
 (code:line (P-period p) (code:comment "Computes the order and all powers and memorizes them."))
-(define-syntax timer
- (syntax-rules ()
-  ((_ exponents)
-   (begin
-    (collect-garbage)
-    (time (for-each (curry P-expt p) exponents))))))
-(timer exponents)
-(timer big-exponents)
-(timer -big-exponents)]
+(define (P-expt-p k) (P-expt p k))
+(define-syntax-rule (timer exponents)
+ (begin
+  (collect-garbage)
+  (time (for-each P-expt-p exponents))))
+(begin
+ (timer      exponents)
+ (timer  big-exponents)
+ (timer -big-exponents))]
 
 For every group @bold{X} we have:
 
@@ -1044,8 +1055,7 @@ Examples:
 
 @interaction[
 (require racket "R.rkt")
-(define S4 (G-symmetric 4))
-(define in-S4 (in-G S4))
+(define in-S4 (in-G (G-symmetric 4)))
 (for/and ((p in-S4))
  (define nfps (P-non-fixed-points p))
  (equal? nfps (sort (for/list ((k (in-list nfps))) (p k)) <)))
@@ -1084,8 +1094,7 @@ You probably never need this procedure. @(lb)@red{Advice: avoid it}.}
 @defproc[(H->P (h pseudo-H?)) P?]{
 You probably never need this procedure. @(lb)@red{Advice: avoid it}.}
 
-@note{
-Nevertheless, procedure @nbr[H->P] can sometimes be useful.@(lb)
+@note{Nevertheless, procedure @nbr[H->P] can sometimes be useful.@(lb)
 See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3v}}}
 
 @(define sequenceref
@@ -1123,8 +1132,9 @@ Examples:
   p))
 (eq? (G-symmetric 4) (list->G (sequence->list (in-R 4))))
 (code:comment "")
+(collect-garbage)
 (code:line (define seq (time (in-R 256))) (code:comment #,(green "ok")))
-(code:line (time (sequence-ref seq 1000)) (code:comment "May take some time, but not very much."))
+(code:line (time (sequence-ref seq 10000)) (code:comment "Takes some time, but not very much."))
 (code:line (in-R 257) (code:comment #,(red "error")))]
 
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
@@ -1211,7 +1221,7 @@ Examples:
 (code:comment "For every pair of elements the composition is an element too.")
 (for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
 
-@color-example[green (G-member? '(   ) G-identity)]
+@color-example[green (G-member? P-identity G-identity)]
 @color-example[red   (G-member? '(2 3) G-identity)]
 
 @red{Warning}: procedure @nbr[G-member?] can be confused by a @nbsl["Cleanup" "cleanup"]:
@@ -1844,13 +1854,13 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "Check that all classocs refer to distinct conjugation classes.")
 (code:comment "")
 (define (get-class classoc) (G-class (car classoc) cube-symmetries))
+(define conj-classes (map get-class classocs))
 (define name-table
- (let ((classes (map get-class classocs)))
-  (cond
-   ((set=? classes cube-classes)
-    (printf "Table classocs is ok, hence the name-table is ok too.~n")
-    (make-hash (map cons classes (map cdr classocs))))
-   ((error 'cube-symmetries "incorrect classocs table")))))
+ (cond
+  ((set=? conj-classes cube-classes)
+   (printf "Table classocs is ok, hence the name-table is ok too.~n")
+   (make-hash (map cons conj-classes (map cdr classocs))))
+  ((error 'cube-symmetries "incorrect classocs table"))))
 (code:comment "")
 (define (get-class-name conj-class) (hash-ref name-table conj-class))
 (define S8 (G-symmetric 8))
@@ -1867,9 +1877,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (printf
   "Order of each element divisor of the order of the group? ~s~n"
   (for/and ((p in-g)) (divisor? (P-order p) g-order)))
- (printf "Check: a proper subgroup of S8: ~s~n"
+ (printf "Proper subgroup of S8? ~s~n"
   (G-proper-subg? g S8))
- (printf "All elements even: ~s~n"
+ (printf "All elements even? ~s~n"
   (for/and ((p in-g)) (P-even? p)))
  (printf "Size of each conjugation class divisor ")
  (printf "of order of the group? ~s~n"
@@ -1963,7 +1973,7 @@ commute with all symmetries and therefore both leave every base as it is.
 The number of bases in a collection of symmetrically equivalent bases equals the order of
 group rotations-only. Indeed, for every pair of symmetrically equivalent bases
 there is a rotations-only-symmetry showing the equivalence.
-In addition, given a base, every rotations-only-symmetry,
+In addition, given a base, every rotations-only-symmetry
 produces a dictinct symmetrically equivalent base.
 The following example shows the details:
 
