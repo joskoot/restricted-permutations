@@ -150,7 +150,8 @@ Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
 `R' is shorthand for `restricted permutation'.
 In this docu@(-?)ment @bold{R} is the set of all Rs.
-@nb{It has} nothing to do with the set of real numbers.
+
+@note{@bold{R} has nothing to do with the set of real numbers.}
 
 Define the composition:
 
@@ -217,8 +218,9 @@ inverses of each other have the same order.}
 If p is a permutation of @bold{N},
 then @nb{[∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}] implies @nb{[p(0) = 0]}
 and hence @nb{[∀k@(∈)@bold{N}: p(k) = k]},
-which means that p is the identity with restriction 0.
-Let a(m) be the number of Rs with restriction m. We have:
+which means that p is the identity with restriction 0.}
+
+@note{Let a(m) be the number of Rs with restriction m. We have:
 @nb{a(0)=1} and @nb{∀m@(∈)@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
 This implies: @nb{a(1) = 0.}
 Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
@@ -429,7 +431,8 @@ Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R"
 Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
 The @nber["id"]{identity of @bold{R}} has even parity.}
 A group containing at least one odd element has as many odd ones as even ones.
-The subset of all even elements of a finite group is an invariant subgroup.
+The subset of all even elements of a finite group is an
+@nbrl[G-invariant-subg? "invariant subgroup"].
 Every @nbrl[G-symmetric "symmetric group"] of order greater than 1 has
 at least one odd element and hence as many odd ones as even ones.}}
 
@@ -526,6 +529,7 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
+
 A P is written, printed or displayed in
 @nbhl["https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"] as:
 
@@ -2226,16 +2230,14 @@ Let's check this:
  " of g in the rows/columns of its composition table."))
 
 @(define C3v-comment3
-  (list
+  @(elemtag "H->P-example" (list
    "Use of "
    @nbr[H->P]
    " is "
    (red "discouraged")
    ", but here it is "
    (green "useful")
-   "."))
-
-@(elemtag "H->P-example" "")
+   ".")))
 
 @interaction[
 (require racket "R.rkt")
