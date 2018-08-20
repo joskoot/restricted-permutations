@@ -1870,14 +1870,13 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define S8 (G-symmetric 8))
 (code:comment "")
 (code:comment "Procedure print-data prints some information about group g.")
-(code:comment "")
-(define (print-data g conj-classes name print-classes?)
+(define (print-data g name print-classes?)
+ (define conj-classes (sort (G-classes g)conj-class<?))
  (define g-order (G-order g))
  (define in-g (in-G g))
  (printf " ~nInfo about group: ~a~n ~n" name)
- (define classes (sort conj-classes conj-class<?))
  (printf "Order of the group: ~s~n" g-order)
- (printf "Number of conjugation classes: ~s~n" (length classes))
+ (printf "Number of conjugation classes: ~s~n" (length conj-classes))
  (printf
   "Order of each element divisor of the order of the group? ~s~n"
   (for/and ((p in-g)) (divisor? (P-order p) g-order)))
@@ -1887,11 +1886,11 @@ id est, @nbr[(P '((0 7) (1 6)))].
   (for/and ((p in-g)) (P-even? p)))
  (printf "Size of each conjugation class divisor ")
  (printf "of order of the group? ~s~n"
-  (for/and ((conj-class (in-list classes)))
+  (for/and ((conj-class (in-list conj-classes)))
    (divisor? (set-count conj-class) g-order)))
  (when print-classes?
   (printf " ~nThe conjugation classes are:~n")
-  (for ((conj-class (in-list classes)))
+  (for ((conj-class (in-list conj-classes)))
    (printf " ~n~a~n" (get-class-name conj-class))
    (printf "Order: ~s, class-size: ~s~n"
     (P-order (set-first conj-class))
@@ -1910,7 +1909,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
     (< (P-order (set-first x)) (P-order (set-first y)))))))
 (code:comment "")
 (define (divisor? divisor multiple) (zero? (modulo multiple divisor)))
-(print-data cube-symmetries cube-classes "cube-symmetries" #t)
+(print-data cube-symmetries "cube-symmetries" #t)
 (code:comment "Subgroup consisting of rotations only:")
 (code:comment "")
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
@@ -1918,7 +1917,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "rotation and other-rotation are rotations about 90°")
 (code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
-(print-data rotations-only rotation-classes "rotations-only" #f)
+(print-data rotations-only "rotations-only" #f)
 (code:line)
 (code:comment "rotations-only is an invariant subgroup of group cube-symmetries.")
 (G-invariant-subg? rotations-only cube-symmetries)
@@ -2257,15 +2256,15 @@ Let's check this:
  (define h
   (make-immutable-hasheq
    (for/list ((p in-g) (k (in-naturals))) (cons p k))))
- (define (correspondence-helper compose-for-row-or-column)
+ (define (correspondence compose-for-row-or-column)
   (for/list ((p in-g))
    (H->P (code:comment #,C3v-comment3)
     (for/hasheqv ((q in-g))
      (values
       (hash-ref h q)
       (hash-ref h (compose-for-row-or-column p q)))))))
- (define rows    (correspondence-helper (lambda (p q) (P p q))))
- (define columns (correspondence-helper (lambda (p q) (P q p))))
+ (define rows    (correspondence (lambda (p q) (P p q))))
+ (define columns (correspondence (lambda (p q) (P q p))))
  (values h rows columns))
 (code:comment "")
 (define-values (h rows columns) (correspondence C3v))
