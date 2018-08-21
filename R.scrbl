@@ -148,10 +148,11 @@ as a permutation of @bold{N} with the following restriction:
 
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
-`R' is shorthand for `restricted permutation'.
-In this docu@(-?)ment @bold{R} is the set of all Rs.
+`R' is shorthand for `restricted permutation'
+and `@bold{R}' for `the set of all Rs'.
 
-@note{@bold{R} has nothing to do with the set of real numbers.}
+@note{@bold{R} has nothing to do with the set of real numbers.@(lb)
+In this document all numbers are exact integers.}
 
 Define the composition:
 
@@ -215,12 +216,11 @@ the identity is the only element of order 1 and
 inverses of each other have the same order.}
 
 @note{There is no R with restriction 1.
-If p is a permutation of @bold{N},
-then @nb{[∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}] implies @nb{[p(0) = 0]}
+If p is a permutation of @bold{N}
+with @nb{[∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}], then @nb{[p(0) = 0]}
 and hence @nb{[∀k@(∈)@bold{N}: p(k) = k]},
-which means that p is the identity with restriction 0.}
-
-@note{Let a(m) be the number of Rs with restriction m. We have:
+which means that p is the identity with restriction 0.
+Let a(m) be the number of Rs with restriction m. We have:
 @nb{a(0)=1} and @nb{∀m@(∈)@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
 This implies: @nb{a(1) = 0.}
 Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
@@ -398,10 +398,12 @@ Examples:}
 (C-normalize '((1) (2) (3)))
 (C-normalize '((0 1) (1 0)))
 (C-normalize '((0 1 2) (3 4)))
-(C-normalize '((1 0) (4 2 3)))
+(C-normalize '((4 2 3) (1 0)))
 (C-normalize '((0 1 2) (0 1 2)))
+(C-normalize '((0 1 2) (2 1 0)))
 (C-normalize '((0 1 2) (1 2 3)))
-(C-normalize '((0 1 2) (2 3 4)))]
+(C-normalize '((0 1 2) (2 3 4)))
+(C-normalize '((0 1 2) (2 3 0)))]
 
 @defproc[(C-identity? (x any/c)) boolean?]{
 Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
@@ -515,11 +517,10 @@ module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, it returns the same @seclink["N"]{natural number}
 as the represented @nber["R" "R"], of course.
-Every @nber["R" "R"] can be represented by a P (when ignoring memory limits).
+Every @nber["R" "R"] can be represented by a P (ignoring memory limits).
 Although Ps are procedures,
 those representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
-
 In fact Ps are
 @nbsl["structures" #:doc '(lib "scribblings/reference/reference.scrbl") "structures"]
 with @nbrl[prop:procedure "procedure property"].
@@ -529,7 +530,6 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
-
 A P is written, printed or displayed in
 @nbhl["https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"] as:
 
@@ -801,7 +801,8 @@ Then @nb{∀k@(∈)@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
 
 Large exponents do no harm.
 The power is computed almost as fast as for small exponents.
-The computation of the modulus of a large exponent may be somewhat slower, though.
+The computation of the modulus of an exponent with large absolute value may be somewhat slower,
+though.
 
 @(collect-garbage)
 
@@ -1870,6 +1871,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define S8 (G-symmetric 8))
 (code:comment "")
 (code:comment "Procedure print-data prints some information about group g.")
+(code:comment "It may recompute the conjugation classes already computed before.")
+(code:comment "This simplifies the code, but is less efficient, of course.")
 (define (print-data g name print-classes?)
  (define conj-classes (sort (G-classes g)conj-class<?))
  (define g-order (G-order g))
