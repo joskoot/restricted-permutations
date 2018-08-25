@@ -129,7 +129,7 @@ In this docu@(-?)ment they are called rearrange@(-?)ments of each other,
 the word `permutation' being reserved for bijections of a set onto the same set.
 Rearrange@(-?)ments can represent permutations, though.
 If there is no danger of confusion,
-@nb{a representing} object can be written or talked about
+a representing object can be written or talked about
 as though it were the object it represents,
 @nb{but this} is avoided in this docu@(-?)ment.
 However, no formal distinction will be made between
@@ -152,7 +152,7 @@ Let's call the least natural number m for which the restriction holds
 and `@bold{R}' for `the set of all Rs'.
 
 @note{@bold{R} has nothing to do with the set of real numbers.@(lb)
-In this document all numbers are exact integers.}
+In this document all numbers are integer, most of them natural.}
 
 Define the composition:
 
@@ -162,7 +162,7 @@ as usual for functions p and q with compatible range of q and domain of p:
 
 @inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
 
-Set @bold{R} always will be associated with this composition,
+@bold{R} always will be associated with this composition,
 thus forming a @nber["group"]{group},
 in particular a denumerable infinite group.
 As required, the composition is associative.
@@ -230,8 +230,7 @@ where m runs from 0 up to and including n.}
 with the @nbrl[G-order]{order of a group}.
 The latter is the cardinality of a group,
 but it usually is called its @italic{order}.
-The word `order' also is used in the sense of the
-consecution of the elements in a list or vector.
+The word `order' also is used for the consecution of elements in a list or vector.
 In most cases it is clear with which meaning the word is used.
 Where there is danger of confusion, a phrase is used that avoids confusion.}
 
@@ -408,6 +407,10 @@ Examples:}
 @defproc[(C-identity? (x any/c)) boolean?]{
 Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
 
+@example-table[
+(C-identity? '())
+(C-identity? '((0 1) (0 1)))]
+
 @defproc[(C-transpositions (c C?)) C?]{
 Returns a list of normalized transpositions
 representing the same @nber["R" "R"] as the argument.
@@ -478,29 +481,15 @@ Example:
         (nber "R" "restriction")
         " 4 or less."))
 
-@(define transpositions-comment1
-  (list "Use " (nbr null?) " as predicate for the " (nber "normalized-C" "normalized C")))
-
-@(define transpositions-comment2
-  (list  "representing the "
-   (nber "id" (list "identity of " @nber["R" (bold "R")])) "."))
-
 @interaction[
 (require racket "R.rkt")
 (code:comment "")
 (code:comment #,transpositions-comment0)
 (define cs (map P->C (G->list (G-symmetric 4))))
 (code:comment "")
-(code:comment #,transpositions-comment1)
-(code:comment #,transpositions-comment2)
-(define C-normalized-identity? null?)
-(code:comment "")
 (for/and ((c (in-list cs)))
  (define transpositions (C-transpositions c))
- (C-normalized-identity?
-  (C-normalize
-   (list     transpositions
-    (reverse transpositions)))))]
+ (C-identity? (list transpositions (reverse transpositions))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
 Returns the normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -617,16 +606,17 @@ Some checks on the properties of compositions of Ps:}
 (for*/and ((p in-S4) (q in-S4))
  (define pq (P-compose p q))
  (define qp (P-compose q p))
- (define restriction
+ (define max-restriction
   (max
    (P-restriction p)
    (P-restriction q)))
  (and
-  (G-member? pq S4) (G-member? qp S4)
+  (G-member? pq S4)
+  (G-member? qp S4)
   (=   (P-order pq) (P-order qp))
   (eq? (P-even? pq) (P-even? qp))
-  (<= 0 (P-restriction pq) restriction)
-  (<= 0 (P-restriction qp) restriction)))]
+  (<= 0 (P-restriction pq) max-restriction)
+  (<= 0 (P-restriction qp) max-restriction)))]
 
 @elemtag["P-example"]{
 The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
@@ -1186,11 +1176,8 @@ the composition of each element with itself included.} Examples:
 
 @(example/n (G '(0 1) '(0 1 2)))
 
-Notice that @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].
-Hence:@(lb)
-@(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))@(lb)
-Also:@(lb)
-@(example (eq? (G '(0 1) '(0 2) '(0 3)) (G-symmetric 4)))
+Notice that @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
+Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
 @(color-example green (eq? (P '((0 1) (1 2))) (P '(0 1) '(1 2))))
@@ -1415,6 +1402,7 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
   (if (< m n) (values b m) (values base n))))
 (code:line)
 (find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))
+(find-simple-base (G '(0 1) '(0 1 2)))
 (find-simple-base (G-symmetric 4))]
 
 @defproc[(G-order (g G?)) N+?]{
@@ -1436,7 +1424,7 @@ This theorem holds for all finite groups, not only for Gs.}}
 (define g0a (G '(0 1)))
 (define g1  (G '(0 1) '(0 2)))
 (code:line (G-subg?  g0a g1)  (code:comment #,(green "ok")))
-(R-clear-hashes)
+(code:line (R-clear-hashes)   (code:comment #,(red "caution")))
 (code:line (G-subg?  g0a g1)  (code:comment #,(green "ok")))
 (define g0b (G '(0 1)))
 (code:line (G-equal? g0a g0b) (code:comment #,(green "ok")))
@@ -1624,7 +1612,7 @@ Isomorphism is an
 (code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))
 (code:comment "An error is reported if the argument")
 (code:comment "is not in the domain of the isomorphism.")
-(code:line (p1->p0 (P '(0 1))) (code:comment #,(red "alas")))]
+(code:line (p1->p0 (P '(0 1))) (code:comment #,(red "error")))]
 
 @red{Warning}: after @nbsl["Cleanup" "cleaning up"]
 isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
@@ -1872,7 +1860,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:comment "Procedure print-data prints some information about group g.")
 (code:comment "It may recompute the conjugation classes already computed before.")
-(code:comment "This simplifies the code, but is less efficient, of course.")
+(code:comment "This simplifies and generalizes the procedure,")
+(code:comment "but it is less efficient, of course.")
+(code:comment "")
 (define (print-data g name print-classes?)
  (define conj-classes (sort (G-classes g)conj-class<?))
  (define g-order (G-order g))
@@ -1977,9 +1967,9 @@ both the identity and the inversion-symmetry
 commute with all symmetries and therefore both leave every base as it is.
 @elemtag["seq" ""]
 The number of bases in a collection of symmetrically equivalent bases equals the order of
-group rotations-only. Indeed, for every pair of symmetrically equivalent bases
-there is a rotations-only-symmetry showing the equivalence.
-In addition, given a base, every rotations-only-symmetry
+group @tt{rotations-only}. Indeed, for every pair of symmetrically equivalent bases
+there is a @tt{rotations-only}-symmetry showing the equivalence.
+In addition, given a base, every @tt{rotations-only}-symmetry
 produces a dictinct symmetrically equivalent base.
 The following example shows the details:
 
