@@ -1157,8 +1157,11 @@ For every finite group there is an isomorphic G (ignoring memory limits).
 Forms the smallest group containing all @nber["R" "Rs"] represented by the arguments.
 Duplicate arguments representing the same @nber["R" "R"] do no harm.
 If no argument is given, the @nbr[G-identity] is returned.
-A group recursively includes all compositions of all pairs of its elements,
-the composition of each element with itself included.} Examples:
+
+@note{A group recursively includes all compositions of all pairs of its elements,@(lb)
+the composition of each element with itself included.}}
+
+Examples:
 
 @(example/n (G))
 
@@ -1825,17 +1828,13 @@ id est, @nbr[(P '((0 7) (1 6)))].
   (cons (P '((0 2 5) (3 6 4)))
    "Rotation 120° or 240°, axis a diagonal.")
   (cons (P '((0 7 2 5) (1 4 3 6)))
-   (string-append
-    "Rotation 90° or 270°, axis // to an edge,\n"
-    "* inversion-symmetry."))
+   "Rotation 90° or 270°, axis // to an edge, * inversion-symmetry.")
   (cons (P '((0 1) (2 4) (3 5) (6 7)))
    (string-append
     "Rotation 90° or 270° * rotation 180°,\n"
     "axes // to an edge and perpendicular to each other."))
   (cons (P '((1 7) (0 4 5 6 2 3)))
-   (string-append
-    "Rotation 120° or 240°, axis a diagonal,\n"
-    "* inversion-symmetry."))
+   "Rotation 120° or 240°, axis a diagonal, * inversion-symmetry.")
   (cons P-identity
    "Identity")
   (cons (P '((0 6) (1 7) (2 4) (3 5)))
@@ -1848,14 +1847,16 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (define (get-class classoc) (G-class (car classoc) cube-symmetries))
 (define conj-classes (map get-class classocs))
-(define name-table
+(define conj-name-table
  (cond
   ((set=? conj-classes cube-classes)
-   (printf "Table classocs is ok, hence the name-table is ok too.~n")
+   (printf "Table classocs is ok, ")
+   (printf "hence the conj-name-table is ok too.~n")
    (make-hash (map cons conj-classes (map cdr classocs))))
-  ((error 'cube-symmetries "incorrect classocs table"))))
+  (else (error 'cube-symmetries "incorrect classocs table"))))
 (code:comment "")
-(define (get-class-name conj-class) (hash-ref name-table conj-class))
+(define (get-class-name conj-class)
+ (hash-ref conj-name-table conj-class))
 (define S8 (G-symmetric 8))
 (code:comment "")
 (code:comment "Procedure print-data prints some information about group g.")
@@ -1901,7 +1902,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
     (= (set-count x) (set-count y))
     (< (P-order (set-first x)) (P-order (set-first y)))))))
 (code:comment "")
-(define (divisor? divisor multiple) (zero? (modulo multiple divisor)))
+(define (divisor? divisor multiple)
+ (zero? (modulo multiple divisor)))
 (print-data cube-symmetries "cube-symmetries" #t)
 (code:comment "Subgroup consisting of rotations only:")
 (code:comment "")
@@ -1957,20 +1959,25 @@ Let's check that the inversion-symmetry commutes with all symmetries of the cube
   (P p inversion-symmetry)))]
 
 There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube.
-They can be grouped in 9 collections of symmetrically equivalent bases,
+They can be grouped in 9 collections of symmetrically equivalent minimal bases,
 each collection containing 24 bases.
-Symmetrically equivalent bases have the same normalized cycle structure.
-The number of collections of symmetrically equivalent bases
+Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
+if there is a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
+It is not difficult to prove that this is indeed an equivalence relation of the minimal bases.
+Symmetrically equivalent minimal bases have the same normalized cycle structure.
+The number of collections of symmetrically equivalent minimal bases
 is one less than the number of conjugation classes of group @tt{cube-symmetries}.
 This is no coincidence, because
 both the identity and the inversion-symmetry
-commute with all symmetries and therefore both leave every base as it is.
+commute with all symmetries and therefore both leave every minimal base as it is.
+
 @elemtag["seq" ""]
-The number of bases in a collection of symmetrically equivalent bases equals the order of
-group @tt{rotations-only}. Indeed, for every pair of symmetrically equivalent bases
+The number of minimal bases in a collection of symmetrically equivalent
+minimal bases equals the order of group @tt{rotations-only}.
+Indeed, for every pair of symmetrically equivalent minimal bases
 there is a @tt{rotations-only}-symmetry showing the equivalence.
-In addition, given a base, every @tt{rotations-only}-symmetry
-produces a dictinct symmetrically equivalent base.
+In addition, given a minimal base, every @tt{rotations-only}-symmetry
+produces a dictinct symmetrically equivalent minimal base.
 The following example shows the details:
 
 @interaction[
@@ -1980,7 +1987,7 @@ The following example shows the details:
 (define cube-symmetries (G rotation reflection))
 (define bases (G-bases cube-symmetries))
 (code:line)
-(define ((make-base-eqv? g) a b)
+(define ((make-base-eqv g) a b)
  (for/or ((p (in-G g)))
   (equal? a
    (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
@@ -1988,7 +1995,7 @@ The following example shows the details:
 (define (eqv-classes lst eq) (group-by values lst eq))
 (code:line)
 (define base-classes
- (eqv-classes bases (make-base-eqv? cube-symmetries)))
+ (eqv-classes bases (make-base-eqv cube-symmetries)))
 (code:line)
 (define class-size (/ (length bases) (length base-classes)))
 (code:line)
@@ -2035,7 +2042,7 @@ The following example shows the details:
   (map set base-classes))
  (apply set
   (map set
-   (eqv-classes bases (make-base-eqv? rotations-only)))))
+   (eqv-classes bases (make-base-eqv rotations-only)))))
 (code:line)
 (code:comment "This is consistent with the fact that adding the inversion-symmetry to")
 (code:comment "a base of group rotations-only yields the group of all cube-symmetries.")
@@ -2048,6 +2055,11 @@ The following example shows the details:
 (code:comment "the composition of a rotation with a reflection,")
 (code:comment "or simply the latter too when regarding the identity")
 (code:comment "as a rotation about 0° (around arbitrary axis of rotation).")
+(code:comment "The inversion-symmetry is a rotation-reflection too.")
+(code:comment "For example:")
+(eq? (P-compose '((0 2) (1 3) (4 6) (5 7))  (code:comment "rotation 180°")
+                '((0 4) (1 5) (2 6) (3 7))) (code:comment "reflection")
+     inversion-symmetry)
 (code:line)
 (define rotation-reflections
  (remove* (G->list rotations-only) (G->list cube-symmetries)))
