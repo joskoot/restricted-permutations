@@ -360,9 +360,8 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-@elemtag["Cs"]{The set of all Cs includes all normalized Cs.
-For every @nber["R" "R"], there is exactly one representing normalized C
-(in the sense of @nbr[equal?] and ignoring memory limits)
+@elemtag["Cs"]{For every @nber["R" "R"] there is exactly one representing normalized C
+(in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.}
 
 @deftogether[
@@ -404,12 +403,23 @@ Examples:}
 (C-normalize '((0 1 2) (2 3 4)))
 (C-normalize '((0 1 2) (2 3 0)))]
 
-@defproc[(C-identity? (x any/c)) boolean?]{
-Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
+The Cs shown in the example below represent the same @nber["R" "R"]:
+
+@inset{0 → 1 → 2 → 0 and k → k for k≥3}
+
+Therefore @nbr[C-normalize] produces the same normalized C for them
+@nb{(in the sense of @nbr[equal?])}:
 
 @example-table[
-(C-identity? '())
-(C-identity? '((0 1) (0 1)))]
+(C-normalize '((0 1) (1 2)))
+(C-normalize '((0 2) (0 1)))
+(C-normalize '((1 2) (0 2)))
+(C-normalize '(0 1 2))
+(C-normalize '(1 2 0))
+(C-normalize '(2 0 1))]
+
+@defproc[(C-identity? (x any/c)) boolean?]{
+Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
 
 @defproc[(C-transpositions (c C?)) C?]{
 Returns a list of normalized transpositions
@@ -1681,7 +1691,8 @@ will not recognize newly constructed @nbsl["P" "P"]s.
 Therefore @nbr[R-clear-hashes] should not be used preceding code that refers to
 @nbsl["P" "P"]s or @nbsl["G" "G"]s made before cleanup.
 Procedures @nbr[P-equal?], @nbr[G-equal?], @nbr[P<?] and @nbr[P-sort]
-remain comparing correctly after cleanup.}
+remain comparing correctly after cleanup.
+See section @nbsr["Distinct-instances"] too.}
 
 @deftogether[
 (@defproc[#:kind "equivalence relation" (P-equal? (p0 P?) (p1 P?)) boolean?]
@@ -1699,7 +1710,7 @@ remain comparing correctly after cleanup.}
 (code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "ok")))
 (code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "ok")))]
 
-@section{Distinct instances of @nbhl["R.rkt" "R.rkt"]}
+@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["R.rkt" "R.rkt"]}
 Two distinct instances of module @nbhl["R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
@@ -1800,9 +1811,9 @@ Number the vertices of a cube as shown in the following figure:
 
 All symmetries of the cube can be found with a
 @nbrl[G-bases "minimal base"] of two elements.
-Below a base is used consisting of anti-clockwise
-rotation about 90° around the vertical axis through the center of the cube, id est,
-@nbr[(P '((0 1 2 3) (4 5 6 7)))], and
+Below a base is used consisting of a
+rotation about 90° around the vertical axis through the center of the cube,
+in particular @nbr[(P '((0 1 2 3) (4 5 6 7)))], and
 reflection in the diagonal plane containing the vertices 2, 3, 4 and 5,
 id est, @nbr[(P '((0 7) (1 6)))].
 
@@ -1865,7 +1876,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "but it is less efficient, of course.")
 (code:comment "")
 (define (print-data g name print-classes?)
- (define conj-classes (sort (G-classes g)conj-class<?))
+ (define conj-classes (sort (G-classes g) conj-class<?))
  (define g-order (G-order g))
  (define in-g (in-G g))
  (printf " ~nInfo about group: ~a~n ~n" name)
@@ -1929,12 +1940,12 @@ which does not occur in subgroup @element['tt "rotations-only"], is lonesome too
 This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
 The inversion-symmetry, rotations about 180° and reflections in the planes
-containing the centre of the cube and parallel to a side-plane of the cube
+containing the center of the cube and parallel to a side-plane of the cube
 have the same normalized cycle structure.
 Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
 Even subgroup @element['tt "rotations-only"] has threefold symmetries.
 In particular, composition of two rotations about 90° with intersecting
-axes orthogonal to each other produces a three-fold symmetry, for example:
+axes orthogonal to each other produces a rotation about 120°, for example:
 
 @example/n[(P-compose (P '((0 1 2 3) (4 5 6 7))) (P '((0 3 7 4) (1 2 6 5))))]
 
@@ -1963,6 +1974,8 @@ They can be grouped in 9 collections of symmetrically equivalent minimal bases,
 each collection containing 24 bases.
 Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if there is a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
+(This is an equality of two sets:
+the order in which the elements appear between the curly brackets is irrelevant.)
 It is not difficult to prove that this is indeed an equivalence relation of the minimal bases.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases
@@ -2055,8 +2068,10 @@ The following example shows the details:
 (code:comment "the composition of a rotation with a reflection,")
 (code:comment "or simply the latter too when regarding the identity")
 (code:comment "as a rotation about 0° (around arbitrary axis of rotation).")
-(code:comment "The inversion-symmetry is a rotation-reflection too.")
-(code:comment "For example:")
+(code:comment "The inversion-symmetry is a rotation-reflection too,")
+(code:comment "for example: reflection in the horizontal plane")
+(code:comment "followed by 180° rotation around the vertical axis,")
+(code:comment "both containing the center of the cube.")
 (eq? (P-compose '((0 2) (1 3) (4 6) (5 7))  (code:comment "rotation 180°")
                 '((0 4) (1 5) (2 6) (3 7))) (code:comment "reflection")
      inversion-symmetry)
