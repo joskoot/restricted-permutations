@@ -17,7 +17,8 @@ Groups are represented in a way that two representations of
 the same mathematical group are the same in the sense of [eq?].
 
 Download all files from https://github.com/joskoot/restricted-permutations.
-Run module R.scrbl and make sure it produces a html file.
+Run module R.scrbl and make sure it produces a html file,
+for example by opening it with DrRacket an clicking the scribble button.
 Keep all files in the same directory.
 More info in R.html as produced by R.scrbl.
 R.scrbl may require some time and memory because of elaborated examples.
