@@ -151,10 +151,9 @@ Let's call the least natural number m for which the restriction holds
 `R' is shorthand for `restricted permutation'
 and `@bold{R}' for `the set of all Rs'.
 
-@note{@bold{R} has nothing to do with the set of real numbers.@(lb)
-In this document all numbers are integer, most of them natural.}
+@note{@bold{R} has nothing to do with the set of real numbers.}
 
-Define the composition:
+@elemtag["composition"]Define the composition:
 
 @inset{@nb{p,q@(∈)@bold{R} → pq@(∈)@bold{R}}}
 
@@ -301,12 +300,7 @@ particularly in their specifications of data types.
          "in the sense of" @nbr[free-identifier=?]))
   #:sep (hspace 1)]}
 
-@note{In the present docu@(-?)ment,
-all numbers are @nbsl[
-"numbers"
-#:doc '(lib "scribblings/guide/guide.scrbl")
-"exact integer numbers"].
-@bold{R} is the group of @nber["R"]{restricted permutations} and
+@note{@bold{R} is the group of @nber["R"]{restricted permutations} and
 has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
@@ -330,10 +324,10 @@ A C represents an @nber["R" "R"] and is one of the following:
   of the @nber["R" "R"] represented by the original single C.}
  @item{
   A list of Cs.
-  Represents the composition of the @nber["R" "Rs"] represented
+  Represents the @nber["composition" "composition"] of the @nber["R" "Rs"] represented
   by its elements. An element of a list of Cs can be a list of Cs, but
   superfluous pairs of parentheses can be ignored,
-  because the composition is associative.
+  because the @nber["composition" "composition"] is associative.
   The order in which the single Cs appear in the list can be relevant,
   because they are not required to commute with each other.})]
 
@@ -403,10 +397,7 @@ Examples:}
 (C-normalize '((0 1 2) (2 3 4)))
 (C-normalize '((0 1 2) (2 3 0)))]
 
-The Cs shown in the example below represent the same @nber["R" "R"]:
-
-@inset{0 → 1 → 2 → 0 and k → k for k≥3}
-
+The Cs shown below represent the same @nber["R" "R"].
 Therefore @nbr[C-normalize] produces the same normalized C for them
 @nb{(in the sense of @nbr[equal?])}:
 
@@ -463,11 +454,8 @@ Examples:
 (C-transpositions '((0 1 2) (3 4 5)))
 (C-transpositions '((3 4 5) (0 1 2)))]
 
-The Cs shown in the example below represent the same @nber["R" "R"]:
-
-@inset{0 → 1 → 2 → 0 and k → k for k≥3}
-
-Therefore @nbr[C-transpositions] produces the same list of transpositions for them
+The Cs shown in the example below represent the same @nber["R" "R"].
+Therefore procedure @nbr[C-transpositions] produces the same list of transpositions for them
 @nb{(in the sense of @nbr[equal?])}:
 
 @example-table[
@@ -483,21 +471,10 @@ reversal of the list of transpositions always produces a C representing the inve
 This implies that inverses of each other have the same parity.
 Example:
 
-@(define transpositions-comment0
-  (list (tt "cs")
-        " is a list of all "
-        (nbsl "C" "Cs")
-        " with "
-        (nber "R" "restriction")
-        " 4 or less."))
-
 @interaction[
 (require racket "R.rkt")
-(code:comment "")
-(code:comment #,transpositions-comment0)
-(define cs (map P->C (G->list (G-symmetric 4))))
-(code:comment "")
-(for/and ((c (in-list cs)))
+(for/and ((p (in-G (G-symmetric 4))))
+ (define c (P->C p))
  (define transpositions (C-transpositions c))
  (C-identity? (list transpositions (reverse transpositions))))]
 
@@ -540,7 +517,7 @@ where @elem[#:style 'tt @italic{c}] is the normalized @nbsl["C" "C-representatio
 @inset{@nbr[P-identity]}
 
 @defproc[(P (p (or/c P? C?)) ...) P?]{
-Returns the P representing the @nber["R" "R"] formed by composition of the
+Returns the P representing the @nber["R" "R"] formed by @nber["composition" "composition"] of the
 @nber["R" "Rs"] represented by the arguments.
 If no argument is given, the @nbr[P-identity] is returned.
 If only one argument is given, the returned P represents the same
@@ -607,7 +584,7 @@ q
 
 @defproc[(P-compose (p (or/c P? C?)) ...) P?]{
 Same as procedure @nbr[P] in the sense of @nbr[free-identifier=?].@(lb)
-Some checks on the properties of compositions of Ps:}
+Some checks on the properties of @nber["composition" "composition"]s of Ps:}
 
 @interaction[
 (require racket "R.rkt")
@@ -801,7 +778,7 @@ Then @nb{∀k@(∈)@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
 
 Large exponents do no harm.
 The power is computed almost as fast as for small exponents.
-The computation of the modulus of an exponent with large absolute value may be somewhat slower,
+The computation of the modulus of an exponent with great absolute value may be somewhat slower,
 though.
 
 @(collect-garbage)
@@ -1001,7 +978,7 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
 @interaction[
 (require racket "R.rkt")
 (random-seed 0)
-(define unsorted-S3-list0 (for/list ((p (in-R 3))) p))
+(define unsorted-S3-list0 (for/list ((p (in-G (G-symmetric 3)))) p))
 (define sorted-S3-list0 (P-sort unsorted-S3-list0))
 (code:comment "")
 (map P->C unsorted-S3-list0)
@@ -1105,43 +1082,6 @@ See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3
 @(define sequenceref
   (nbhl "https://docs.racket-lang.org/reference/sequences.html" "sequence"))
 
-@defproc[(in-R (m (and/c N? (<=/c 256)) 256)) (Sequenceof P?)]{
-Produces a lazy @sequenceref
-of all @nbsl["P" "Ps"] with @nber["R" "restriction"] less than or equal to @nbr[m].
-There are @nbr[m]@italic{!} of them.
-Together the @nbsl["P" "Ps"] form a @nbsl["G" "G"] isomorphic to symmetric group S@↓{m}.
-The @nbsl["P" "Ps"] are generated in order of increasing @nber["R" "restriction"].
-The order in which @nbsl["P" "Ps"] with the same restriction are generated is not specified.
-@note{This order depends on Racket's procedure @nbr[in-permutations],
-which according to the @nber["rearrangement" "terminology"] used in this docu@(-?)ment
-produces a sequence of rearrangements rather than a sequence of permutations.}
-@note{There are 256! or about 8.58×10@↑{506} @nber["R" "Rs"]
-with @nber["R" "restriction"] less than or equal to 256.@(lb)
-Therefore it is impossible to walk along the whole sequence @nbr[(in-R 256)].@(lb)
-Hence the constraint @nbr[(<=/c 256)] on argument @nbr[m] is an acceptable one.
-@(lb)This constraint stems from procedure @nbr[in-permutations].}}
-Examples:
-
-@interaction[
-(require racket "R.rkt")
-(code:line)
-(code:comment #,(list "List all " @nbsl["P" "Ps"] " with " @nber["R" "restriction"]
-                 " less than or equal to 4."))
-(code:comment "There are 4!=24 of them.")
-(code:line)
-(for ((p (in-R)) (n (in-range 1 25)))
- (printf "~a restr: ~s, order: ~s, P: ~s~n"
-  (~s #:min-width 2 #:align 'right n)
-  (P-restriction p)
-  (P-order p)
-  p))
-(eq? (G-symmetric 4) (list->G (sequence->list (in-R 4))))
-(code:comment "")
-(collect-garbage)
-(code:line (define seq (time (in-R 256))) (code:comment #,(green "ok")))
-(code:line (time (sequence-ref seq 10000)) (code:comment "Takes some time, but not very much."))
-(code:line (in-R 257) (code:comment #,(red "error")))]
-
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
 
 All objects described in this section are defined in
@@ -1168,8 +1108,9 @@ Forms the smallest group containing all @nber["R" "Rs"] represented by the argum
 Duplicate arguments representing the same @nber["R" "R"] do no harm.
 If no argument is given, the @nbr[G-identity] is returned.
 
-@note{A group recursively includes all compositions of all pairs of its elements,@(lb)
-the composition of each element with itself included.}}
+@note{A group recursively includes all @nber["composition" "composition"]s
+of all pairs of its elements,@(lb)
+the @nber["composition" "composition"] of each element with itself included.}}
 
 Examples:
 
@@ -1240,9 +1181,10 @@ Examples:
 (code:line (G-member? c g)  (code:comment #,(red "alas")))]
 
 @defproc[(G-print-table (g G?) (port output-port? (current-output-port))) void?]{
-The composition table of @nbr[g] is printed in normalized @nbsl["C" "cycle-notation"]
+The @nber["composition" "composition"] table of @nbr[g] is printed in normalize
+@nbsl["C" "cycle-notation"]
 on the output-@nbr[port].
-Every element is the composition pq
+Every element is the @nber["composition" "composition"] pq
 of element p in the left column and element q in the top row.
 The left column and top row are @nbrl[P-sort "sorted"] and start with the
 @nbrl[P-identity "identity"].
@@ -1262,7 +1204,8 @@ See section @nbsl["C3v"]{Group C@↓{3v}}
 for a more elaborated discussion of this group.
 
 @defproc[(G-table (g G?)) (listof (listof P?))]{
-Returns the composition table of @nbr[g] as a list of lists of @nbsl["P" "Ps"].
+Returns the @nber["composition" "composition"]
+table of @nbr[g] as a list of lists of @nbsl["P" "Ps"].
 The first row, id est (@nbr[car (G-table g)]),
 and the first column, id est @nbr[(map car (G-table g))],
 of the table are @nbrl[P-sort "sorted"].}
@@ -1497,7 +1440,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
 @note{The order of a subgroup always is a divisor of the order of the group it is part of.}}
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
-Returns the conjugation class of @nbr[g] that contains @nbr[p].
+Returns the conjugation class of @nbr[g] containing @nbr[p].@(lb)
 If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
@@ -1747,7 +1690,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 All objects described in this section are defined in
 module @nbhl["H.rkt" "H.rkt"].
 The H-representation is used internally for operations like application,
-composition and inversion.
+@nber["composition" "composition"] and inversion.
 @red{Advice}: don't use the H-representation explicitly.
 Use the @nbsl["P" "P-representation"].
 It represents @nber["R" "Rs"] by means of functions
@@ -1784,8 +1727,8 @@ Returns the image of @nbr[k] under the @nber["R" "R"] represented by @nbr[h].@(l
 Same as: @nbr[(hash-ref h k k)].}
 
 @defproc[(H-compose (h pseudo-H?) ...) H?]{
-Returns an H representing the @nber["R" "R"] formed by composition of the @nber["R" "R"]s
-represented by the arguments.
+Returns an H representing the @nber["R" "R"] formed by @nber["composition" "composition"]
+of the @nber["R" "R"]s represented by the arguments.
 When called without argument @nbr[H-compose] returns the @nbr[H-identity].
 When called with one argument, the normalized from of the argument is returned.}
 
@@ -1852,17 +1795,17 @@ id est, @nbr[(P '((0 7) (1 6)))].
    "Inversion-symmetry.")))
 (code:comment "")
 (define cube-classes (G-classes cube-symmetries))
+(define (get-class classoc) (G-class (car classoc) cube-symmetries))
+(define conj-classes (map get-class classocs))
 (code:comment "")
 (code:comment "The following table maps each conjugation class to its name.")
 (code:comment "Check that all classocs refer to distinct conjugation classes.")
 (code:comment "")
-(define (get-class classoc) (G-class (car classoc) cube-symmetries))
-(define conj-classes (map get-class classocs))
 (define conj-name-table
  (cond
   ((set=? conj-classes cube-classes)
    (printf "Table classocs is ok, ")
-   (printf "hence the conj-name-table is ok too.~n")
+   (printf "therefore the conj-name-table is ok too.~n")
    (make-hash (map cons conj-classes (map cdr classocs))))
   (else (error 'cube-symmetries "incorrect classocs table"))))
 (code:comment "")
@@ -1944,7 +1887,7 @@ containing the center of the cube and parallel to a side-plane of the cube
 have the same normalized cycle structure.
 Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
 Even subgroup @element['tt "rotations-only"] has threefold symmetries.
-In particular, composition of two rotations about 90° with intersecting
+In particular, @nber["composition" "composition"] of two rotations about 90° with intersecting
 axes orthogonal to each other produces a rotation about 120°, for example:
 
 @example/n[(P-compose (P '((0 1 2 3) (4 5 6 7))) (P '((0 3 7 4) (1 2 6 5))))]
@@ -1976,7 +1919,7 @@ Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if there is a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
 (This is an equality of two sets:
 the order in which the elements appear between the curly brackets is irrelevant.)
-It is not difficult to prove that this is indeed an equivalence relation of the minimal bases.
+It is not difficult to prove that this indeed is an equivalence relation of the minimal bases.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases
 is one less than the number of conjugation classes of group @tt{cube-symmetries}.
@@ -2131,7 +2074,8 @@ Identify @hspace[1]@element['tt "k"]  with @element['tt "(P i j)"].}
 
 We have @element['tt "ii=jj=kk=-1"], @element['tt "ij=k"], @element['tt "jk=i"]
 and @element['tt "ki=j"].
-With these compositions all others are defined as shown in the following table:
+With these @nber["composition" "composition"]s
+all others are defined as shown in the following table:
 
 @nested[#:style 'inset (verbatim table)]})
 
@@ -2216,7 +2160,7 @@ The represented symmetries are:
 According to @nbhl["https://en.wikipedia.org/wiki/Cayley%27s_theorem" "Cayley's theorem"]
 every group of finite order m is isomorphic to
 a subgroup of the symmetric group S@↓{m}.
-For every group, every row of the table of compositions
+For every group, every row of the table of @nber["composition" "composition"]s
 is a distinct @nber["rearrangement" "rearrangement"] of the elements of the group.
 Likewise every column is a distinct @nber["rearrangement" "rearrangement"].
 Therefore every element of a group @bold{X}
@@ -2332,7 +2276,7 @@ A minimal base of C@↓{3h} consists of one element only.
 This implies that C@↓{3h} is circular and abelean.
 There are two minimal bases (consisting of inverses of each other)
 C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excluded),
-0 as identity and addition modulo 6 as composition.
+0 as identity and addition modulo 6 as @nber["composition" "composition"].
 
 @interaction[
 (require racket "R.rkt")

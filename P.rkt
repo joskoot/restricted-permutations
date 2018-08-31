@@ -9,7 +9,7 @@
 (provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
 (provide (rename-out (P P-compose)))
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
-(provide P-fixed-point? in-R P->H H->P)
+(provide P-fixed-point? P->H H->P)
 
 (define (P->C p)                  ; This definition comes before that of P-write because
  (or (P-C-field p)                ; the debugger can be caught in an infinite sequence of
@@ -56,7 +56,7 @@
 
 (define (H->P h)
  (define hh (H-normalize h))
- (hash-ref! P-hash hh (λ ()(P-constr hh))))
+ (hash-ref! P-hash hh (λ () (P-constr hh))))
 
 (define P-identity
  (let ((P-identity (P-constr H-identity)))
@@ -172,21 +172,7 @@
 (define (P-non-fixed-points p) (sort (hash-keys (P-H-field p)) <))
 (define (P-fixed-point? p k) (= (p k) k))
 
-(define (make-P-generator)
- (generator ()
-  (yield P-identity)
-  (yield (C->P '(0 1)))
-  (let loop ((m 3) (lst1 '(0 1 2)) (lst2 '(0 1)))
-   (for ((k (in-list lst2)))
-    (define list-k (list k))
-    (for ((lst (in-permutations (remove k lst1))))
-     (yield (C->P (V->C (apply vector (append lst list-k)))))))
-   (loop (add1 m) (cons m lst1) lst1))))
-
-(define (in-R (max-restriction 256))
- (when (> max-restriction 256)
-  (error 'in-R "~s too big max-restriction (max is 256)" max-restriction))
- (in-producer (make-P-generator) (λ (p) (> (P-restriction p) max-restriction))))
+(require (only-in racket/generator in-generator)) 
 
 (define (V->C v)
  (let ((n (vector-length v)))
