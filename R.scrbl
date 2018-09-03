@@ -151,7 +151,7 @@ Let's call the least natural number m for which the restriction holds
 `R' is shorthand for `restricted permutation'
 and `@bold{R}' for `the set of all Rs'.
 
-@note{@bold{R} has nothing to do with the set of real numbers.}
+@note{Obviously, @bold{R} has nothing to do with real numbers.}
 
 @elemtag["composition"]Define the composition:
 
@@ -171,14 +171,16 @@ although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group, @bold{R} has an isomorphic subgroup.
 
-@note{In fact exactly one such subgroup if the order of the group
+@note{In fact exactly one such subgroup
+(consisting of the @nber["id"]{identity of @bold{R}} only)
+if the order of the group
 (= cardinality of the set of the group) is 1 and
 a countably infinite number of them if the order is greater than 1.}
 
 @note{@elemtag["group"]{The present docu@(-?)ment is not an introduction to group theory.
 It refers to mathematical concepts without providing definitions and
 mentions theorems without proofs.
-@nb{For definitions} and proofs see chapters 1 and 2 of
+See chapters 1 and 2 of
 @nbhl[
  (string-append
   "https://ia800307.us.archive.org/18/items/"
@@ -207,7 +209,7 @@ For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
-@nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group} S@↓{max(1@bold{,}n)}.
+@nbrl[G-symmetric]{symmetric group} S@↓{max(1@bold{,}n)}.
 Inverses of each other have the same order and the same restriction.
 
 @note{In every group, not only in @bold{R},
@@ -354,7 +356,9 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-@elemtag["Cs"]{For every @nber["R" "R"] there is exactly one representing normalized C
+@elemtag["Cs"]{For every C there is exactly one normalized C
+(in the sense of @nbr[equal?]) representing the same @nber["R" "R"].
+For every @nber["R" "R"] there is exactly one representing normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.}
 
@@ -438,9 +442,7 @@ Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "
 The @nber["id"]{identity of @bold{R}} has even parity.}
 A group containing at least one odd element has as many odd ones as even ones.
 The subset of all even elements of a finite group is an
-@nbrl[G-invariant-subg? "invariant subgroup"].
-Every @nbrl[G-symmetric "symmetric group"] of order greater than 1 has
-at least one odd element and hence as many odd ones as even ones.}}
+@nbrl[G-invariant-subg? "invariant subgroup"].}}
 
 Examples:
 
@@ -500,8 +502,8 @@ those representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?
 In fact Ps are
 @nbsl["structures" #:doc '(lib "scribblings/reference/reference.scrbl") "structures"]
 with @nbrl[prop:procedure "procedure property"].
-A P memorizes its @nbsl["H" "H-representation"].
-@nb{It also} memorizes its normalized @nbsl["C" "C-representation"],
+A P contains its @nbsl["H" "H-representation"].
+It memorizes its normalized @nbsl["C" "C-representation"],
 its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
@@ -614,9 +616,11 @@ The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
 (define q (P '( 1 2   3 4)))
 (define pq (P-compose p q))
 (define qp (P-compose q p))
-(begin
- (printf "pq = ~s with restriction ~s~n" pq (P-restriction pq))
- (printf "qp = ~s with restriction ~s~n" qp (P-restriction qp)))]
+(define-syntax-rule (print-restrictions x ...)
+ (begin
+  (printf "~s = ~s with restriction ~s~n" 'x x (P-restriction x))
+  ...))
+(print-restrictions pq qp)]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made
@@ -813,8 +817,8 @@ This applies to @nber["R" (bold "R")] too. For example:
 (require "R.rkt")
 (define p (P '(0 1) '(3 4 5)))
 (P-order p)
-(define exponents (in-range -10 10))
-(for*/and ((k exponents) (m exponents))
+(define in-exponents (in-range -10 10))
+(for*/and ((k in-exponents) (m in-exponents))
  (and
   (eq? (P-expt (P-expt p k) m)       (P-expt p (* k m)))
   (eq? (P (P-expt p k) (P-expt p m)) (P-expt p (+ k m)))))]
@@ -971,7 +975,7 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
   (list
    "corresponding elements are "
    (nbr equal?)
-   ", hence neither "
+   ", let alone "
    (nbr eq?)
    "."))
 
@@ -1040,11 +1044,11 @@ Examples:
 (define in-S4 (in-G (G-symmetric 4)))
 (for/and ((p in-S4))
  (define nfps (P-non-fixed-points p))
- (equal? nfps (sort (for/list ((k (in-list nfps))) (p k)) <)))
-(for/and ((p in-S4))
- (equal?
-  (P-non-fixed-points p)
-  (P-non-fixed-points (P-inverse p))))]
+ (and
+  (equal? (sort (for/list ((k (in-list nfps))) (p k)) <) nfps)
+  (equal?
+   (P-non-fixed-points p)
+   (P-non-fixed-points (P-inverse p)))))]
 
 @defproc[(P-fixed-point? (p P?) (k N?)) boolean?]{
 Same as @nbr[(= (p k) k)].
@@ -1164,7 +1168,8 @@ Examples:
 (require racket "R.rkt")
 (define g (G '(0 1) '(0 2)))
 (define in-g (in-G g))
-(code:comment "For every pair of elements the composition is an element too.")
+(code:comment "By definition, for every pair of elements of g")
+(code:comment "the composition is an element of g too.")
 (for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
 
 @color-example[green (G-member? P-identity G-identity)]
@@ -1625,8 +1630,7 @@ and to clear the hashes.
 However, the @nbr[P-identity] and the @nbr[G-identity] are not removed.
 @red{Warning}: after clearing the hashes,
 newly constructed @nbsl["P" "P"]s and @nbsl["G" "G"]s
-no longer will be the same (in the sense of @nbr[eq?],
-not even in the sense of @nbr[equal?]) as equivalent
+no longer will be the same (not even in the sense of @nbr[equal?]) as equivalent
 @nbsl["P" "P"]s and @nbsl["G" "G"]s
 that were constructed before cleaning up.
 @nbrl[G-isomorphism "Isomorphisms"]
@@ -1635,6 +1639,7 @@ Therefore @nbr[R-clear-hashes] should not be used preceding code that refers to
 @nbsl["P" "P"]s or @nbsl["G" "G"]s made before cleanup.
 Procedures @nbr[P-equal?], @nbr[G-equal?], @nbr[P<?] and @nbr[P-sort]
 remain comparing correctly after cleanup.
+
 See section @nbsr["Distinct-instances"] too.}
 
 @deftogether[
@@ -1794,6 +1799,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
   (cons (P '((0 6) (1 7) (2 4) (3 5)))
    "Inversion-symmetry.")))
 (code:comment "")
+(define class-names (map cdr classocs))
 (define cube-classes (G-classes cube-symmetries))
 (define (get-class classoc) (G-class (car classoc) cube-symmetries))
 (define conj-classes (map get-class classocs))
@@ -1806,7 +1812,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
   ((set=? conj-classes cube-classes)
    (printf "Table classocs is ok, ")
    (printf "therefore the conj-name-table is ok too.~n")
-   (make-hash (map cons conj-classes (map cdr classocs))))
+   (make-hash (map cons conj-classes class-names)))
   (else (error 'cube-symmetries "incorrect classocs table"))))
 (code:comment "")
 (define (get-class-name conj-class)
@@ -1814,8 +1820,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define S8 (G-symmetric 8))
 (code:comment "")
 (code:comment "Procedure print-data prints some information about group g.")
-(code:comment "It may recompute the conjugation classes already computed before.")
-(code:comment "This simplifies and generalizes the procedure,")
+(code:comment "It may recompute conjugation classes that may already")
+(code:comment "have been computed before the procedure is called.")
+(code:comment "This simplifies and generalizes the procedure to arbitrary g,")
 (code:comment "but it is less efficient, of course.")
 (code:comment "")
 (define (print-data g name print-classes?)
@@ -2008,9 +2015,7 @@ The following example shows the details:
 (code:line)
 (code:comment "In fact adding an arbitrary rotation-reflection will do.")
 (code:comment "A rotation-reflection is a reflection or")
-(code:comment "the composition of a rotation with a reflection,")
-(code:comment "or simply the latter too when regarding the identity")
-(code:comment "as a rotation about 0° (around arbitrary axis of rotation).")
+(code:comment "the composition of a rotation with a reflection.")
 (code:comment "The inversion-symmetry is a rotation-reflection too,")
 (code:comment "for example: reflection in the horizontal plane")
 (code:comment "followed by 180° rotation around the vertical axis,")
@@ -2148,7 +2153,7 @@ The represented symmetries are:
 @elemtag["C3v-table" ""]
 @inset{@Tabular[
 (("label" (nbsl "C" "C") "symmetry")
- ("0"     @nbr[()]       "the identity (= rotation about 0°)")
+ ("0"     @nbr[()]       "the identity")
  ("1"     @nbr[(0 1 2)]  "rotation about 120°")
  ("2"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction")
  ("3"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
