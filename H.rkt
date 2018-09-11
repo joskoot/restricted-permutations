@@ -19,7 +19,7 @@
 
 (define H-identity (make-immutable-hasheqv))
 
-(define (H-identity? x) (equal? x H-identity))
+(define (H-identity? x) (and (pseudo-H? x) (equal? (H-normalize x) H-identity)))
 
 (define (H? x)
  (and (pseudo-H? x)
@@ -31,7 +31,7 @@
    (and
     (andmap N? keys)
     (andmap N? values)
-    (equal? (sort (hash-keys x) <) (sort values <))))))
+    (equal? (sort keys <) (sort values <))))))
 
 (define (H-compose . hs)
  (case (length hs)
