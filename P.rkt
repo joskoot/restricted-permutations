@@ -9,7 +9,7 @@
 (provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
 (provide (rename-out (P P-compose)))
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
-(provide P-fixed-point? P->H H->P)
+(provide P-fixed-point? P->H H->P P-commute?)
 
 (define (P->C p)                  ; This definition comes before that of P-write because
  (or (P-C-field p)                ; the debugger can be caught in an infinite sequence of
@@ -200,5 +200,7 @@
  (let ((a (length c0)) (b (length c1)))
   (or (< a b)
    (and (= a b) (< (car c0) (car c1))))))
+
+(define (P-commute? p q) (eq? (P p q) (P q p)))
 
 ;===================================================================================================

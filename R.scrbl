@@ -106,10 +106,6 @@
 @title[#:version ""]{Restricted permutations}
 @author{Jacob J. A. Koot}
 
-@note{This document has no margin notes at the right.
-For easier reading you probably can increase the zoom-factor of your browser.
-I use zoom-factor 150% without being bothered by a horizontal scroll bar.}
-
 @(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
@@ -181,10 +177,11 @@ For @bold{R} it is not,
 although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group, @bold{R} has an isomorphic subgroup.
-In fact exactly one such subgroup
+
+@note{In fact exactly one such subgroup
 (consisting of the @nber["id"]{identity of @bold{R}} only)
-if the order (= cardinality) of the group is 1 and
-an infinite number of them if the order is greater than 1.
+if the order @nb{(= cardinality)} of the group is 1 and
+an infinite number of them if the order is greater than 1.}
 
 @note{@elemtag["group"]{The present document is not an introduction to group theory.
 It refers to mathematical concepts without providing definitions and
@@ -217,7 +214,7 @@ For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
-@nbrl[G-symmetric]{symmetric group} S@↓{max(1@bold{,}n)}.
+@nbrl[G-symmetric]{symmetric group} S@↓{n}.
 Inverses of each other have the same order and the same restriction.
 
 @note{In every group, not only in @bold{R},
@@ -301,16 +298,16 @@ particularly in their specifications of data types.
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
   @defproc[#:kind "predicate" (N+? (x any/c)) boolean?]
   @defproc[#:kind "predicate" (Z?  (x any/c)) boolean?])]{
- @inset{@Tabular[
+@Tabular[
   (("Predicate" "Synonym of"                      "In the sense of")
    (@nbr[N?]    @nbr[exact-nonnegative-integer?]  @nbr[free-identifier=?])
    (@nbr[N+?]   @nbr[exact-positive-integer?]     @nbr[free-identifier=?])
    (@nbr[Z?]    @nbr[exact-integer?]              @nbr[free-identifier=?]))
   #:sep (hspace 3)
-  #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}}
+  #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
-@note{In this document @bold{R} is the group of @nber["R"]{restricted permutations},@(lb)
-which has nothing to do with real numbers.}
+@note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
+and has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
 
@@ -458,6 +455,9 @@ Examples:
 (C-transpositions '(0 1))
 (C-transpositions '(0 1 2))
 (C-transpositions '(2 1 0))
+(C-transpositions '(0 1 2 3 4))
+(C-transpositions '(1 2 3 4 0))
+(C-transpositions '(2 3 4 0 1))
 (C-transpositions '((0 1) (2 3)))
 (C-transpositions '((0 1) (0 1)))
 (C-transpositions '((0 1 2) (3 4 5)))
@@ -500,7 +500,7 @@ You probably never need this procedure.@(lb)@nb{@red{Advice: avoid it}.}}
 All objects described in this section are defined in
 module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
-Given the same argument, it returns the same @seclink["N"]{natural number}
+Given the same argument, a P returns the same @seclink["N"]{natural number}
 as the represented @nber["R" "R"], of course.
 Every @nber["R" "R"] can be represented by a P (ignoring memory limits).
 Although Ps are procedures,
@@ -1123,7 +1123,7 @@ Forms the smallest group containing all @nber["R" "Rs"] represented by the argum
 Duplicate arguments representing the same @nber["R" "R"] do no harm.
 If no argument is given, the @nbr[G-identity] is returned.
 
-@note{A group recursively includes all @nber["composition" "composition"]s
+@note{By definition, a group recursively includes the @nber["composition" "compositions"]
 of all pairs of its elements,@(lb)
 the @nber["composition" "composition"] of each element with itself included.}}
 
@@ -1144,6 +1144,14 @@ Examples:
 @(example/n (G '(0 1) '(1 2)))
 
 @(example/n (G '(0 1) '(0 1 2)))
+
+@interaction[
+(require racket "R.rkt")
+(define g (G '(0 3) '(0 1 2)))
+(G-order g)
+(G->list g)
+(define in-g (in-G g))
+(for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
 
 Notice that @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
 Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
@@ -1196,10 +1204,9 @@ Examples:
 (code:line (R-clear-hashes) (code:comment #,(red "caution")))
 (code:line (G-member? c g)  (code:comment #,(red "alas")))]
 
-@defproc[(G-print-table (g G?) (port output-port? (current-output-port))) void?]{
+@defproc[(G-print-table (g G?) (output-port output-port? (current-output-port))) void?]{
 The @nber["composition" "composition"] table of @nbr[g] is printed in normalized
-@nbsl["C" "cycle-notation"]
-on the output-@nbr[port].
+@nbsl["C" "cycle-notation"] on the @nbr[output-port].
 Every element is the @nber["composition" "composition"] pq
 of element p in the left column and element q in the top row.
 The left column and top row are @nbrl[P-sort "sorted"] and start with the
@@ -1251,10 +1258,10 @@ are @nbrl[P-fixed-point?]{fixed points} of all elements of the group.
 If the @nbr[lst] has less than two distinct elements, the @nbr[G-identity] is returned.
 The order of the returned G is n! where n is the number of distinct elements of @nbr[lst].
 
-@note{@red{Warning}: @nbr[G-symmetric] is not lazy. Because @nb{12! = 479001600},@(lb)
-@nbr[(> n 12)] and
-@nbr[(> (length (remove-duplicates lst =)) 12)]@(lb)
-probably cause memory problems,
+@note{@red{Warning}: @nbr[G-symmetric] is not lazy. Because @nb{15! = 1,307,674,368,000},@(lb)
+@nbr[(> n 15)] and
+@nbr[(> (length (remove-duplicates lst =)) 15)]
+almost certainly cause memory problems,
 thrashing on virtual memory and slowing down the processor to
 a few per cent of its capacity, eventually aborting because of lack of memory.}}
 
@@ -1329,6 +1336,24 @@ g-base
 (code:comment "Nevertheless it is a correct base:")
 (eq? (apply G (set->list g-base)) g)]
 
+S@↓{0}, S@↓{1} and S@↓{2} have bases of one element.
+Every symmetric group S@↓{m} with m≥3
+has a minimal base of two elements, @nb{for example:}
+
+@interaction[
+(require racket "R.rkt")
+(G-base (G-symmetric 0))
+(G-base (G-symmetric 1))
+(G-base (G-symmetric 2))
+(for/and ((m (in-range 3 8)))
+ (define m-1 (sub1 m))
+ (define Sm (G-symmetric m))
+ (and (= (set-count (G-base Sm)) 2)
+  (code:comment "Take base {(0 m-1), (0 .. m-1)},")
+  (code:comment "where (0 .. m-1) is the list of natural numbers")
+  (code:comment "from 0 up to but not including m-1.")
+  (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
+
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
 
@@ -1377,16 +1402,6 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
 (find-simple-base (G '(0 1) '(0 1 2)))
 (find-simple-base (G-symmetric 4))
 (find-simple-base (G-symmetric 5))]
-
-Every symmetric group S@↓{m+1} with m>1
-has a minimal base of two elements, @nb{for example:}
-
-@interaction[
-(require racket "R.rkt")
-(for/and ((m (in-range 2 7)))
- (define Sm+1 (G-symmetric (add1 m)))
- (and (= (set-count (G-base Sm+1)) 2)
-  (eq? Sm+1 (G (list 0 m) (range 0 m)))))]
 
 @defproc[(G-order (g G?)) N+?]{
 Returns the order of @nbr[g], id est, its number of elements.
@@ -1482,7 +1497,7 @@ always is a divisor of the order of the group.
 If element x commutes with all elements of @bold{X} its class consists of x only.
 Reversely, if the class of element x consists of x only, it commutes with all elements.
 In an abelean group every class consists of one element.
-The identity always is lonesome in its class.
+The identity always is lonesome in its class;
 it is a conjugate of itself only.}}
 
 Examples:
@@ -1885,6 +1900,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (define (divisor? divisor multiple)
  (zero? (modulo multiple divisor)))
+(code:comment "")
 (print-group-info cube-symmetries conj-classes "cube-symmetries" #t)
 (code:comment "Subgroup consisting of rotations only:")
 (code:comment "")
@@ -1894,15 +1910,14 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
 (print-group-info rotations-only rotation-classes "rotations-only" #f)
-(code:comment "")
 (code:comment "rotations-only is an invariant subgroup of group cube-symmetries.")
 (G-invariant-subg? rotations-only cube-symmetries)
 (code:comment "Each conjugation class of the group of rotations-only")
 (code:comment "also is a conjugation class of the group of all cube-symmetries")
 (proper-subset? rotation-classes conj-classes)]
 
-There are ten conjugation classes, of which five are the conjugation classes
-of subgroup @element['tt "rotations-only"].
+There are ten conjugation classes, of which five are conjugation classes
+of subgroup @element['tt "rotations-only"] too.
 Elements belonging to the same class have the same normalized cycle structure.
 The @nbr[P-identity] always is the only member of its class.
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
@@ -1943,20 +1958,20 @@ There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube
 They can be grouped in 9 collections of symmetrically equivalent minimal bases,
 each collection containing 24 bases.
 Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
-if there is a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
+if the group contains a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
 (This is an equality of two sets:
 the order in which the elements appear between the curly brackets is irrelevant.)
 It is not difficult to prove that this indeed is an equivalence relation of the minimal bases.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
-The number of collections of symmetrically equivalent minimal bases
-is one less than the number of conjugation classes of group @tt{cube-symmetries}.
+The number of collections of symmetrically equivalent minimal bases of the group of
+@tt{cube-symmetries} is one less than the number of conjugation classes.
 This is no coincidence, because
 both the identity and the inversion-symmetry
 commute with all symmetries and therefore both leave every minimal base as it is.
 
 @elemtag["seq" ""]
 The number of minimal bases in a collection of symmetrically equivalent
-minimal bases equals the order of group @tt{rotations-only}.
+minimal bases of group @tt{cube-symmetries} equals the order of group @tt{rotations-only}.
 Indeed, for every pair of symmetrically equivalent minimal bases
 there is a @tt{rotations-only}-symmetry showing the equivalence.
 In addition, given a minimal base, every @tt{rotations-only}-symmetry
