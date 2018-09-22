@@ -103,7 +103,7 @@
 @(define constr-style
  (nbhl "https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"))
         
-@title[#:version ""]{Restricted permutations}
+@title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
 @(defmodule "R.rkt" #:packages ())
@@ -292,7 +292,7 @@ and the corresponding abstract natural numbers.
 @bold{Z} the set of all integer numbers.
 The following synonyms are provided by module @nbhl["N.rkt" "N.rkt"]
 and used in the description of the procedures shown in this docu@(-?)ment,
-particularly in their specifications of data types.
+particularly in their specifications of data types:
 
 @deftogether[
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
@@ -393,10 +393,10 @@ Examples:}
 (C-normalize '(2 3 0 1))
 (C-normalize '(3 0 1 2))
 (C-normalize '((0 1) (1 2) (2 3)))
-(C-normalize '((())))
+(C-normalize '((() () ())))
 (C-normalize '(((9))))
 (C-normalize '((1) (2) (3)))
-(C-normalize '((0 1) (1 0)))
+(C-normalize '((0 1) (0 1)))
 (C-normalize '((0 1 2) (3 4)))
 (C-normalize '((4 2 3) (1 0)))
 (C-normalize '((0 1 2) (0 1 2)))
@@ -911,8 +911,7 @@ has as many odd as even elements.
 (require "R.rkt" racket/set)
 (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
 (code:comment "\"as many evens as odds\" if g has as many odd as even elements.")
-(code:comment "Else raises an error, which should never happen,")
-(code:comment #,(list "provided the argument is a " @nbsl["G" "G"] "."))
+(code:comment "Else raises an error, which should never happen.")
 (define (check g)
  (define in-g (in-G g))
  (define  odd-set (for/seteq ((p in-g) #:unless (P-even? p)) p))
@@ -991,15 +990,12 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
 @interaction[
 (require racket "R.rkt")
 (random-seed 0)
-(define unsorted-S3-list0 (for/list ((p (in-G (G-symmetric 3)))) p))
-(define sorted-S3-list0 (P-sort unsorted-S3-list0))
-(code:comment "")
-(map P->C unsorted-S3-list0)
-(map P->C   sorted-S3-list0)
-(code:comment "")
+(code:line (define S3-list0 (G->list (G-symmetric 3))) (code:comment "S3-list0 is sorted."))
 (code:line (R-clear-hashes) (code:comment #,(list "Does not disturb procedure " (nbr P-sort))))
 (code:line (define S3-list1 (G->list (G-symmetric 3))) (code:comment "S3-list1 is sorted."))
-(code:line (R-clear-hashes) (code:comment #,(list "Does not disturb procedure " (nbr P-sort))))
+(code:comment "")
+(map P->C S3-list0)
+(code:comment "")
 (code:line (define in-rearrangements in-permutations) (code:comment #,(list
   "See " (elemref "note" "note below")".")))
 (code:comment "")
@@ -1007,14 +1003,14 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
  (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
  (and
   (code:comment #,comment1)
-  (andmap P-equal? sorted-S3-list0 sorted-rearranged-S3-list1)
+  (andmap P-equal? S3-list0 sorted-rearranged-S3-list1)
   (code:comment #,comment2)
-  (eq? (car sorted-S3-list0) (car sorted-rearranged-S3-list1))
+  (eq? (car S3-list0) (car sorted-rearranged-S3-list1))
   (code:comment #,comment3a)
   (code:comment #,comment3b)
   (not
    (ormap equal?
-    (cdr sorted-S3-list0)
+    (cdr S3-list0)
     (cdr sorted-rearranged-S3-list1)))))]
 
 @elemtag["note"]
@@ -1910,7 +1906,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
 (print-group-info rotations-only rotation-classes "rotations-only" #f)
-(code:comment "rotations-only is an invariant subgroup of group cube-symmetries.")
+(code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
 (G-invariant-subg? rotations-only cube-symmetries)
 (code:comment "Each conjugation class of the group of rotations-only")
 (code:comment "also is a conjugation class of the group of all cube-symmetries")
@@ -1925,7 +1921,7 @@ which does not occur in subgroup @element['tt "rotations-only"], is lonesome too
 This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
 The inversion-symmetry, rotations about 180° and reflections in the planes
-containing the center of the cube and parallel to a side-plane of the cube
+containing the center of the cube and parallel to a side of the cube
 have the same normalized cycle structure.
 Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
 Even subgroup @element['tt "rotations-only"] has threefold symmetries.
@@ -1965,9 +1961,8 @@ It is not difficult to prove that this indeed is an equivalence relation of the 
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases of the group of
 @tt{cube-symmetries} is one less than the number of conjugation classes.
-This is no coincidence, because
-both the identity and the inversion-symmetry
-commute with all symmetries and therefore both leave every minimal base as it is.
+This is no coincidence, because both the identity and the inversion-symmetry
+leave every minimal base as it is.
 
 @elemtag["seq" ""]
 The number of minimal bases in a collection of symmetrically equivalent
@@ -2259,12 +2254,11 @@ Let's check this:
  (define in-g (in-G g))
  (code:comment #,(list "h maps the Ps of g onto the " @nbsl["N"]{natural numbers}))
  (code:comment "0 up to but not including the order of g.")
- (define h
-  (make-immutable-hasheq
-   (for/list ((p in-g) (k (in-naturals))) (cons p k))))
+ (define h (for/hasheq ((p in-g) (k (in-naturals))) (values p k)))
+ (code:comment #,C3v-comment3)
  (define (correspondence compose-for-row-or-column)
   (for/list ((p in-g))
-   (H->P (code:comment #,C3v-comment3)
+   (H->P
     (for/hasheqv ((q in-g))
      (values
       (hash-ref h q)
