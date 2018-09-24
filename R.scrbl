@@ -25,7 +25,8 @@
 
 @(define lb linebreak)
 @(define nb nonbreaking)
-@; Below syntaxes are used such as to allow keyword arguments without explicitly mentioning them.
+@; Below syntaxes are used such as to allow keyword arguments
+@; without explicitly mentioning them in the definitions.
 @(define-syntax-rule (nbsl x ...) (nb (seclink    x ...)))
 @(define-syntax-rule (nbsr x ...) (nb (secref     x ...)))
 @(define-syntax-rule (nbhl x ...) (nb (hyperlink  x ...)))
@@ -1367,8 +1368,8 @@ but shows how to prove the above @nber["proof" "above statement"].
  (error 'example "failed!"))]
 
 Obviously, for m>1 the set of @nbrl[C-transpositions]{transpositions}
-@nb{{(k m@(minus)1): 0≤k<m@(minus)1}}
-forms a base for an S@↓{m} (but not minimal if m>3).
+@nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
+forms a base for @nbr[(G-symmetric m)] (but not minimal for m>3).
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
