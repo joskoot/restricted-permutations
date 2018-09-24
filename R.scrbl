@@ -1344,7 +1344,7 @@ has at least one minimal base of two elements, @nb{for example:}}
   (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
 
 The following example is not a proof,
-but shows how to prove the above @nber["proof" "above statement"].
+but shows how to prove the @nber["proof" "above statement"].
 
 @interaction[
 (require racket "R.rkt")
@@ -1356,20 +1356,22 @@ but shows how to prove the above @nber["proof" "above statement"].
   (define transposition (P (list 0 m-1)))
   (define cycle (P (range 0 m-1)))
   (define inversed-cycle (P-inverse cycle))
-  (define base
+  (define base-of-transpositions
    (for/fold
     ((transposition transposition)
-     (base (list transposition))
-     #:result base) ((k (in-range m-1)))
+     (base-of-transpositions (list transposition))
+     #:result base-of-transpositions) ((k (in-range m-1)))
     (printf "~s~n" transposition)
-    (define new-transposition (P cycle transposition inversed-cycle))
-    (values new-transposition (cons new-transposition base))))
-  (eq? (apply G base) (G-symmetric m)))
+    (define new-transposition
+     (P cycle transposition inversed-cycle))
+    (values new-transposition
+     (cons new-transposition base-of-transpositions))))
+  (eq? (apply G base-of-transpositions) (G-symmetric m)))
  (error 'example "failed!"))]
 
 Obviously, for m>1 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
-forms a base for @nbr[(G-symmetric m)] (but not minimal for m>3).
+forms a base for @nbr[(G-symmetric m)], but not minimal for m>3.
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
