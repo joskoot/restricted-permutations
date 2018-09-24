@@ -153,18 +153,11 @@ Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
 `R' is shorthand for `restricted permutation'
 and `@bold{R}' for `the set of all Rs'.
-@note{@bold{R} has nothing to do with the set of real numbers.@(lb)
-In the present document all numbers are
-@nbsl[
-"numbers"
-#:doc '(lib "scribblings/guide/guide.scrbl")
-"exact integers"].}
-
 @elemtag["composition"]Define the composition:
 
 @inset{@nb{p,q@(∈)@bold{R} → pq@(∈)@bold{R}}}
 
-as usual for functions p and q with compatible range of q and domain of p:
+as usual for functions p and q with compatible domain of p and range of q:
 
 @inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
 
@@ -208,14 +201,13 @@ in the description of procedure @nbr[P-compose].
 
 @inset{@nb{∀k@(∈)@bold{N}: k → k}}
 
-This is the only R with restriction 0.
-It also is the only R of @nbrl[P-order "order"] 1.
+This is the only R with restriction 0 and @nbrl[P-order "order"] 1.
 For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
+@nbrl[P-inverse]{Inverses} of each other have the same order and restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
 @nbrl[G-symmetric]{symmetric group} S@↓{n}.
-Inverses of each other have the same order and the same restriction.
 
 @note{In every group, not only in @bold{R},
 the identity is the only element of order 1 and
@@ -1332,9 +1324,9 @@ g-base
 (code:comment "Nevertheless it is a correct base:")
 (eq? (apply G (set->list g-base)) g)]
 
-S@↓{0}, S@↓{1} and S@↓{2} have bases of one element.
+@elemtag["proof"]{The symmetric groups S@↓{0}, S@↓{1} and S@↓{2} have minimal bases of one element.
 Every symmetric group S@↓{m} with m≥3
-has a minimal base of two elements, @nb{for example:}
+has at least one minimal base of two elements, @nb{for example:}}
 
 @interaction[
 (require racket "R.rkt")
@@ -1345,10 +1337,38 @@ has a minimal base of two elements, @nb{for example:}
  (define m-1 (sub1 m))
  (define Sm (G-symmetric m))
  (and (= (set-count (G-base Sm)) 2)
-  (code:comment "Take base {(0 m-1), (0 .. m-1)},")
+  (code:comment "As an example take base {(0 m-1), (0 .. m-1)},")
   (code:comment "where (0 .. m-1) is the list of natural numbers")
   (code:comment "from 0 up to but not including m-1.")
   (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
+
+The following example is not a proof,
+but shows how to prove the above @nber["proof" "above statement"].
+
+@interaction[
+(require racket "R.rkt")
+(code:comment "")
+(unless
+ (for/and ((m (in-range 2 8)))
+  (printf " ~nm = ~s~n" m)
+  (define m-1 (sub1 m))
+  (define transposition (P (list 0 m-1)))
+  (define cycle (P (range 0 m-1)))
+  (define inversed-cycle (P-inverse cycle))
+  (define base
+   (for/fold
+    ((transposition transposition)
+     (base (list transposition))
+     #:result base) ((k (in-range m-1)))
+    (printf "~s~n" transposition)
+    (define new-transposition (P cycle transposition inversed-cycle))
+    (values new-transposition (cons new-transposition base))))
+  (eq? (apply G base) (G-symmetric m)))
+ (error 'example "failed!"))]
+
+Obviously, for m>1 the set of @nbrl[C-transpositions]{transpositions}
+@nb{{(k m@(minus)1): 0≤k<m@(minus)1}}
+forms a base for an S@↓{m} (but not minimal if m>3).
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
@@ -1806,7 +1826,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:comment "The following table associates one member")
 (code:comment #,(list "of each " (nbrl G-class "conjugation class") " with a name"))
-(code:comment "to be associated with the conjugation class.")
+(code:comment "later to be associated with the whole")
+(code:comment "conjugation class of this member.")
 (code:comment "")
 (define classocs
  (list
@@ -2299,9 +2320,10 @@ Let's check this:
 (define row-group    (list->G rows))
 (define column-group (list->G columns))
 (and
- (G-isomorphic?       C3v    row-group)
- (G-isomorphic?       C3v column-group)
- (G-isomorphic? row-group column-group))]
+ (G-isomorphic? C3v    row-group)
+ (G-isomorphic? C3v column-group))
+(code:comment "This implies:")
+(G-isomorphic? row-group column-group)]
 
 @subsection[#:tag "C3h"]{Group C@↓{3h}}
 
