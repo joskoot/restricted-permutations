@@ -547,7 +547,7 @@ Examples:}
 (P '(0 1) '(1 2) '(2 3))
 (P '(2 3) '(1 2) '(0 1))]
 
-Let's do some checks that two Ps representing the same @nber["R" "R"]
+Let's do a check that two Ps representing the same @nber["R" "R"]
 are the same in the sense of @nbr[eq?]
 (assuming that no disturbing @nbsl["Cleanup" "cleanup"] is made)
 
@@ -1114,7 +1114,8 @@ If no argument is given, the @nbr[G-identity] is returned.
 
 @note{By definition, a group recursively includes the @nber["composition" "compositions"]
 of all pairs of its elements,@(lb)
-the @nber["composition" "composition"] of each element with itself included.}}
+the @nber["composition" "composition"] of each element with itself included.
+Let @bold{X} be a group. Then by definition: @nb{∀p,q@(∈)@bold{X}: pq@(∈)@bold{X}}.}}
 
 Examples:
 
@@ -1325,9 +1326,9 @@ g-base
 (code:comment "Nevertheless it is a correct base:")
 (eq? (apply G (set->list g-base)) g)]
 
-@elemtag["proof"]{The symmetric groups S@↓{0}, S@↓{1} and S@↓{2} have minimal bases of one element.
+The symmetric groups S@↓{0}, S@↓{1} and S@↓{2} have minimal bases of one element.
 Every symmetric group S@↓{m} with m≥3
-has at least one minimal base of two elements, @nb{for example:}}
+has at least one minimal base of two elements, @nb{for example:}
 
 @interaction[
 (require racket "R.rkt")
@@ -1344,7 +1345,8 @@ has at least one minimal base of two elements, @nb{for example:}}
   (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
 
 The following example is not a proof,
-but shows how to prove the @nber["proof" "above statement"].
+but shows how to prove that every symmetric group S@↓{m} with m≥3
+has at least one minimal base of two elements.
 
 @interaction[
 (require racket "R.rkt")
@@ -1369,9 +1371,15 @@ but shows how to prove the @nber["proof" "above statement"].
   (eq? (apply G base-of-transpositions) (G-symmetric m)))
  (error 'example "failed!"))]
 
-Obviously, for m>1 the set of @nbrl[C-transpositions]{transpositions}
+@note{For m>1 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
-forms a base for @nbr[(G-symmetric m)], but not minimal for m>3.
+forms a base for @nb{@nbr[(G-symmetric m)] ∼ S@↓{m}},
+because every element of S@↓{m} can be written as a composition of transpositions and
+every relevant transposition not in the set can be
+obtained by composing three transpositions of the set as follows:
+@nb{((i m@(minus)1) (j m@(minus)1) (i m@(minus)1)) = (i j)},
+where m>2 and @nb{i≠j}.
+For m>3 the base of transpositions is not minimal.}
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
@@ -1423,7 +1431,7 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
 (find-simple-base (G-symmetric 5))]
 
 @defproc[(G-order (g G?)) N+?]{
-Returns the order of @nbr[g], id est, its number of elements.
+Returns the order of @nbr[g], id est, its number of elements (= cardinality).
 
 @note{Do not confuse the order of a G with the order of a
 @nbsl["P" "P"] (See @nbr[P-order]).
@@ -1936,8 +1944,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "also is a conjugation class of the group of all cube-symmetries")
 (proper-subset? rotation-classes conj-classes)]
 
-There are ten conjugation classes, of which five are conjugation classes
-of subgroup @element['tt "rotations-only"] too.
+There are ten conjugation classes, of which five are the conjugation classes
+of subgroup @element['tt "rotations-only"].
 Elements belonging to the same class have the same normalized cycle structure.
 The @nbr[P-identity] always is the only member of its class.
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
@@ -2175,7 +2183,9 @@ We can verify this as follows:
   ((2)
    (define-values (p q) (apply values (set->list g-class)))
    (eq? (P |-1| p) q))
-  (else #f)))]
+  (else #f)))
+(code:comment "Notice that:")
+(code:line (let ((k (P i j))) (eq? (P i j k) |-1|)) (code:comment #,(green "ok")))]
 
 In the quaternion group the @nbrl[P-period "period"]
 of each element forms an @nbrl[G-invariant-subg? "invariant subgroup"]:
