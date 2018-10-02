@@ -216,8 +216,8 @@ inverses of each other have the same order.}
 
 @note{There is no R with restriction 1.
 If p is a permutation of @bold{N}
-with @nb{[∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}], then @nb{[p(0) = 0]}
-and hence @nb{[∀k@(∈)@bold{N}: p(k) = k]},
+with @nb{∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}, then @nb{p(0) = 0}
+and hence @nb{∀k@(∈)@bold{N}: p(k) = k},
 which means that p is the identity with restriction 0.
 Let a(m) be the number of Rs with restriction m. We have:
 @nb{a(0)=1} and @nb{∀m@(∈)@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
@@ -241,9 +241,8 @@ in terms of Racket objects are used:
 (list
  (list "P" @seclink["P"]{Function-representation})
  (list "C" @seclink["C"]{Cycle-representation})
- (list "H" @seclink["H"]{Hash-representation}))]}
-
-A G is a Racket object representing a @seclink["G"]{finite subgroup of @bold{R}}.
+ (list "H" @seclink["H"]{Hash-representation})
+ (list "G" @seclink["G"]{Representation of a finite subgroup of @bold{R}}))]}
 
 @note{Hs are for internal use behind the screen. @red{Advice}: avoid explicit use of Hs.}
 
@@ -478,7 +477,9 @@ Example:
 (for/and ((p (in-G (G-symmetric 4))))
  (define c (P->C p))
  (define transpositions (C-transpositions c))
- (C-identity? (list transpositions (reverse transpositions))))]
+ (and
+  (eq? (P-even? p) (P-even? (P-inverse p)))
+  (C-identity? (list transpositions (reverse transpositions)))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
 Returns the normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -1353,11 +1354,14 @@ has at least one minimal base of two elements.
 (code:comment "")
 (unless
  (for/and ((m (in-range 2 8)))
-  (printf " ~nm = ~s~n" m)
+  (printf " ~nm = ~s~n ~n" m)
   (define m-1 (sub1 m))
+  (code:comment "transposition and cycle form a minimal base.")
   (define transposition (P (list 0 m-1)))
   (define cycle (P (range 0 m-1)))
-  (define inversed-cycle (P-inverse cycle))
+  (code:comment "From cycle we van construct inversed-cycle.")
+  (define inversed-cycle (P-expt cycle (- m 2)))
+  (code:comment "base-of-transposition is not minimal for m>3.")
   (define base-of-transpositions
    (for/fold
     ((transposition transposition)
@@ -1371,7 +1375,7 @@ has at least one minimal base of two elements.
   (eq? (apply G base-of-transpositions) (G-symmetric m)))
  (error 'example "failed!"))]
 
-@note{For m>1 the set of @nbrl[C-transpositions]{transpositions}
+For m>1 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
 forms a base for @nb{@nbr[(G-symmetric m)] ∼ S@↓{m}},
 because every element of S@↓{m} can be written as a composition of transpositions and
@@ -1379,7 +1383,6 @@ every relevant transposition not in the set can be
 obtained by composing three transpositions of the set as follows:
 @nb{((i m@(minus)1) (j m@(minus)1) (i m@(minus)1)) = (i j)},
 where m>2 and @nb{i≠j}.
-For m>3 the base of transpositions is not minimal.}
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
