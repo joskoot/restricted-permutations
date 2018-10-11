@@ -25,6 +25,7 @@
 
 @(define lb linebreak)
 @(define nb nonbreaking)
+@(define-syntax-rule (ignore x ...) (void))
 @; Below syntaxes are used such as to allow keyword arguments
 @; without explicitly mentioning them in the definitions.
 @(define-syntax-rule (nbsl x ...) (nb (seclink    x ...)))
@@ -208,7 +209,7 @@ but always finite. They are not necessarily the same.
 @nbrl[P-inverse]{Inverses} of each other have the same order and restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
-@nbrl[G-symmetric]{symmetric group} S@↓{n}.
+@nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group} S@↓{n}.
 
 @note{In every group, not only in @bold{R},
 the identity is the only element of order 1 and
@@ -239,10 +240,10 @@ in terms of Racket objects are used:
 
 @inset{@tabular[#:sep (list (hspace 1) ":" (hspace 1))
 (list
- (list "P" @seclink["P"]{Function-representation})
- (list "C" @seclink["C"]{Cycle-representation})
- (list "H" @seclink["H"]{Hash-representation})
- (list "G" @seclink["G"]{Representation of a finite subgroup of @bold{R}}))]}
+ (list "P" @seclink["P"]{Function-representation of Rs})
+ (list "C" @seclink["C"]{Cycle-representation of Rs})
+ (list "H" @seclink["H"]{Hash-representation of Rs})
+ (list "G" @seclink["G"]{Representation of finite subgroups of @bold{R}}))]}
 
 @note{Hs are for internal use behind the screen. @red{Advice}: avoid explicit use of Hs.}
 
@@ -298,8 +299,8 @@ particularly in their specifications of data types:
   #:sep (hspace 3)
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
-@note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
-and has nothing to do with the set of real numbers.}
+@note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}.@(lb)
+It has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
 
@@ -352,11 +353,9 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-@elemtag["Cs"]{For every C there is exactly one normalized C
-(in the sense of @nbr[equal?]) representing the same @nber["R" "R"].
-For every @nber["R" "R"] there is exactly one normalized C
+Every @nber["R" "R"] is represented by exactly one normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
-See procedure @nbr[C-normalize] for examples.}
+See procedure @nbr[C-normalize] for examples.
 
 @deftogether[
  (@defproc[#:kind "predicate" (C?            (x any/c)) boolean?]
@@ -642,23 +641,12 @@ but the result is not a P. Example:
 (code:comment "whereas:")
 (code:line (P? Pabc) (code:comment #,(green "ok:")))
 (code:comment #,(list
- "Racket's procedure "
- (nbr compose)
- " does not return "
- (nbr equal?)
- " results for "))
-(code:comment #,(list (nbr eq?) " arguments when called with two or more arguments."))
+ "Racket's procedure " (nbr compose) " does not return " (nbr equal?) " results"))
+(code:comment #,(list "when called with (two or more) " (nbr eq?) " arguments."))
 (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))
-(code:comment #,(list
- (nbr P)
- " does, even "
- (nbr eq?)
- " when the result represents the same "
- (elemref "R" "R")))
-(code:comment #,(list
- "(and no disturbing "
- (nbsl "Cleanup" "cleanup")
- " interferes)"))
+(code:comment #,(list "Procedures " (nbr P) " and " (nbr P-compose) " do, even " (nbr eq?) ","))
+(code:comment #,(list "when the result represents the same " (elemref "R" "R")))
+(code:comment #,(list "(and no disturbing " (nbsl "Cleanup" "cleanup") " interferes)"))
 (eq? (code:comment #,(green "ok"))
  (P-compose (P-compose a b) c)
  (P-compose a (P-compose b c)))
@@ -1101,7 +1089,7 @@ An exception is made for the @nbr[G-identity], which is written as:
 
 @inset{@nbr[G-identity]}
 
-which can be regarded as @constr-style too.
+and can be regarded as @constr-style too.
 
 Gs produced by the procedures of this section and representing the same subgroup of
 @nber["R" (bold "R")] are the same in the sense of @nbr[eq?].
@@ -1111,13 +1099,7 @@ For every finite group there is an isomorphic G (ignoring memory limits).
 @defproc[(G (p (or/c P? C?)) ...) G?]{
 Forms the smallest group containing all @nber["R" "Rs"] represented by the arguments.
 Duplicate arguments representing the same @nber["R" "R"] do no harm.
-If no argument is given, the @nbr[G-identity] is returned.
-
-@note{By definition, a group recursively includes the @nber["composition" "compositions"]
-of all pairs of its elements,@(lb)
-the @nber["composition" "composition"] of each element with itself included.
-Let @bold{X} be a group. Then by definition: @nb{∀p,q@(∈)@bold{X}: pq@(∈)@bold{X}}.}}
-
+If no argument is given, the @nbr[G-identity] is returned.}
 Examples:
 
 @(example/n (G))
@@ -1231,7 +1213,8 @@ of the table are @nbrl[P-sort "sorted"].}
 
 @defproc*[(((G-symmetric (n N?) (offset N? 0)) G?)
            ((G-symmetric (lst (listof N?))) G?))]{
-The first form returns the symmetric group of all @nbr[n]! @nbsl["P" "Ps"]
+The first form returns the @nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group}
+of all @nbr[n]! @nbsl["P" "Ps"]
 of the @nbsl["N"]{natural numbers}
 from @nbr[offset] up to but not including @nbr[(+ offset n)].
 All @nbsl["N"]{natural numbers} outside this range are
@@ -1242,7 +1225,8 @@ Obviously @nbr[G-symmetric] yields isomorphic groups when
 called with the same value for @nbr[n].
 The order of the returned G is @nbr[n]!.
 
-The second form returns the symmetric group corresponding to all rearrangements of @nbr[lst].
+The second form returns the @nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group}
+corresponding to all rearrangements of @nbr[lst].
 Duplicate elements are ignored.
 All @nbsl["N"]{natural numbers} not in the @nbr[lst]
 are @nbrl[P-fixed-point?]{fixed points} of all elements of the group.
@@ -1341,7 +1325,7 @@ has at least one minimal base of two elements, @nb{for example:}
  (define Sm (G-symmetric m))
  (and (= (set-count (G-base Sm)) 2)
   (code:comment "As an example take base {(0 m-1), (0 .. m-1)},")
-  (code:comment "where (0 .. m-1) is the list of natural numbers")
+  (code:comment "where (0 .. m-1) is the cycle of natural numbers")
   (code:comment "from 0 up to but not including m-1.")
   (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
 
@@ -1375,14 +1359,14 @@ has at least one minimal base of two elements.
   (eq? (apply G base-of-transpositions) (G-symmetric m)))
  (error 'example "failed!"))]
 
-For m>1 the set of @nbrl[C-transpositions]{transpositions}
+For m>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
 forms a base for @nb{@nbr[(G-symmetric m)] ∼ S@↓{m}},
 because every element of S@↓{m} can be written as a composition of transpositions and
 every relevant transposition not in the set can be
 obtained by composing three transpositions of the set as follows:
 @nb{((i m@(minus)1) (j m@(minus)1) (i m@(minus)1)) = (i j)},
-where m>2 and @nb{i≠j}.
+where @nb{i≠j}.
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
@@ -1441,7 +1425,7 @@ Returns the order of @nbr[g], id est, its number of elements (= cardinality).
 The order of every @nbsl["P" "P"] of a G is a divisor of the order of that G.
 This is a consequence of the more general theorem of group theory that
 the order of an element of a finite group always is a divisor of the order of that group.
-This theorem holds for all finite groups, not only for Gs.}}
+This theorem holds for all finite groups, Gs included.}}
 
 @defproc[(G-subg? (g0 G?) (g1 G?)) boolean?]{
 @nbr[#t] if @nbr[g0] is a subset of @nbr[g1].
@@ -1875,8 +1859,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "Check that all classocs refer to distinct conjugation classes")
 (code:comment "and that all conjugation classes are present.")
 (code:comment "")
-(unless (set=? conj-classes (G-classes cube-symmetries))
- (error 'cube-symmetries "incorrect classocs table"))
+(code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "must be ok")))
 (code:comment "")
 (code:comment "The following table maps each conjugation class to its name.")
 (code:comment "")
@@ -1889,10 +1872,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define S8 (G-symmetric 8))
 (code:comment "")
 (code:comment "Procedure print-group-info prints some information about group g.")
-(code:comment "classes must be a list of all conjugation classes of g.")
 (code:comment "")
-(define (print-group-info g classes name print-classes?)
- (define conj-classes (sort classes conj-class<?))
+(define (print-group-info g name print-classes?)
+ (define conj-classes (sort (G-classes g) conj-class<?))
  (define g-order (G-order g))
  (define in-g (in-G g))
  (printf " ~nInfo about group: ~a~n ~n" name)
@@ -1932,7 +1914,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define (divisor? divisor multiple)
  (zero? (modulo multiple divisor)))
 (code:comment "")
-(print-group-info cube-symmetries conj-classes "cube-symmetries" #t)
+(print-group-info cube-symmetries "cube-symmetries" #t)
 (code:comment "Subgroup consisting of rotations only:")
 (code:comment "")
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
@@ -1940,7 +1922,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "rotation and other-rotation are rotations about 90°")
 (code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
-(print-group-info rotations-only rotation-classes "rotations-only" #f)
+(print-group-info rotations-only "rotations-only" #f)
 (code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
 (G-invariant-subg? rotations-only cube-symmetries)
 (code:comment "Each conjugation class of the group of rotations-only")
@@ -1997,7 +1979,7 @@ Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases of the group of
 @tt{cube-symmetries} is one less than the number of conjugation classes.
 This is no coincidence, because both the identity and the inversion-symmetry
-leave every minimal base as it is.
+leave every minimal base as it is and are the only ones that commute with all symmetries.
 
 @elemtag["seq" ""]
 The number of minimal bases in a collection of symmetrically equivalent
@@ -2040,7 +2022,8 @@ The following example shows the details:
  (printf "size of each base-collection    ~a~n"
   (pad3 collection-size)))
 (code:comment "")
-(code:comment #,(list "Print the base classes in " (nbsl "C" "C-notation") ", one base per line."))
+(code:comment #,(list
+  "Print the base collections in " (nbsl "C" "C-notation") ", one base per line."))
 (code:comment "")
 (for ((base-collection (in-list base-collections)) (i (in-naturals)))
  (printf " ~nbase-collection ~s~n" (add1 i))
@@ -2292,9 +2275,9 @@ Let's check this:
  (code:comment #,(list "h maps the Ps of g onto the " @nbsl["N"]{natural numbers}))
  (code:comment "0 up to but not including the order of g.")
  (define h (for/hasheq ((p in-g) (k (in-naturals))) (values p k)))
- (code:comment #,C3v-comment3)
  (define (correspondence compose-for-row-or-column)
   (for/list ((p in-g))
+   (code:comment #,C3v-comment3)
    (H->P
     (for/hasheqv ((q in-g))
      (values
