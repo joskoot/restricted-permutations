@@ -26,6 +26,7 @@
 @(define lb linebreak)
 @(define nb nonbreaking)
 @(define-syntax-rule (ignore x ...) (void))
+@(define (∈) (smaller "∈"))
 @; Below syntaxes are used such as to allow keyword arguments
 @; without explicitly mentioning them in the definitions.
 @(define-syntax-rule (nbsl x ...) (nb (seclink    x ...)))
@@ -34,7 +35,6 @@
 @(define-syntax-rule (nber x ...) (nb (elemref    x ...)))
 @(define-syntax-rule (nbrl x ...) (nb (racketlink x ...)))
 @(define-syntax-rule (nbr  x ...) (nb (racket     x ...)))
-@(define (∈) (smaller "∈"))
 
 @(define (make-color-style color)
   (define prop:color (color-property color))
@@ -128,7 +128,7 @@ id est, such as to mean a bijection of a set onto the same set.
 
 @elemtag["rearrangement" ""]
 @note{The word `permutation' often is used for rearrangements.
-For example, two lists like @nbr[(1 2 0)] and @nbr[(0 1 2)]
+For example, two lists like @nb{(1 2 0)} and @nb{(0 1 2)}
 often are called permutations of each other.
 In this docu@(-?)ment they are called rearrange@(-?)ments of each other,
 the word `permutation' being reserved for bijections of a set onto the same set.
@@ -159,7 +159,7 @@ and `@bold{R}' for `the set of all Rs'.
 
 @inset{@nb{p,q@(∈)@bold{R} → pq@(∈)@bold{R}}}
 
-as usual for functions p and q with compatible domain of p and range of q:
+as usual for functions p and q with compatible range of q and domain of p:
 
 @inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
 
@@ -181,7 +181,7 @@ an infinite number of them if the order is greater than 1.}
 @note{@elemtag["group"]{The present document is not an introduction to group theory.
 It refers to mathematical concepts without providing definitions and
 mentions theorems without proofs.
-See chapters 1 and 2 of
+For a simple introduction see chapters 1 and 2 of
 @nbhl[
  (string-append
   "https://ia800307.us.archive.org/18/items/"
@@ -199,6 +199,7 @@ We have @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.
 See the @nber["P-example"]{example}
 in the description of procedure @nbr[P-compose].
+
 @elemtag["id" "The identity"] of @bold{R} is:
 
 @inset{@nb{∀k@(∈)@bold{N}: k → k}}
@@ -251,7 +252,7 @@ in terms of Racket objects are used:
 In this docu@(-?)ment the word `representation' refers to the way abstract mathematical concepts
 are expressed in terms of Racket objects.
 In group theory the word has quite another meaning
-(group of coordinate transformations in a linear space)
+(group of coordinate transformations in a linear space).
 In this docu@(-?)ment the word is not used with the group theoretical meaning.}}
 
 Notice that
@@ -272,7 +273,7 @@ The
 #:doc '(lib "scribblings/guide/guide.scrbl")
 "exact integer numbers of Racket"]
 represent their abstract mathematical counter@(-?)parts exactly.
-Although the representation cannot be complete because of memory and performance limits,
+Although the representation is not complete because of memory and performance limits,
 no distinction is needed between abstract integer numbers and
 the exact integer numbers of Racket by which they are represented.
 Therefore, in this docu@(-?)ment no distinction is made between
@@ -313,13 +314,13 @@ A C represents an @nber["R" "R"] and is one of the following:
  @item{
   A single C, which is a list of distinct @nbsl["N"]{natural numbers}.
   It represents the @nber["R" "R"]
-  that maps each element of the list onto the next one and the last element onto the first one.
-  Every @nbsl["N"]{natural number} that is not part of the single C, is mapped onto itself. 
+  that maps each element of the list onto the next one, the last element onto the first one
+  and every @nbsl["N"]{natural number} that is not part of the single C onto itself. 
   The empty list and every single C of one element represent the
   @nber["id"]{identity} of @nber["R"]{@bold{R}}.
   The @nber["id"]{identity} has @nbrl[P-order "order"] 1.
   A non-empty single C of n elements represents an @nber["R" "R"] of @nbrl[P-order "order"] n.
-  The @racket[reverse] of a single C represents the inverse
+  The @racket[reverse] of a single C represents the @nbrl[P-inverse]{inverse}
   of the @nber["R" "R"] represented by the original single C.}
  @item{
   A list of Cs.
@@ -353,7 +354,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-Every @nber["R" "R"] is represented by exactly one normalized C
+For every C and every @nber["R" "R"] there is exactly one normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.
 
@@ -424,18 +425,14 @@ The list of transpositions is not uniquely defined.
 but always the same one (in the sense of @nbr[equal?])
 for Cs representing the same @nber["R" "R"]
 and with no more transpositions than necessary.
-An @nber["R" "R"] is either even or odd,
-id est,
-the length of its representation as a list of transpositions is either even or odd.
 
-@note{@elemtag["parity"]{Every C can be written as a list of transpositions.
-If it can be written as a list of an even number of transpositions,
-it cannot be written as a list of an odd number of transpositions and reversely.
+@elemtag["parity"]@note{A C that can be written as a list of an even number of transpositions
+cannot be written as a list of an odd number of transpositions and reversely.
 Hence every C, and consequently every @nber["R" "R"], has well defined parity.
 Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R" "R"].
 Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
-The @nber["id"]{identity of @bold{R}} has even parity.}
-A group containing at least one odd element has as many odd ones as even ones.
+The @nber["id"]{identity of @bold{R}} has even parity.
+@nb{A group} containing at least one odd element has as many odd ones as even ones.
 The subset of all even elements of a finite group is an
 @nbrl[G-invariant-subg? "invariant subgroup"].}}
 
@@ -446,6 +443,7 @@ Examples:
 (C-transpositions '(0 1))
 (C-transpositions '(0 1 2))
 (C-transpositions '(2 1 0))
+(C-transpositions '(0 1 2 3))
 (C-transpositions '(0 1 2 3 4))
 (C-transpositions '(1 2 3 4 0))
 (C-transpositions '(2 3 4 0 1))
@@ -456,7 +454,7 @@ Examples:
 
 The Cs shown in the example below represent the same @nber["R" "R"].
 Therefore procedure @nbr[C-transpositions] produces the same list of transpositions for them
-@nb{(in the sense of @nbr[equal?])}:
+(in the sense of @nbr[equal?]):
 
 @example-table[
 (C-transpositions '((0 1) (1 2)))
@@ -530,7 +528,7 @@ Examples:}
 @interaction[
 (require racket "R.rkt")
 (define p (P '(2 3) '(4 5 6)))
-(for ((k (in-range 10))) (printf "~s -> ~s~n" k (p k)))]
+(for ((k (in-range 10))) (printf "p(~s) = ~s~n" k (p k)))]
 
 @example-table[
 (P)
@@ -583,7 +581,7 @@ q
  (define x (P a (P b c)))
  (define y (P (P a b) c))
  (define z (P a b c))
- (and (eq? x z) (eq? y z)))]
+ (and (eq? x y) (eq? x z) (eq? y z)))]
 
 @defproc[(P-compose (p (or/c P? C?)) ...) P?]{
 Same as procedure @nbr[P] in the sense of @nbr[free-identifier=?].@(lb)
@@ -642,7 +640,7 @@ but the result is not a P. Example:
 (code:line (P? Pabc) (code:comment #,(green "ok:")))
 (code:comment #,(list
  "Racket's procedure " (nbr compose) " does not return " (nbr equal?) " results"))
-(code:comment #,(list "when called with (two or more) " (nbr eq?) " arguments."))
+(code:comment #,(list "when called with two or more " (nbr eq?) " arguments."))
 (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))
 (code:comment #,(list "Procedures " (nbr P) " and " (nbr P-compose) " do, even " (nbr eq?) ","))
 (code:comment #,(list "when the result represents the same " (elemref "R" "R")))
@@ -867,7 +865,7 @@ This applies to @nber["R" @bold{R}] too:
 Returns @nbr[#t] if the @nber["R" "R"] represented by the argument is even.@(lb)
 Returns @nbr[#f] if the @nber["R" "R"] represented by the argument is odd.@(lb)
 See the @nber["parity"]{note} in the description of procedure @nbr[C-transpositions].}
-@(lb)Examples:
+Examples:
 
 @example-table[
 (P-even? P-identity)
@@ -1032,7 +1030,7 @@ Examples:
 (for/and ((p in-S4))
  (define nfps (P-non-fixed-points p))
  (and
-  (equal? (sort (for/list ((k (in-list nfps))) (p k)) <) nfps)
+  (equal? (sort (map p nfps) <) nfps)
   (equal?
    (P-non-fixed-points p)
    (P-non-fixed-points (P-inverse p)))))]
@@ -1089,7 +1087,7 @@ An exception is made for the @nbr[G-identity], which is written as:
 
 @inset{@nbr[G-identity]}
 
-and can be regarded as @constr-style too.
+which can be regarded as @constr-style too.
 
 Gs produced by the procedures of this section and representing the same subgroup of
 @nber["R" (bold "R")] are the same in the sense of @nbr[eq?].
@@ -1118,15 +1116,18 @@ Examples:
 
 @(example/n (G '(0 1) '(0 1 2)))
 
+By definition a group, say @bold{X}, includes the composition of every pair of its elements,
+the composition of every element with itself included, id est:
+@nb{∀x,y@(∈)@bold{X}: xy@(∈)@bold{X}}. For example:
+
 @interaction[
 (require racket "R.rkt")
-(define g (G '(0 3) '(0 1 2)))
-(G-order g)
-(G->list g)
-(define in-g (in-G g))
-(for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
+(define X (G '(0 3) '(0 1 2)))
+(G-order X)
+(define in-X (in-G X))
+(for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
 
-Notice that @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
+@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
 Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
@@ -1372,7 +1373,7 @@ where @nb{i≠j}.
 Returns a list of all minimal bases of @nbr[g].} Examples:
 
 @interaction[
-(require"R.rkt" racket)
+(require "R.rkt" racket)
 (define (G-order+bases g)
  (define bases (G-bases g))
  (values
@@ -1664,7 +1665,7 @@ Examples:}
 (list->G (list P-identity P-identity (P '(0 1)) (P '(0 1))))
 (code:comment "Error when the list does not form a group:")
 (code:comment #,(list "In the following example " @nbr[(P '((0 1) (2 3)))] " is missing."))
-(list->G (list P-identity (P '(0 1)) (P '(2 3))))]
+(code:line (list->G (list P-identity (P '(0 1)) (P '(2 3)))) (code:comment #,(red "alas")))]
 
 @section[#:tag "Cleanup"]{Cleanup}
 
@@ -1929,17 +1930,20 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "also is a conjugation class of the group of all cube-symmetries")
 (proper-subset? rotation-classes conj-classes)]
 
-There are ten conjugation classes, of which five are the conjugation classes
-of subgroup @element['tt "rotations-only"].
-Elements belonging to the same class have the same normalized cycle structure.
+The group of all cube-symmetries has ten conjugation classes,
+of which five are the conjugation classes of the subgroup @tt{rotations-only}.
+Elements belonging to the same class have the same normalized cycle structure,
+but distinct classes can have the same normalized cycle structure
+(in a @nbrl[G-symmetric]{symmetric} group
+every class has distinct normalized cycle structure).
+In particular the inversion-symmetry, rotations about 180° and reflections in the planes
+containing the center of the cube and parallel to a side of the cube
+have the same normalized cycle structure, but are distinct conjugation classes.
 The @nbr[P-identity] always is the only member of its class.
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
 which does not occur in subgroup @element['tt "rotations-only"], is lonesome too.
 This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
-The inversion-symmetry, rotations about 180° and reflections in the planes
-containing the center of the cube and parallel to a side of the cube
-have the same normalized cycle structure.
 Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
 Even subgroup @element['tt "rotations-only"] has threefold symmetries.
 In particular, @nber["composition" "composition"] of two rotations about 90° with intersecting
@@ -2079,6 +2083,13 @@ The following example shows the details:
 (code:comment "")
 (for/and ((p (in-list rotation-reflections)))
  (eq? cube-symmetries (G rotation other-rotation p)))]
+
+@note{In the group of all cube-symmetries, all collections of
+symmetrically equivalent minimal bases have the same size.
+This is not true for all groups. For example,
+group @tt{rotations-only} has 108 distinct minimal bases
+in five collections of symmetrically equivalent bases,
+one collection of 12 bases and four collections of 24 bases.}
 
 @subsection{The quaternion group}
 
