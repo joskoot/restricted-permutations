@@ -3,4 +3,4 @@
 ; By Jacob J. A. Koot
 
 (define scribblings '(("R.scrbl" ())))
-(define collection 'use-pkg-name)
+(define collection "restricted-permutations")

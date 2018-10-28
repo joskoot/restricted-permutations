@@ -26,7 +26,6 @@
 @(define lb linebreak)
 @(define nb nonbreaking)
 @(define-syntax-rule (ignore x ...) (void))
-@(define (∈) (smaller "∈"))
 @; Below syntaxes are used such as to allow keyword arguments
 @; without explicitly mentioning them in the definitions.
 @(define-syntax-rule (nbsl x ...) (nb (seclink    x ...)))
@@ -149,7 +148,7 @@ Let @bold{N} be the set of all natural numbers, 0 included.
 Define a restricted permutation, @nb{say p},
 as a permutation of @bold{N} with the following restriction:
 
-@inset{@nb{∃m@(∈)@bold{N}: ∀k@(∈)@bold{N}: k≥m @⇒ p(k) = k}}
+@inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m @⇒ p(k) = k}}
 
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
@@ -157,11 +156,11 @@ Let's call the least natural number m for which the restriction holds
 and `@bold{R}' for `the set of all Rs'.
 @elemtag["composition"]Define the composition:
 
-@inset{@nb{p,q@(∈)@bold{R} → pq@(∈)@bold{R}}}
+@inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
 
 as usual for functions p and q with compatible range of q and domain of p:
 
-@inset{@nb{pq: k@(∈)@bold{N} → p@larger{(}q(k)@larger{)}@(∈)@bold{N}}}
+@inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
 
 @bold{R} always will be associated with this composition,
 thus forming a @nber["group"]{group},
@@ -172,15 +171,14 @@ For @bold{R} it is not,
 although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group, @bold{R} has an isomorphic subgroup.
-
-@note{In fact exactly one such subgroup
-(consisting of the @nber["id"]{identity of @bold{R}} only)
+In fact exactly one such subgroup
+consisting of the @nber["id"]{identity of @bold{R}} only
 if the order @nb{(= cardinality)} of the group is 1 and
-an infinite number of them if the order is greater than 1.}
+an infinite number of them if the order is greater than 1.
 
 @note{@elemtag["group"]{The present document is not an introduction to group theory.
-It refers to mathematical concepts without providing definitions and
-mentions theorems without proofs.
+It refers to mathematical concepts without their definitions and
+mentions theorems without their proofs.
 For a simple introduction see chapters 1 and 2 of
 @nbhl[
  (string-append
@@ -202,7 +200,7 @@ in the description of procedure @nbr[P-compose].
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
-@inset{@nb{∀k@(∈)@bold{N}: k → k}}
+@inset{@nb{∀k∈@bold{N}: k → k}}
 
 This is the only R with restriction 0 and @nbrl[P-order "order"] 1.
 For every other R the restriction and order are greater than 1,
@@ -218,11 +216,11 @@ inverses of each other have the same order.}
 
 @note{There is no R with restriction 1.
 If p is a permutation of @bold{N}
-with @nb{∀k@(∈)@bold{N}: k≥1 @⇒ p(k) = k}, then @nb{p(0) = 0}
-and hence @nb{∀k@(∈)@bold{N}: p(k) = k},
-which means that p is the identity with restriction 0.
-Let a(m) be the number of Rs with restriction m. We have:
-@nb{a(0)=1} and @nb{∀m@(∈)@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
+with @nb{∀k∈@bold{N}: k≥1 @⇒ p(k) = k}, then @nb{p(0) = 0}
+and hence @nb{∀k∈@bold{N}: p(k) = k},
+which means that p is the identity with restriction 0.@(lb)
+Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
+We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
 This implies: @nb{a(1) = 0.}
 Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
 where m runs from 0 up to and including n.}
@@ -284,8 +282,8 @@ and the corresponding abstract natural numbers.
 @bold{N} is the set of all natural numbers,
 @bold{N@↑{+}} the set of all positive natural numbers and
 @bold{Z} the set of all integer numbers.
-The following synonyms are provided by module @nbhl["N.rkt" "N.rkt"]
-and used in the description of the procedures shown in this docu@(-?)ment,
+The following synonyms are provided by module @nbhl["N.rkt" "N.rkt"].
+They are used in the description of the procedures shown in this docu@(-?)ment,
 particularly in their specifications of data types:
 
 @deftogether[
@@ -293,10 +291,10 @@ particularly in their specifications of data types:
   @defproc[#:kind "predicate" (N+? (x any/c)) boolean?]
   @defproc[#:kind "predicate" (Z?  (x any/c)) boolean?])]{
 @Tabular[
-  (("Predicate" "Synonym of"                      "In the sense of")
-   (@nbr[N?]    @nbr[exact-nonnegative-integer?]  @nbr[free-identifier=?])
-   (@nbr[N+?]   @nbr[exact-positive-integer?]     @nbr[free-identifier=?])
-   (@nbr[Z?]    @nbr[exact-integer?]              @nbr[free-identifier=?]))
+  (("Predicate" "Synonym of"                     "In the sense of")
+   (@nbr[N?]    @nbr[exact-nonnegative-integer?] @nbr[free-identifier=?])
+   (@nbr[N+?]   @nbr[exact-positive-integer?]    @nbr[free-identifier=?])
+   (@nbr[Z?]    @nbr[exact-integer?]             @nbr[free-identifier=?]))
   #:sep (hspace 3)
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
@@ -427,12 +425,12 @@ for Cs representing the same @nber["R" "R"]
 and with no more transpositions than necessary.
 
 @elemtag["parity"]@note{A C that can be written as a list of an even number of transpositions
-cannot be written as a list of an odd number of transpositions and reversely.
-Hence every C, and consequently every @nber["R" "R"], has well defined parity.
+cannot be written as a list of an odd number of transpositions and vice versa.
+Hence every C, and consequently every @nber["R" "R"], has well defined @nbrl[P-even? "parity"].
 Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R" "R"].
 Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
 The @nber["id"]{identity of @bold{R}} has even parity.
-@nb{A group} containing at least one odd element has as many odd ones as even ones.
+@nb{A finite group} containing at least one odd element has as many odd ones as even ones.
 The subset of all even elements of a finite group is an
 @nbrl[G-invariant-subg? "invariant subgroup"].}}
 
@@ -448,6 +446,7 @@ Examples:
 (C-transpositions '(1 2 3 4 0))
 (C-transpositions '(2 3 4 0 1))
 (C-transpositions '((0 1) (2 3)))
+(C-transpositions '((2 3) (0 1)))
 (C-transpositions '((0 1) (0 1)))
 (C-transpositions '((0 1 2) (3 4 5)))
 (C-transpositions '((3 4 5) (0 1 2)))]
@@ -767,7 +766,7 @@ If the period and order already are available, they are
 recollected from @nbr[p] without computing them again.}
 
 @note{Let x be a group element of finite order m.
-Then @nb{∀k@(∈)@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
+Then @nb{∀k∈@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
 
 Large exponents do no harm.
 The power is computed almost as fast as for small exponents.
@@ -797,8 +796,8 @@ though.
 For every group @bold{X} we have:
 
 @inset{
-∀p@(∈)@bold{X}: ∀k,m@(∈)@bold{Z}: (p@↑{k})@↑{m} = p@↑{km}@(hspace 3)and@(lb)
-∀p@(∈)@bold{X}: ∀k,m@(∈)@bold{Z}: p@↑{k}p@↑{m} = p@↑{k+m}}
+∀p∈@bold{X}: ∀k,m∈@bold{Z}: (p@↑{k})@↑{m} = p@↑{km}@(hspace 3)and@(lb)
+∀p∈@bold{X}: ∀k,m∈@bold{Z}: p@↑{k}p@↑{m} = p@↑{k+m}}
 
 This applies to @nber["R" (bold "R")] too, of course. For example:
 
@@ -849,7 +848,7 @@ Examples:
 
 For every group @bold{X} we have:
 
-@inset{@nb{∀a,b@(∈)@bold{X}: (ab)@(expt-1) = b@(expt-1)a@(expt-1)}}
+@inset{@nb{∀a,b∈@bold{X}: (ab)@(expt-1) = b@(expt-1)a@(expt-1)}}
 
 This applies to @nber["R" @bold{R}] too:
 
@@ -1095,9 +1094,14 @@ Gs produced by the procedures of this section and representing the same subgroup
 For every finite group there is an isomorphic G (ignoring memory limits).
 
 @defproc[(G (p (or/c P? C?)) ...) G?]{
-Forms the smallest group containing all @nber["R" "Rs"] represented by the arguments.
-Duplicate arguments representing the same @nber["R" "R"] do no harm.
-If no argument is given, the @nbr[G-identity] is returned.}
+Forms the smallest group containing all @nber["R" "Rs"] represented by the arguments.@(lb)
+Duplicate arguments representing the same @nber["R" "R"] do no harm.@(lb)
+If no argument is given, the @nbr[G-identity] is returned.}@(lb)
+By definition a group, say @bold{X}, recursively includes
+the composition of every pair of its elements,
+the composition of every element with itself included, id est:
+@nb{∀x,y∈@bold{X}: xy∈@bold{X}}.
+
 Examples:
 
 @(example/n (G))
@@ -1115,10 +1119,6 @@ Examples:
 @(example/n (G '(0 1) '(1 2)))
 
 @(example/n (G '(0 1) '(0 1 2)))
-
-By definition a group, say @bold{X}, includes the composition of every pair of its elements,
-the composition of every element with itself included, id est:
-@nb{∀x,y@(∈)@bold{X}: xy@(∈)@bold{X}}. For example:
 
 @interaction[
 (require racket "R.rkt")
@@ -1187,7 +1187,7 @@ The left column and top row are @nbrl[P-sort "sorted"] and start with the
 @nbrl[P-identity "identity"].
 The columns are aligned.}
 
-@note{For every group @bold{X} with identity e we have: @nb{∀x@(∈)@bold{X}: ex = x = xe}.
+@note{For every group @bold{X} with identity e we have: @nb{∀x∈@bold{X}: ex = x = xe}.
 Hence with the identity as the first label for both columns and rows,
 the first row and first column of the table proper are the same as the labels.
 Therefore we can omit the labels.} Example:
@@ -1502,7 +1502,7 @@ If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
 Two elements a and b of a group @bold{X} are conjugates of each other if and only if:
-@nb{∃c@(∈)@bold{X}: ac = cb}.
+@nb{∃c∈@bold{X}: ac = cb}.
 This is an equivalence relation, which defines conjugation classes in @bold{X}.
 Two elements belong to the same class if and only if they are conjugates of each other.
 All elements of a conjugation class of a finite group
@@ -1552,7 +1552,7 @@ Returns a list of all conjugation classes of @nbr[g]. Example:
 
 @defproc[(G-invariant-subg? (g0 G?) (g1 G?)) boolean?]{
 @nbr[g0] is an invariant subgroup of @nbr[g1] if it is a subgroup of @nbr[g1] and
-@nb{∀p@(∈)@nbr[g1]: {pq: q@(∈)@nbr[g0]} = {qp: q@(∈)@nbr[g0]}}.
+@nb{∀p∈@nbr[g1]: {pq: q∈@nbr[g0]} = {qp: q∈@nbr[g0]}}.
 The two sets (indicated by curly braces) are called `cosets'.
 
 @note{
@@ -1588,9 +1588,9 @@ Procedure @nbr[G-isomorphism] returns one only plus its inverse.
 
 @note{@elemtag["iso"]{Two groups @bold{X} and @bold{Y} are isomorphic to each other
 if and only if there is a bijection @nb{ξ: @bold{X} ↔ @bold{Y}} such that:
-@nb{∀p,q@(∈)@bold{X}: ξ(pq) = ξ(p)ξ(q).}
+@nb{∀p,q∈@bold{X}: ξ(pq) = ξ(p)ξ(q).}
 Because ξ is a bijection, we also have:@(↑ (hspace 1))
-@nb{∀a,b@(∈)@bold{Y}: ξ@(expt-1)(ab) = ξ@(expt-1)(a)ξ@(expt-1)(b).}
+@nb{∀a,b∈@bold{Y}: ξ@(expt-1)(ab) = ξ@(expt-1)(a)ξ@(expt-1)(b).}
 Isomorphism is an
 @nbhl["https://en.wikipedia.org/wiki/Equivalence_relation" "equivalence relation."]}}} Examples:
 
@@ -2089,7 +2089,8 @@ symmetrically equivalent minimal bases have the same size.
 This is not true for all groups. For example,
 group @tt{rotations-only} has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
-one collection of 12 bases and four collections of 24 bases.}
+one collection of 12 bases and four collections of 24 bases.
+A simple modification of part of the above example can do the computation.}
 
 @subsection{The quaternion group}
 
@@ -2235,8 +2236,8 @@ Therefore every element of a group @bold{X}
 can be associated with one or two permutations of set @bold{X}:
 
 @inset{
-∀x@(∈)@bold{X}: (y@(∈)@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
-∀x@(∈)@bold{X}: (y@(∈)@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
+∀x∈@bold{X}: (y∈@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
+∀x∈@bold{X}: (y∈@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
 
 If the group is abelean, the @nber["rearrangement" "rearrangements"]
 in the rows are the same as those in the columns.

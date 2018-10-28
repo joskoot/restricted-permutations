@@ -97,7 +97,9 @@
     (exact-nonnegative-integer? offset))
    (G-symmetric-help (range offset (+ n offset))))
   (else
-   (error 'G-symmetric "incorrect arguments ~s ~s" n offset))))
+   (if (eq? offset no-offset)
+    (error 'G-symmetric "incorrect argument ~s" n)
+    (error 'G-symmetric "incorrect arguments ~s ~s" n offset)))))
 
 (define (G-symmetric-help lst)
  (cond
