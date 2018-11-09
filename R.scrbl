@@ -13,7 +13,6 @@
   scribble/core
   scribble/eval
   racket
-  (only-in scribble/html-properties attributes)
   "R.rkt"
   (for-label
    "R.rkt"
@@ -171,10 +170,11 @@ For @bold{R} it is not,
 although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group, @bold{R} has an isomorphic subgroup.
-In fact exactly one such subgroup
+
+@note{In fact exactly one such subgroup
 consisting of the @nber["id"]{identity of @bold{R}} only
 if the order @nb{(= cardinality)} of the group is 1 and
-an infinite number of them if the order is greater than 1.
+an infinite number of them if the order is greater than 1.}
 
 @note{@elemtag["group"]{The present document is not an introduction to group theory.
 It refers to mathematical concepts without their definitions and
@@ -187,7 +187,7 @@ For a simple introduction see chapters 1 and 2 of
   "Hamermesh-GroupTheoryAndItsApplicationToPhysicalProblems.pdf")
  "Group Theory by Morton Hamermesh"].
 If you know nothing about quantum mechanics,
-you'd better skip its introduction.
+you'd better skip the introduction.
 Quantum mechanics play no role in chapter 1, nor in chapter 2.
 As an alternative see @nbhl["finite-groups.doc" "finite-groups.doc"].}}
 
@@ -226,11 +226,11 @@ Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
 where m runs from 0 up to and including n.}
 
 @note{Do not confuse the @nbrl[P-order]{order of an element}
-with the @nbrl[G-order]{order of a group}.
+with the @nbrl[G-order]{order of a group}.@(lb)
 The latter is the cardinality of a group,
-but it usually is called its @italic{order}.
-The word `order' also is used for the consecution of elements in a list or vector.
-In most cases it is clear with which meaning the word is used.
+but it usually is called its @italic{order}.@(lb)
+The word `order' also is used for the consecution of elements in a list or vector.@(lb)
+In most cases it is clear with which meaning the word is used.@(lb)
 Where there is danger of confusion, a phrase is used that avoids confusion.}
 
 An R is an abstract mathematical concept.@(lb)
@@ -273,9 +273,7 @@ The
 represent their abstract mathematical counter@(-?)parts exactly.
 Although the representation is not complete because of memory and performance limits,
 no distinction is needed between abstract integer numbers and
-the exact integer numbers of Racket by which they are represented.
-Therefore, in this docu@(-?)ment no distinction is made between
-@nbrl[exact-integer? "exact integer numbers of Racket"] and abstract integer numbers nor between
+the exact integer numbers of Racket by which they are represented nor between
 @nbrl[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
 
@@ -343,7 +341,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   Therefore a non-normalized single C of at least two elements can be normalized
   by shifting it circularly until its least element is in front.}
  @item{
-  A list of two or more disjunct non-empty normalized single Cs,
+  A list of two or more disjunct non-empty normalized single Cs
   sorted in increasing order of their lengths
   and among normalized single Cs of the same length
   in increasing order of the first element.
@@ -352,7 +350,8 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-For every C and every @nber["R" "R"] there is exactly one normalized C
+For every @nber["R" "R"] there is a multitude of representing Cs
+but exactly one representing normalized C only
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.
 
@@ -492,15 +491,16 @@ module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, a P returns the same @seclink["N"]{natural number}
 as the represented @nber["R" "R"], of course.
-Every @nber["R" "R"] can be represented by a P (ignoring memory limits).
+For every @nber["R" "R"] there is a representing P (ignoring memory limits).
 Although Ps are procedures,
 those representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
 In fact Ps are
 @nbsl["structures" #:doc '(lib "scribblings/reference/reference.scrbl") "structures"]
 with @nbrl[prop:procedure "procedure property"].
-A P contains its @nbsl["H" "H-representation"].
+A P is idenified by its @nbsl["H" "H-representation"].
 It memorizes its normalized @nbsl["C" "C-representation"],
+its @nber["parity"]{parity},
 its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
@@ -516,12 +516,17 @@ where @elem[#:style 'tt @italic{c}] is the normalized @nbsl["C" "C-representatio
 
 which can be regarded as @constr-style too.
 
-@defproc[(P (p (or/c P? C?)) ...) P?]{
-Returns the P representing the @nber["R" "R"] formed by @nber["composition" "composition"] of the
+@deftogether[
+ (@defproc[(P (p (or/c P? C?)) ...) P?]
+  @defproc[(P-compose (p (or/c P? C?)) ...) P?])]{
+@nbr[P-compose] is a synonym of @nbr[P] in the sense of @nbr[free-identifier=?].
+Both return the P representing the @nber["R" "R"]
+formed by @nber["composition" "composition"] of the
 @nber["R" "Rs"] represented by the arguments.
 If no argument is given, the @nbr[P-identity] is returned.
 If only one argument is given, the returned P represents the same
 @nber["R" "R"] as the argument.
+
 Examples:}
 
 @interaction[
@@ -582,9 +587,7 @@ q
  (define z (P a b c))
  (and (eq? x y) (eq? x z) (eq? y z)))]
 
-@defproc[(P-compose (p (or/c P? C?)) ...) P?]{
-Same as procedure @nbr[P] in the sense of @nbr[free-identifier=?].@(lb)
-Some checks on the properties of @nber["composition" "composition"]s of Ps:}
+Some checks on the properties of @nber["composition" "composition"]s of Ps:
 
 @interaction[
 (require racket "R.rkt")
@@ -677,7 +680,7 @@ Examples:
 (P->C (P '(0 1)))
 (P->C (P '(1 0)))
 (P->C (P '(0 1) '(0 1)))
-(P->C (P '(0 1) '(2 3 4)))
+(P->C (P '(2 3 4) '(0 1)))
 (P->C (P '(0 1 2 3)))
 (P->C (P '(1 2 3 0)))
 (P->C (P '(2 3 0 1)))
@@ -933,7 +936,7 @@ has as many odd as even elements.
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
 Defines a sorting order among @nber["R" "Rs"].
 The first sorting key is the @nbrl[P-even? "parity"].
-Even @nber["R" "Rs"] come before odd @nber["R" "Rs"].
+Even @nber["R" "Rs"] precede odd @nber["R" "Rs"].
 The second sorting key is the order of the @nber["R" "Rs"].
 The third sorting key is @nbr[(p k)] for the least argument @nbr[k]
 for which the two @nber["R" "Rs"] represented by the two arguments return different values.
@@ -1096,11 +1099,12 @@ For every finite group there is an isomorphic G (ignoring memory limits).
 @defproc[(G (p (or/c P? C?)) ...) G?]{
 Forms the smallest group containing all @nber["R" "Rs"] represented by the arguments.@(lb)
 Duplicate arguments representing the same @nber["R" "R"] do no harm.@(lb)
-If no argument is given, the @nbr[G-identity] is returned.}@(lb)
-By definition a group, say @bold{X}, recursively includes
+If no argument is given, the @nbr[G-identity] is returned.}
+
+@note{By definition a group, say @bold{X}, recursively includes
 the composition of every pair of its elements,
 the composition of every element with itself included, id est:
-@nb{∀x,y∈@bold{X}: xy∈@bold{X}}.
+@nb{∀x,y∈@bold{X}: xy∈@bold{X}}.}
 
 Examples:
 
@@ -1312,8 +1316,9 @@ g-base
 (code:comment "Nevertheless it is a correct base:")
 (eq? (apply G (set->list g-base)) g)]
 
-The symmetric groups S@↓{0}, S@↓{1} and S@↓{2} have minimal bases of one element.
-Every symmetric group S@↓{m} with m≥3
+The @nbrl[G-symmetric "symmetric"] groups S@↓{0}, S@↓{1} and S@↓{2}
+each have one minimal base of one element.
+Every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements, @nb{for example:}
 
 @interaction[
@@ -1321,52 +1326,53 @@ has at least one minimal base of two elements, @nb{for example:}
 (G-base (G-symmetric 0))
 (G-base (G-symmetric 1))
 (G-base (G-symmetric 2))
-(for/and ((m (in-range 3 8)))
- (define m-1 (sub1 m))
- (define Sm (G-symmetric m))
- (and (= (set-count (G-base Sm)) 2)
-  (code:comment "As an example take base {(0 m-1), (0 .. m-1)},")
-  (code:comment "where (0 .. m-1) is the cycle of natural numbers")
-  (code:comment "from 0 up to but not including m-1.")
-  (eq? Sm (G (list 0 m-1) (range 0 m-1)))))]
+(for/and ((n (in-range 3 8)))
+ (define n-1 (sub1 n))
+ (define Sn (G-symmetric n))
+ (and (= (set-count (G-base Sn)) 2)
+  (code:comment "As an example take base {(0 n-1), (0 .. n-2)},")
+  (code:comment "where (0 n-1) is a transposition and")
+  (code:comment "where (0 .. n-2) is the cycle of the natural")
+  (code:comment "numbers from 0 up to and including n-2.")
+  (eq? Sn (G (list 0 n-1) (range 0 n-1)))))]
 
 The following example is not a proof,
-but shows how to prove that every symmetric group S@↓{m} with m≥3
+but shows how to prove that every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements.
 
 @interaction[
 (require racket "R.rkt")
 (code:comment "")
 (unless
- (for/and ((m (in-range 2 8)))
-  (printf " ~nm = ~s~n ~n" m)
-  (define m-1 (sub1 m))
+ (for/and ((n (in-range 2 8)))
+  (printf " ~nn = ~s~n ~n" n)
+  (define n-1 (sub1 n))
   (code:comment "transposition and cycle form a minimal base.")
-  (define transposition (P (list 0 m-1)))
-  (define cycle (P (range 0 m-1)))
+  (define transposition (P (list 0 n-1)))
+  (define cycle (P (range 0 n-1)))
   (code:comment "From cycle we van construct inversed-cycle.")
-  (define inversed-cycle (P-expt cycle (- m 2)))
-  (code:comment "base-of-transposition is not minimal for m>3.")
+  (define inversed-cycle (P-expt cycle (- n 2)))
+  (code:comment "base-of-transposition is not minimal for n>3.")
   (define base-of-transpositions
    (for/fold
     ((transposition transposition)
      (base-of-transpositions (list transposition))
-     #:result base-of-transpositions) ((k (in-range m-1)))
+     #:result base-of-transpositions) ((k (in-range n-1)))
     (printf "~s~n" transposition)
     (define new-transposition
      (P cycle transposition inversed-cycle))
     (values new-transposition
      (cons new-transposition base-of-transpositions))))
-  (eq? (apply G base-of-transpositions) (G-symmetric m)))
+  (eq? (apply G base-of-transpositions) (G-symmetric n)))
  (error 'example "failed!"))]
 
-For m>2 the set of @nbrl[C-transpositions]{transpositions}
-@nb{{(k m@(minus)1): 0 ≤ k < m@(minus)1}}
-forms a base for @nb{@nbr[(G-symmetric m)] ∼ S@↓{m}},
-because every element of S@↓{m} can be written as a composition of transpositions and
+For n>2 the set of @nbrl[C-transpositions]{transpositions}
+@nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
+forms a base for @nb{@nbr[(G-symmetric n)] ∼ S@↓{n}},
+because every element of S@↓{n} can be written as a composition of transpositions and
 every relevant transposition not in the set can be
 obtained by composing three transpositions of the set as follows:
-@nb{((i m@(minus)1) (j m@(minus)1) (i m@(minus)1)) = (i j)},
+@nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
 where @nb{i≠j}.
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
@@ -1452,7 +1458,7 @@ but not the @nbr[G-identity] and not the same as @nbr[g1].
 can be confused by a @nbsl["Cleanup" "cleanup"].}
 
 @defproc[(G-even-subg (g G?)) G?]{
-Returns the G representing the subgroup of all even Ps of @nbr[g].
+Returns the G representing the invariant subgroup of all even Ps of @nbr[g].
 Same as:
 @inset{@nbr[(list->G (filter P-even? (G->list g)))]}
 Example:}
@@ -1494,7 +1500,8 @@ Returns a list of all subgroups of @nbr[g]. Example:
   (newline))
  (printf line))]
 
-@note{The order of a subgroup always is a divisor of the order of the group it is part of.}}
+@note{The order of a subgroup of a finite group always is a divisor
+of the order of the latter.}}
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
 Returns the conjugation class of @nbr[g] containing @nbr[p].@(lb)
@@ -1509,11 +1516,12 @@ All elements of a conjugation class of a finite group
 have the same order and the same normalized cycle structure.
 The number of elements in a conjugation class of a finite group
 always is a divisor of the order of the group.
-If element x commutes with all elements of @bold{X} its class consists of x only.
-Reversely, if the class of element x consists of x only, it commutes with all elements.
-In an abelean group every class consists of one element.
-The identity always is lonesome in its class;
-it is a conjugate of itself only.}}
+A conjugation class of element @nb{x∈@bold{X}} consists of x only if and only if
+it commutes with all elements of @bold{X}.
+This implies that the identity always is lonesome in its class;
+it is a conjugate of itself only.
+It also implies that the class of every element of an abelean group
+consists of this element only.}}
 
 Examples:
 
@@ -1546,7 +1554,7 @@ Returns a list of all conjugation classes of @nbr[g]. Example:
 (code:comment "#<seteq: (P '((0 2) (1 3)))>")
 (print-G-classes (G '(1 3) '(0 1 2 3)))
 (print-G-classes (G '((0 1 2 3) (4 5 6 7)) '((0 4 2 6) (1 7 3 5))))
-(code:comment "For a symmetric group two elements belong to the same conjugation")
+(code:comment "In a symmetric group two elements belong to the same conjugation")
 (code:comment "class if and only if they have the same normalized cycle structure:")
 (print-G-classes (G-symmetric 4))]}
 
@@ -1576,11 +1584,11 @@ The subset of all even elements of a G is an invariant subgroup. For example:
 (G-invariant-subg? h g)]
 
 @defproc[(G-isomorphism (g0 G?) (g1 G?) (name0 symbol? 'no-name) (name1 symbol? 'no-name))
-         (or/c #f (cons/c (-> P? P?) (-> P? P?)))]{
+         (or/c #f (list/c (-> P? P?) (-> P? P?)))]{
 If @nbr[g0] and @nbr[g1] are isomorphic,
-a pair of two isomorphisms is returned,
+a list of two isomorphisms is returned,
 the car mapping the @nbsl["P" "P"]s of @nbr[g0] onto those of @nbr[g1]
-the cdr being the inverse of the car.
+the cadr being the inverse of the car.
 The two iso@(-?)mor@(-?)phisms are procedures and @nbr[name0] and @nbr[name1] their names.
 If @nbr[g0] and @nbr[g1] are not iso@(-?)mor@(-?)phic, @nbr[#f] is returned.
 Two iso@(-?)mor@(-?)phic Gs may have more than one iso@(-?)mor@(-?)phism.
@@ -1616,9 +1624,8 @@ Isomorphism is an
 (require racket "R.rkt")
 (define g0 (G '(0 1) '(2 3)))
 (define g1 (G '((1 2) (7 8)) '((5 6) (3 4))))
-(define iso+inverse (G-isomorphism g0 g1 'p0->p1 'p1->p0))
-(define p0->p1 (car iso+inverse))
-(define p1->p0 (cdr iso+inverse))
+(define-values (p0->p1 p1->p0)
+ (apply values (G-isomorphism g0 g1 'p0->p1 'p1->p0)))
 (eq? (list->G (map p0->p1 (G->list g0))) g1)
 (eq? (list->G (map p1->p0 (G->list g1))) g0)
 (code:comment "If the two Gs are not isomorphic, G-isomorphism returns #f.")
@@ -1639,13 +1646,13 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
   '012->123
   '123->012))
 (define p (P '(0 1 2)))
-((car iso) p)
+(code:line ((car iso) p) (code:comment #,(green "ok")))
+(code:line ((cadr iso) p) (code:comment #,(red "error")))
 (code:line (R-clear-hashes) (code:comment #,(red "Caution")))
-((car iso) p)
-(code:comment "but because of the cleanup the following raises an exception:")
-((car iso) (P '(0 1 2)))
+(code:comment "Because of the cleanup the following raises an exception:")
+(code:line ((car iso) (P '(0 1 2))) (code:comment #,(red "error")))
 (code:comment "because after cleanup:")
-(code:line (equal? p (P '(0 1 2))) (code:comment #,(list (red "alas"))))
+(code:line (equal? p (P '(0 1 2))) (code:comment #,(red "alas")))
 (code:comment "although:")
 (code:line (P-equal? p (P '(0 1 2))) (code:comment #,(green "ok")))]
 
@@ -1670,7 +1677,7 @@ Examples:}
 @section[#:tag "Cleanup"]{Cleanup}
 
 @defproc*[
- (((R-hashes-count) N?)
+ (((R-hashes-count) N+?)
   ((R-clear-hashes) void?))]{
 Modules @nbhl["P.rkt" "P.rkt"] and @nbhl["G.rkt" "G.rkt"]
 use hashes in order to avoid repeated identical computations
@@ -1931,14 +1938,15 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (proper-subset? rotation-classes conj-classes)]
 
 The group of all cube-symmetries has ten conjugation classes,
-of which five are the conjugation classes of the subgroup @tt{rotations-only}.
+of which five are the conjugation classes of subgroup @tt{rotations-only}.
 Elements belonging to the same class have the same normalized cycle structure,
-but distinct classes can have the same normalized cycle structure
-(in a @nbrl[G-symmetric]{symmetric} group
-every class has distinct normalized cycle structure).
-In particular the inversion-symmetry, rotations about 180° and reflections in the planes
+but distinct classes can have the same normalized cycle structure.
+@note{In a @nbrl[G-symmetric]{symmetric} group
+every class has distinct normalized cycle structure.}
+In group @tt{cube-symmetries} the inversion-symmetry,
+rotations about 180° and reflections in the planes
 containing the center of the cube and parallel to a side of the cube
-have the same normalized cycle structure, but are distinct conjugation classes.
+have the same normalized cycle structure, but form distinct conjugation classes.
 The @nbr[P-identity] always is the only member of its class.
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
 which does not occur in subgroup @element['tt "rotations-only"], is lonesome too.
@@ -1975,7 +1983,7 @@ There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube
 They can be grouped in 9 collections of symmetrically equivalent minimal bases,
 each collection containing 24 bases.
 Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
-if the group contains a symmetry x such that @nb{{x@↑{@(minus)1}ax ...} = {b ...}}.
+if the group contains a symmetry x such that @nb{{ax ...} = {xb ...}}.
 (This is an equality of two sets:
 the order in which the elements appear between the curly brackets is irrelevant.)
 It is not difficult to prove that this indeed is an equivalence relation of the minimal bases.
@@ -2090,7 +2098,8 @@ This is not true for all groups. For example,
 group @tt{rotations-only} has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
 one collection of 12 bases and four collections of 24 bases.
-A simple modification of part of the above example can do the computation.}
+A simple modification of part of the above example can do the computation.
+Try it!}
 
 @subsection{The quaternion group}
 
@@ -2115,8 +2124,8 @@ In the quaternion group, make the following identifications:
   (define | i| (P '((0 1 2 3) (4 5 6 7))))
   (define | j| (P '((0 4 2 6) (1 7 3 5))))
   (define | k| (P | i| | j|))
-  (define | 1| P-identity)
   (define |-1| (P | i| | i|))
+  (define | 1| (P |-1| |-1|))
   (define |-i| (P |-1| | i|))
   (define |-j| (P |-1| | j|))
   (define |-k| (P |-1| | k|))
@@ -2132,16 +2141,32 @@ In the quaternion group, make the following identifications:
     (unless (eq? p |-k|) (newline))))
   (define table (get-output-string op))
 
-@nested{@nested[#:style 'inset]{
-Identify @hspace[1]@element['tt "1"]  with @element['tt (~s | 1|)].@(lb)
-Identify           @element['tt "-1"] with @element['tt (~s |-1|)].@(lb)
-Identify @hspace[1]@element['tt "i"]  with @element['tt (~s | i|)].@(lb)
-Identify @hspace[1]@element['tt "j"]  with @element['tt (~s | j|)].@(lb)
-Identify @hspace[1]@element['tt "k"]  with @element['tt "(P i j)"].}
+  (define-syntax-rule (ttt x) (element 'tt x))
 
-We have @element['tt "ii=jj=kk=-1"], @element['tt "ij=k"], @element['tt "jk=i"]
-and @element['tt "ki=j"].
-With these @nber["composition" "composition"]s
+@nested{@nested[#:style 'inset]{@tabular[
+#:sep (hspace 1)
+#:column-properties '(left right left left right left)
+#:row-properties '(bottom bottom bottom bottom bottom)
+#:cell-properties
+ '((() () () () () ())
+   (() () () () () ())
+   (() () () () () ())
+   (() () () () () ())
+   (bottom bottom bottom bottom bottom bottom))
+(list
+ (list "Identify" @tt["i"]  "with" (hspace 1)               (hspace 1) (ttt (~s | i|)))
+ (list "Identify" @tt["j"]  "with" (hspace 1)               (hspace 1) (ttt (~s | j|)))
+ (list "Identify" @tt["k"]  "with" (tt "ij")                "="        (ttt (~s (P | i| | j|))))
+ (list "Identify" @tt["-1"] "with" (tt "ii")                "="        (ttt (~s (P | i| | i|))))
+ (list "Identify" @tt["1"]  "with" @tt{(-1)@↑{@smaller{2}}} "=" (list  (hspace 1)
+                                                                       (ttt (~s (P |-1| |-1|))))))]}
+         
+We have
+@tt["ii=jj=kk=-1"],
+@tt["ij=k"],
+@tt["jk=i"]
+and @tt["ki=j"].@(lb)
+With these @nber["composition" "compositions"]
 all others are defined as shown in the following table:
 
 @nested[#:style 'inset (verbatim table)]})
@@ -2154,7 +2179,7 @@ Because @element['tt "1"] is the identity, it commutes with all elements.
 which is verified by the fact that the second row of the table
 equals the second column.
 Notice that
-@nb[@element['tt "ji=(-ii)ji=-i(ij)i=-iki=-ij=-k"]].
+@nb[@element['tt "ji=(-ii)ji=-i(ij)i=-iki=-ij=-k"]].@(lb)
 Likewise @nb[@element['tt "kj=-i"]] and @nb[@element['tt "ik=-j"]].
 The @nbrl[G-classes "conjugation classes"] are:
 

@@ -188,7 +188,7 @@
    (define (make-iso hash)
     (define hsah
      (make-immutable-hasheq (hash-map hash (λ (k v) (cons v k)))))
-    (cons
+    (list
      (procedure-rename
       (λ (p)
        (hash-ref hash p
@@ -196,7 +196,7 @@
      (procedure-rename
       (λ (p)
        (hash-ref hsah p
-         (λ () (error name1 "arg ~s not in domain of this isomorphism" p)))) name1)))
+        (λ () (error name1 "arg ~s not in domain of this isomorphism" p)))) name1)))
    (cond
     ((not (equal? keys0 keys1)) #f)
     (else
