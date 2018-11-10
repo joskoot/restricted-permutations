@@ -196,7 +196,7 @@ let r@↓{pq} be the restriction of the composition pq.
 We have @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.
 See the @nber["P-example"]{example}
-in the description of procedure @nbr[P-compose].
+in the description of procedure @nbr[P].
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
@@ -350,8 +350,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-For every @nber["R" "R"] there is a multitude of representing Cs
-but exactly one representing normalized C only
+Every @nber["R" "R"] is represented by exactly one normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.
 
@@ -498,7 +497,7 @@ those representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?
 In fact Ps are
 @nbsl["structures" #:doc '(lib "scribblings/reference/reference.scrbl") "structures"]
 with @nbrl[prop:procedure "procedure property"].
-A P is idenified by its @nbsl["H" "H-representation"].
+A P is identified by its @nbsl["H" "H-representation"].
 It memorizes its normalized @nbsl["C" "C-representation"],
 its @nber["parity"]{parity},
 its @nbrl[P-order #:style #f]{order},
@@ -516,11 +515,8 @@ where @elem[#:style 'tt @italic{c}] is the normalized @nbsl["C" "C-representatio
 
 which can be regarded as @constr-style too.
 
-@deftogether[
- (@defproc[(P (p (or/c P? C?)) ...) P?]
-  @defproc[(P-compose (p (or/c P? C?)) ...) P?])]{
-@nbr[P-compose] is a synonym of @nbr[P] in the sense of @nbr[free-identifier=?].
-Both return the P representing the @nber["R" "R"]
+@defproc[(P (p (or/c P? C?)) ...) P?]{
+Returns the P representing the @nber["R" "R"]
 formed by @nber["composition" "composition"] of the
 @nber["R" "Rs"] represented by the arguments.
 If no argument is given, the @nbr[P-identity] is returned.
@@ -594,8 +590,8 @@ Some checks on the properties of @nber["composition" "composition"]s of Ps:
 (define S4 (G-symmetric 4))
 (define in-S4 (in-G S4))
 (for*/and ((p in-S4) (q in-S4))
- (define pq (P-compose p q))
- (define qp (P-compose q p))
+ (define pq (P p q))
+ (define qp (P q p))
  (define max-restriction
   (max
    (P-restriction p)
@@ -615,8 +611,8 @@ The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
 (require racket "R.rkt")
 (define p (P '((1 2) (3 4))))
 (define q (P '( 1 2   3 4)))
-(define pq (P-compose p q))
-(define qp (P-compose q p))
+(define pq (P p q))
+(define qp (P q p))
 (define-syntax-rule (print-restrictions x ...)
  (begin
   (printf "~s = ~s with restriction ~s~n" 'x x (P-restriction x))
@@ -625,7 +621,7 @@ The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made
-with procedure @nbr[P-compose] or @nbr[P],
+with procedure @nbr[P],
 but the result is not a P. Example:
 
 @interaction[
@@ -633,8 +629,8 @@ but the result is not a P. Example:
 (define a (P '(0 1 2)))
 (define b (P '(1 2 3)))
 (define c (P '(2 3 4)))
-(define  abc (  compose a b c))
-(define Pabc (P-compose a b c))
+(define  abc (compose a b c))
+(define Pabc (P       a b c))
 (for/and ((k (in-range 10))) (= (abc k) (Pabc k)))
 (code:comment "But:")
 (code:line (P? abc) (code:comment #,(red "alas:")))
@@ -644,16 +640,16 @@ but the result is not a P. Example:
  "Racket's procedure " (nbr compose) " does not return " (nbr equal?) " results"))
 (code:comment #,(list "when called with two or more " (nbr eq?) " arguments."))
 (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))
-(code:comment #,(list "Procedures " (nbr P) " and " (nbr P-compose) " do, even " (nbr eq?) ","))
+(code:comment #,(list "Procedure " (nbr P) " does, even " (nbr eq?) ","))
 (code:comment #,(list "when the result represents the same " (elemref "R" "R")))
 (code:comment #,(list "(and no disturbing " (nbsl "Cleanup" "cleanup") " interferes)"))
 (eq? (code:comment #,(green "ok"))
- (P-compose (P-compose a b) c)
- (P-compose a (P-compose b c)))
+ (P (P a b) c)
+ (P a (P b c)))
 (code:comment "also:")
 (eq? (code:comment #,(green "ok"))
- (P-inverse (P-compose a b c))
- (P-compose (P-inverse c) (P-inverse b) (P-inverse a)))]
+ (P-inverse (P a b c))
+ (P (P-inverse c) (P-inverse b) (P-inverse a)))]
 
 @note{Notice that (abc)@↑{@(minus)1} = c@↑{@(minus)1}b@↑{@(minus)1}a@↑{@(minus)1},
 writing x@↑{@(minus)1} for the inverse of x.}
@@ -719,10 +715,10 @@ Examples:
   a
   b
   c
-  (P-compose a b)
-  (P-compose a c)
-  (P-compose b c)
-  (P-compose a b c)))]
+  (P a b)
+  (P a c)
+  (P b c)
+  (P a b c)))]
 
 @defproc*[(((P-period (p P?)) (and/c (vectorof P?) immutable?))
            ((P-period (c C?)) (and/c (vectorof P?) immutable?)))]{
@@ -860,8 +856,8 @@ This applies to @nber["R" @bold{R}] too:
 (define in-S4 (in-G (G-symmetric 4)))
 (for*/and ((a in-S4) (b in-S4))
  (eq?
-  (P-inverse (P-compose a b))
-  (P-compose (P-inverse b) (P-inverse a))))]
+  (P-inverse (P a b))
+  (P (P-inverse b) (P-inverse a))))]
 
 @defproc[(P-even? (p (or/c P? C?))) boolean?]{
 Returns @nbr[#t] if the @nber["R" "R"] represented by the argument is even.@(lb)
@@ -1957,13 +1953,13 @@ Even subgroup @element['tt "rotations-only"] has threefold symmetries.
 In particular, @nber["composition" "composition"] of two rotations about 90° with intersecting
 axes orthogonal to each other produces a rotation about 120°, for example:
 
-@example/n[(P-compose (P '((0 1 2 3) (4 5 6 7))) (P '((0 3 7 4) (1 2 6 5))))]
+@example/n[(P (P '((0 1 2 3) (4 5 6 7))) (P '((0 3 7 4) (1 2 6 5))))]
 
 This is a rotation about 120° around axis 0-6.
 Composition of this rotation with the inversion-symmetry,
 which is not part of subgroup @element['tt "rotations-only"], produces:
 
-@example/n[(P-compose (P '((1 3 4) (2 7 5))) (P '((0 6) (1 7) (2 4) (3 5))))]
+@example/n[(P (P '((1 3 4) (2 7 5))) (P '((0 6) (1 7) (2 4) (3 5))))]
 
 This is a symmetry of order 6.
 Let's check that the inversion-symmetry commutes with all symmetries of the cube:
@@ -2082,8 +2078,8 @@ The following example shows the details:
 (code:comment "followed by 180° rotation around the vertical axis,")
 (code:comment "both containing the center of the cube.")
 (code:comment "")
-(eq? (P-compose '((0 2) (1 3) (4 6) (5 7))  (code:comment "rotation 180°")
-                '((0 4) (1 5) (2 6) (3 7))) (code:comment "reflection")
+(eq? (P '((0 2) (1 3) (4 6) (5 7))  (code:comment "rotation 180°")
+        '((0 4) (1 5) (2 6) (3 7))) (code:comment "reflection")
      inversion-symmetry)
 (code:comment "")
 (define rotation-reflections

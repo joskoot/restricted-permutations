@@ -7,7 +7,6 @@
 
 (require "H.rkt" "C.rkt" "N.rkt" (only-in racket/generator generator yield))
 (provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
-(provide (rename-out (P P-compose)))
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
 (provide P-fixed-point? P->H H->P P-commute?)
 
