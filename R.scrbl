@@ -214,15 +214,15 @@ These form a finite subgroup of @bold{R} isomorphic to the
 the identity is the only element of order 1 and
 inverses of each other have the same order.}
 
-@note{There is no R with restriction 1.
+@note{There is no R with restriction 1.@(lb)
 If p is a permutation of @bold{N}
-with @nb{∀k∈@bold{N}: k≥1 @⇒ p(k) = k}, then @nb{p(0) = 0}
-and hence @nb{∀k∈@bold{N}: p(k) = k},
-which means that p is the identity with restriction 0.@(lb)
+with @nb{∀k∈@bold{N}: k≥1 @⇒ p(k) = k},@(lb)
+then @nb{p(0) = 0} and hence @nb{∀k∈@bold{N}: p(k) = k},@(lb)
+which means that p is the identity with @nb{restriction 0.}@(lb)
 Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
-We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.
+We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
 This implies: @nb{a(1) = 0.}
-Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},
+Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
 where m runs from 0 up to and including n.}
 
 @note{Do not confuse the @nbrl[P-order]{order of an element}
@@ -333,7 +333,8 @@ A C represents an @nber["R" "R"] and is one of the following:
 (list
  @item{
   The empty list. It is the one and only normalized C representing the
-  @nber["id"]{identity of @bold{R}}.}
+  @nber["id"]{identity of @bold{R}}.@(lb)
+  The normalized form of a single C of one element is the empty list.}
  @item{
   A single C of at least two elements and the first element being the least one.
   @nb{A circular} shift of a single C represents the same @nber["R" "R"]
@@ -350,7 +351,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   The @nbrl[P-order "order"] of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-Every @nber["R" "R"] is represented by exactly one normalized C
+For every C and every @nber["R" "R"] there is exactly one normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.
 
@@ -394,7 +395,7 @@ Examples:}
 (C-normalize '((0 1 2) (2 3 0)))]
 
 The Cs shown below represent the same @nber["R" "R"].
-Therefore @nbr[C-normalize] produces the same normalized C for them
+Therefore procedure @nbr[C-normalize] returns the same normalized C for them
 @nb{(in the sense of @nbr[equal?])}:
 
 @example-table[
@@ -410,7 +411,7 @@ Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
 
 @defproc[(C-transpositions (c C?)) C?]{
 Returns a list of normalized transpositions
-representing the same @nber["R" "R"] as the argument.
+representing the same @nber["R" "R"] as the argument.@(lb)
 A transposition is a single C of two elements.
 For every C there is a list of transpositions
 representing the same @nber["R" "R"].
@@ -449,7 +450,7 @@ Examples:
 (C-transpositions '((0 1 2) (3 4 5)))
 (C-transpositions '((3 4 5) (0 1 2)))]
 
-The Cs shown in the example below represent the same @nber["R" "R"].
+The Cs shown in the example below represent the same @nber["R" "R"].@(lb)
 Therefore procedure @nbr[C-transpositions] produces the same list of transpositions for them
 (in the sense of @nbr[equal?]):
 
@@ -473,7 +474,7 @@ Example:
  (define transpositions (C-transpositions c))
  (and
   (eq? (P-even? p) (P-even? (P-inverse p)))
-  (C-identity? (list transpositions (reverse transpositions)))))]
+  (C-identity? (list (reverse transpositions) transpositions))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
 Returns the normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -554,9 +555,9 @@ are the same in the sense of @nbr[eq?]
 (define a (P '(3 4) '(4 5)))
 (define b (P '(4 5 3)))
 (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
-(code:line (for/and ((k (in-range 10))) (= (a k) (b k))) (code:comment #,(green "ok")))
+(code:line (for/and ((k (in-range 10))) (= (a k) (b k))) (code:comment #,(green "true")))
 (code:comment "Hence:")
-(code:line (eq? a b) (code:comment #,(green "ok")))]
+(code:line (eq? a b) (code:comment #,(green "true")))]
 
 Another example:
 
@@ -566,7 +567,7 @@ Another example:
 (define q (P-inverse p))
 q
 (code:comment "Because p and q are the inverses of each other, we have:")
-(and
+(and (code:comment #,(green "true"))
  (eq? (P-inverse p) q)
  (eq? (P-inverse q) p)
  (eq? (P p q) P-identity)
@@ -577,7 +578,7 @@ q
 @interaction[
 (require racket "R.rkt")
 (define in-S4 (in-G (G-symmetric 4)))
-(for*/and ((a in-S4) (b in-S4) (c in-S4))
+(for*/and ((a in-S4) (b in-S4) (c in-S4)) (code:comment #,(green "true"))
  (define x (P a (P b c)))
  (define y (P (P a b) c))
  (define z (P a b c))
@@ -589,7 +590,7 @@ Some checks on the properties of @nber["composition" "composition"]s of Ps:
 (require racket "R.rkt")
 (define S4 (G-symmetric 4))
 (define in-S4 (in-G S4))
-(for*/and ((p in-S4) (q in-S4))
+(for*/and ((p in-S4) (q in-S4)) (code:comment #,(green "true"))
  (define pq (P p q))
  (define qp (P q p))
  (define max-restriction
@@ -635,7 +636,7 @@ but the result is not a P. Example:
 (code:comment "But:")
 (code:line (P? abc) (code:comment #,(red "alas:")))
 (code:comment "whereas:")
-(code:line (P? Pabc) (code:comment #,(green "ok:")))
+(code:line (P? Pabc) (code:comment #,(green "true:")))
 (code:comment #,(list
  "Racket's procedure " (nbr compose) " does not return " (nbr equal?) " results"))
 (code:comment #,(list "when called with two or more " (nbr eq?) " arguments."))
@@ -643,11 +644,11 @@ but the result is not a P. Example:
 (code:comment #,(list "Procedure " (nbr P) " does, even " (nbr eq?) ","))
 (code:comment #,(list "when the result represents the same " (elemref "R" "R")))
 (code:comment #,(list "(and no disturbing " (nbsl "Cleanup" "cleanup") " interferes)"))
-(eq? (code:comment #,(green "ok"))
+(eq? (code:comment #,(green "true"))
  (P (P a b) c)
  (P a (P b c)))
 (code:comment "also:")
-(eq? (code:comment #,(green "ok"))
+(eq? (code:comment #,(green "true"))
  (P-inverse (P a b c))
  (P (P-inverse c) (P-inverse b) (P-inverse a)))]
 
@@ -687,7 +688,7 @@ Examples:
 For every argument @nbr[p] there is a least
 @nbsl["N"]{positive natural number} @nbr[k]
 such that @nb{@nbr[(P-expt p k)] → @nbr[P-identity].}
-@nbr[k] is called the order of the @nber["R" "R"] represented by @nbr[p].
+@nbr[k] is called the order of the @nber["R" "R"] represented by @nbr[p].@(lb)
 The @nber["id" "identity"] of @nber["R"]{@bold{R}}
 is the only @nber["R" "R"] of order 1.
 For every other @nber["R" "R"] the order is greater than 1.}
@@ -745,7 +746,7 @@ Examples:
 
 @interaction[
 (require "R.rkt")
-(for/and ((p (in-G (G-symmetric 4))))
+(for/and ((p (in-G (G-symmetric 4)))) (code:comment #,(green "true"))
  (define period (P-period p))
  (define order (P-order p))
  (and
@@ -835,7 +836,7 @@ Examples:
 (require racket "R.rkt")
 (define S4 (G-symmetric 4))
 (G-order S4)
-(for/and ((p (in-G S4)))
+(for/and ((p (in-G S4))) (code:comment #,(green "true"))
  (define q (P-inverse p))
  (and
   (P-identity? (P q p))
@@ -854,7 +855,7 @@ This applies to @nber["R" @bold{R}] too:
 @interaction[
 (require racket "R.rkt")
 (define in-S4 (in-G (G-symmetric 4)))
-(for*/and ((a in-S4) (b in-S4))
+(for*/and ((a in-S4) (b in-S4)) (code:comment #,(green "true"))
  (eq?
   (P-inverse (P a b))
   (P (P-inverse b) (P-inverse a))))]
@@ -977,7 +978,7 @@ It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
 (code:line (define in-rearrangements in-permutations) (code:comment #,(list
   "See " (elemref "note" "note below")".")))
 (code:comment "")
-(for/and ((rearranged-S3-list1 (in-rearrangements S3-list1)))
+(for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
  (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
  (and
   (code:comment #,comment1)
@@ -1025,7 +1026,7 @@ Examples:
 @interaction[
 (require racket "R.rkt")
 (define in-S4 (in-G (G-symmetric 4)))
-(for/and ((p in-S4))
+(for/and ((p in-S4)) (code:comment #,(green "true"))
  (define nfps (P-non-fixed-points p))
  (and
   (equal? (sort (map p nfps) <) nfps)
@@ -1174,7 +1175,7 @@ Examples:
 (require racket "R.rkt")
 (define c '(0 1))
 (define g (G c))
-(code:line (G-member? c g)  (code:comment #,(green "ok")))
+(code:line (G-member? c g)  (code:comment #,(green "true")))
 (code:line (R-clear-hashes) (code:comment #,(red "caution")))
 (code:line (G-member? c g)  (code:comment #,(red "alas")))]
 
@@ -1339,7 +1340,7 @@ has at least one minimal base of two elements.
 @interaction[
 (require racket "R.rkt")
 (code:comment "")
-(unless
+(if
  (for/and ((n (in-range 2 8)))
   (printf " ~nn = ~s~n ~n" n)
   (define n-1 (sub1 n))
@@ -1360,6 +1361,7 @@ has at least one minimal base of two elements.
     (values new-transposition
      (cons new-transposition base-of-transpositions))))
   (eq? (apply G base-of-transpositions) (G-symmetric n)))
+ (printf "~n ~netc.~n")
  (error 'example "failed!"))]
 
 For n>2 the set of @nbrl[C-transpositions]{transpositions}
@@ -1369,7 +1371,7 @@ because every element of S@↓{n} can be written as a composition of transpositi
 every relevant transposition not in the set can be
 obtained by composing three transpositions of the set as follows:
 @nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
-where @nb{i≠j}.
+where @nb{i≠j}, @nb{i≠n@(minus)1} and @nb{j≠n@(minus)1}.
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
@@ -1438,11 +1440,11 @@ This theorem holds for all finite groups, Gs included.}}
 (require racket "R.rkt")
 (define g0a (G '(0 1)))
 (define g1  (G '(0 1) '(0 2)))
-(code:line (G-subg?  g0a g1)  (code:comment #,(green "ok")))
+(code:line (G-subg?  g0a g1)  (code:comment #,(green "true")))
 (code:line (R-clear-hashes)   (code:comment #,(red "caution")))
-(code:line (G-subg?  g0a g1)  (code:comment #,(green "ok")))
+(code:line (G-subg?  g0a g1)  (code:comment #,(green "true")))
 (define g0b (G '(0 1)))
-(code:line (G-equal? g0a g0b) (code:comment #,(green "ok")))
+(code:line (G-equal? g0a g0b) (code:comment #,(green "true")))
 (code:line (  equal? g0a g0b) (code:comment #,(red "alas")))
 (code:line ( G-subg? g0b g1)  (code:comment #,(red "alas")))]
 
@@ -1642,7 +1644,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
   '012->123
   '123->012))
 (define p (P '(0 1 2)))
-(code:line ((car iso) p) (code:comment #,(green "ok")))
+(code:line ((car iso) p) (code:comment #,(green "true")))
 (code:line ((cadr iso) p) (code:comment #,(red "error")))
 (code:line (R-clear-hashes) (code:comment #,(red "Caution")))
 (code:comment "Because of the cleanup the following raises an exception:")
@@ -1650,7 +1652,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 (code:comment "because after cleanup:")
 (code:line (equal? p (P '(0 1 2))) (code:comment #,(red "alas")))
 (code:comment "although:")
-(code:line (P-equal? p (P '(0 1 2))) (code:comment #,(green "ok")))]
+(code:line (P-equal? p (P '(0 1 2))) (code:comment #,(green "true")))]
 
 @defproc[(G->list (g G?)) (listof P?)]{
 Returns a sorted list of all elements of @nbr[g] using @nbr[P-sort].}
@@ -1710,8 +1712,8 @@ See section @nbsr["Distinct-instances"] too.}
 (R-clear-hashes)
 (code:line (equal? p (P '(0 1 2))) (code:comment #,(red "alas:")))
 (code:line (equal? g (G '(0 1 2) '(0 1))) (code:comment #,(red "alas:")))
-(code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "ok")))
-(code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "ok")))]
+(code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "true")))
+(code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "true")))]
 
 @section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["R.rkt" "R.rkt"]}
 Two distinct instances of module @nbhl["R.rkt" "R.rkt"]
@@ -1730,8 +1732,8 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 (define other-G-identity  (other-eval 'G-identity))
 (define other-P-identity? (other-eval 'P-identity?))
 (define other-G-identity? (other-eval 'G-identity?))
-(code:line (other-P-identity? other-P-identity) (code:comment #,(green "ok")))
-(code:line (other-G-identity? other-G-identity) (code:comment #,(green "ok")))
+(code:line (other-P-identity? other-P-identity) (code:comment #,(green "true")))
+(code:line (other-G-identity? other-G-identity) (code:comment #,(green "true")))
 (code:line (equal? P-identity other-P-identity) (code:comment #,(red "alas:")))
 (code:line (equal? G-identity other-G-identity) (code:comment #,(red "alas:")))
 (code:line (P-identity? other-P-identity) (code:comment #,(red "alas:")))
@@ -1863,7 +1865,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "Check that all classocs refer to distinct conjugation classes")
 (code:comment "and that all conjugation classes are present.")
 (code:comment "")
-(code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "must be ok")))
+(code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "true")))
 (code:comment "")
 (code:comment "The following table maps each conjugation class to its name.")
 (code:comment "")
@@ -1934,8 +1936,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (proper-subset? rotation-classes conj-classes)]
 
 The group of all cube-symmetries has ten conjugation classes,
-of which five are the conjugation classes of subgroup @tt{rotations-only}.
-Elements belonging to the same class have the same normalized cycle structure,
+of which five are the conjugation classes of the invariant subgroup @tt{rotations-only}.
+Elements of the same class have the same normalized cycle structure,
 but distinct classes can have the same normalized cycle structure.
 @note{In a @nbrl[G-symmetric]{symmetric} group
 every class has distinct normalized cycle structure.}
@@ -1953,7 +1955,7 @@ Even subgroup @element['tt "rotations-only"] has threefold symmetries.
 In particular, @nber["composition" "composition"] of two rotations about 90° with intersecting
 axes orthogonal to each other produces a rotation about 120°, for example:
 
-@example/n[(P (P '((0 1 2 3) (4 5 6 7))) (P '((0 3 7 4) (1 2 6 5))))]
+@example/n[(P '((0 1 2 3) (4 5 6 7)) '((0 3 7 4) (1 2 6 5)))]
 
 This is a rotation about 120° around axis 0-6.
 Composition of this rotation with the inversion-symmetry,
@@ -1982,7 +1984,6 @@ Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if the group contains a symmetry x such that @nb{{ax ...} = {xb ...}}.
 (This is an equality of two sets:
 the order in which the elements appear between the curly brackets is irrelevant.)
-It is not difficult to prove that this indeed is an equivalence relation of the minimal bases.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases of the group of
 @tt{cube-symmetries} is one less than the number of conjugation classes.
@@ -2153,8 +2154,8 @@ In the quaternion group, make the following identifications:
  (list "Identify" @tt["i"]  "with" (hspace 1)               (hspace 1) (ttt (~s | i|)))
  (list "Identify" @tt["j"]  "with" (hspace 1)               (hspace 1) (ttt (~s | j|)))
  (list "Identify" @tt["k"]  "with" (tt "ij")                "="        (ttt (~s (P | i| | j|))))
- (list "Identify" @tt["-1"] "with" (tt "ii")                "="        (ttt (~s (P | i| | i|))))
- (list "Identify" @tt["1"]  "with" @tt{(-1)@↑{@smaller{2}}} "=" (list  (hspace 1)
+ (list "Identify" @tt["-1"] "with" (tt "i"@↑{@smaller{2}})  "="        (ttt (~s (P | i| | i|))))
+ (list "Identify" @tt["1"]  "with" @tt{i@↑{@smaller{4}}}    "=" (list  (hspace 1)
                                                                        (ttt (~s (P |-1| |-1|))))))]}
          
 We have
@@ -2202,9 +2203,7 @@ We can verify this as follows:
   ((2)
    (define-values (p q) (apply values (set->list g-class)))
    (eq? (P |-1| p) q))
-  (else #f)))
-(code:comment "Notice that:")
-(code:line (let ((k (P i j))) (eq? (P i j k) |-1|)) (code:comment #,(green "ok")))]
+  (else #f)))]
 
 In the quaternion group the @nbrl[P-period "period"]
 of each element forms an @nbrl[G-invariant-subg? "invariant subgroup"]:
@@ -2348,14 +2347,12 @@ Let's check this:
 (code:comment "")
 (code:comment "Let's check that we have isomorphic groups here.")
 (code:comment "")
-(define (G-isomorphic? x y) (and (G-isomorphism x y) #t))
 (define row-group    (list->G rows))
 (define column-group (list->G columns))
 (and
- (G-isomorphic? C3v    row-group)
- (G-isomorphic? C3v column-group))
-(code:comment "This implies:")
-(G-isomorphic? row-group column-group)]
+ (G-isomorphic C3v    row-group)
+ (G-isomorphic C3v column-group)
+ #t)]
 
 @subsection[#:tag "C3h"]{Group C@↓{3h}}
 
