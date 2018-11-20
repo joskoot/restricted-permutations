@@ -7,7 +7,7 @@
 
 (require "H.rkt" "N.rkt")
 
-(provide H->C C->H C? C-normalized? C-normalize C-transpositions C-identity?)
+(provide H->C C->H C? C-normalized? C-normalize C-transpositions C-identity? C-even?)
 
 (define (C? x)
  (and (list? x)
@@ -78,5 +78,7 @@
    ((N? (car c)) (C-single-transpositions c))
    (else (apply append (map C-single-transpositions c)))))
  (C-transpositions (C-normalize c)))
+
+(define (C-even? c) (even? (length (C-transpositions c))))
 
 ;===================================================================================================

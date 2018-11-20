@@ -151,8 +151,8 @@ as a permutation of @bold{N} with the following restriction:
 
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
-`R' is shorthand for `restricted permutation'
-and `@bold{R}' for `the set of all Rs'.
+`R' is shorthand for `restricted permutation'.
+Define @bold{R} as the set of all Rs.@(lb)
 @elemtag["composition"]Define the composition:
 
 @inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
@@ -211,7 +211,7 @@ These form a finite subgroup of @bold{R} isomorphic to the
 @nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group} S@↓{n}.
 
 @note{In every group, not only in @bold{R},
-the identity is the only element of order 1 and
+the identity is the only element of order 1 and@(lb)
 inverses of each other have the same order.}
 
 @note{There is no R with restriction 1.@(lb)
@@ -272,7 +272,7 @@ The
 "exact integer numbers of Racket"]
 represent their abstract mathematical counter@(-?)parts exactly.
 Although the representation is not complete because of memory and performance limits,
-no distinction is needed between abstract integer numbers and
+no distinction will be needed between abstract integer numbers and
 the exact integer numbers of Racket by which they are represented nor between
 @nbrl[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
@@ -423,16 +423,6 @@ but always the same one (in the sense of @nbr[equal?])
 for Cs representing the same @nber["R" "R"]
 and with no more transpositions than necessary.
 
-@elemtag["parity"]@note{A C that can be written as a list of an even number of transpositions
-cannot be written as a list of an odd number of transpositions and vice versa.
-Hence every C, and consequently every @nber["R" "R"], has well defined @nbrl[P-even? "parity"].
-Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R" "R"].
-Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
-The @nber["id"]{identity of @bold{R}} has even parity.
-@nb{A finite group} containing at least one odd element has as many odd ones as even ones.
-The subset of all even elements of a finite group is an
-@nbrl[G-invariant-subg? "invariant subgroup"].}}
-
 Examples:
 
 @example-table[
@@ -460,7 +450,20 @@ Therefore procedure @nbr[C-transpositions] produces the same list of transpositi
 (C-transpositions '((1 2) (0 2)))
 (C-transpositions '(0 1 2))
 (C-transpositions '(1 2 0))
-(C-transpositions '(2 0 1))]
+(C-transpositions '(2 0 1))]}
+
+@defproc[(C-even? (c (C?))) boolean?]{
+Same as @nbr[(even? (length (C-transpositions c)))]}
+
+@note{A C that can be written as a list of an even number of transpositions
+cannot be written as a list of an odd number of transpositions and vice versa.
+Hence every C, and consequently every @nber["R" "R"], has well defined parity.
+Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R" "R"].
+Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
+The @nber["id"]{identity of @bold{R}} has even parity.
+@nb{A finite group} containing at least one odd element has as many odd ones as even ones.
+The subset of all even elements of a finite group is an
+@nbrl[G-invariant-subg? "invariant subgroup"].}
 
 Because every @nber["R" "R"] represented by a transposition equals its inverse,
 reversal of the list of transpositions always produces a C representing the inverse.
@@ -471,9 +474,10 @@ Example:
 (require racket "R.rkt")
 (for/and ((p (in-G (G-symmetric 4))))
  (define c (P->C p))
+ (define c-inverse (P->C (P-inverse p)))
  (define transpositions (C-transpositions c))
  (and
-  (eq? (P-even? p) (P-even? (P-inverse p)))
+  (eq? (C-even? c) (C-even? c-inverse))
   (C-identity? (list (reverse transpositions) transpositions))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
@@ -500,16 +504,16 @@ In fact Ps are
 with @nbrl[prop:procedure "procedure property"].
 A P is identified by its @nbsl["H" "H-representation"].
 It memorizes its normalized @nbsl["C" "C-representation"],
-its @nber["parity"]{parity},
+its @nbrl[P-even? #:style #f]{parity},
 its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
 A P is written, printed or displayed in @constr-style as:
 
-@inset{@nb{@elem[#:style 'tt]{(@nbr[P] @bold{@literal{'}}@italic{c})}}}
+@inset{@nbr[(P 'c)]}
 
-where @elem[#:style 'tt @italic{c}] is the normalized @nbsl["C" "C-representation"].
+where @tt{c} is the normalized @nbsl["C" "C-representation"].
 @(lb)An exception is made for the @nbr[P-identity], which is written as:
 
 @inset{@nbr[P-identity]}
@@ -863,7 +867,7 @@ This applies to @nber["R" @bold{R}] too:
 @defproc[(P-even? (p (or/c P? C?))) boolean?]{
 Returns @nbr[#t] if the @nber["R" "R"] represented by the argument is even.@(lb)
 Returns @nbr[#f] if the @nber["R" "R"] represented by the argument is odd.@(lb)
-See the @nber["parity"]{note} in the description of procedure @nbr[C-transpositions].}
+See procedure @nbr[C-even?].}
 Examples:
 
 @example-table[
@@ -932,7 +936,7 @@ has as many odd as even elements.
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
 Defines a sorting order among @nber["R" "Rs"].
-The first sorting key is the @nbrl[P-even? "parity"].
+The first sorting key is the @nbrl[P-even? #:style #f "parity"].
 Even @nber["R" "Rs"] precede odd @nber["R" "Rs"].
 The second sorting key is the order of the @nber["R" "Rs"].
 The third sorting key is @nbr[(p k)] for the least argument @nbr[k]
