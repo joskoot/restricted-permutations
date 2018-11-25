@@ -152,7 +152,8 @@ as a permutation of @bold{N} with the following restriction:
 Let's call the least natural number m for which the restriction holds
 @italic{the} restriction of p.
 `R' is shorthand for `restricted permutation'.
-Define @bold{R} as the set of all Rs.@(lb)
+Define @bold{R} as the set of all Rs.
+
 @elemtag["composition"]Define the composition:
 
 @inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
@@ -193,7 +194,7 @@ As an alternative see @nbhl["finite-groups.doc" "finite-groups.doc"].}}
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of the composition pq.
-We have @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
+We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.
 See the @nber["P-example"]{example}
 in the description of procedure @nbr[P].
@@ -297,7 +298,7 @@ particularly in their specifications of data types:
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}.@(lb)
-It has nothing to do with the set of real numbers.}
+In this document it has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
 
@@ -586,9 +587,9 @@ q
  (define x (P a (P b c)))
  (define y (P (P a b) c))
  (define z (P a b c))
- (and (eq? x y) (eq? x z) (eq? y z)))]
+ (and (eq? x z) (eq? y z) (eq? x y)))]
 
-Some checks on the properties of @nber["composition" "composition"]s of Ps:
+Some checks on the properties of @nber["composition" "compositions"] of @nber["R" "Rs"]:
 
 @interaction[
 (require racket "R.rkt")
@@ -731,7 +732,7 @@ If the argument is a @nbsl["C" "C"] it is first converted to a @nbsl["P" "P"].
 @nbr[(P-period c)] is treated as @nbr[(P-period (P c))].
 Procedure @nbr[P-period] returns an immutable vector of length @nbr[(P-order p)] containing the
 powers of @nbr[p].
-Element with index @nbr[i] of the vector contains @nbr[(P-expt p i)].
+Element with index @nbr[i] contains @nbr[(P-expt p i)].
 The period and the order of @nbr[p] are memorized in @nbr[p].
 They are not computed again when already available.
 The first element @nb{(index 0)} of the vector always is @nbr[P-identity].
@@ -1033,10 +1034,8 @@ Examples:
 (for/and ((p in-S4)) (code:comment #,(green "true"))
  (define nfps (P-non-fixed-points p))
  (and
-  (equal? (sort (map p nfps) <) nfps)
-  (equal?
-   (P-non-fixed-points p)
-   (P-non-fixed-points (P-inverse p)))))]
+  (equal? nfps (sort (map p nfps) <))
+  (equal? nfps (P-non-fixed-points (P-inverse p)))))]
 
 @defproc[(P-fixed-point? (p P?) (k N?)) boolean?]{
 Same as @nbr[(= (p k) k)].
@@ -1317,7 +1316,7 @@ g-base
 (code:comment "Nevertheless it is a correct base:")
 (eq? (apply G (set->list g-base)) g)]
 
-The @nbrl[G-symmetric "symmetric"] groups S@↓{0}, S@↓{1} and S@↓{2}
+The @nbrl[G-symmetric "symmetric groups"] S@↓{0}, S@↓{1} and S@↓{2}
 each have one minimal base of one element.
 Every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements, @nb{for example:}
@@ -1368,14 +1367,14 @@ has at least one minimal base of two elements.
  (printf "~n ~netc.~n")
  (error 'example "failed!"))]
 
-For n>2 the set of @nbrl[C-transpositions]{transpositions}
+@note{For n>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
 forms a base for @nb{@nbr[(G-symmetric n)] ∼ S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
 every relevant transposition not in the set can be
 obtained by composing three transpositions of the set as follows:
 @nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
-where @nb{i≠j}, @nb{i≠n@(minus)1} and @nb{j≠n@(minus)1}.
+where @nb{i≠j}, @nb{i≠n@(minus)1} and @nb{j≠n@(minus)1}.}
 
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
 Returns a list of all minimal bases of @nbr[g].} Examples:
@@ -2354,8 +2353,8 @@ Let's check this:
 (define row-group    (list->G rows))
 (define column-group (list->G columns))
 (and
- (G-isomorphic C3v    row-group)
- (G-isomorphic C3v column-group)
+ (G-isomorphism C3v    row-group)
+ (G-isomorphism C3v column-group)
  #t)]
 
 @subsection[#:tag "C3h"]{Group C@↓{3h}}
