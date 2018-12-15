@@ -230,8 +230,11 @@
   (for ((q in-g)) (fprintf port "~a" (pad (P p q))))
   (newline port)))
 
+(define-syntax-rule (for/immutable-vector x body ...)
+ (vector->immutable-vector (for/vector x body ...)))
+
 (define (G-table g)
  (define in-g (in-G g))
- (for/list ((p (in-G g))) (for/list ((q in-g)) (P p q))))
+ (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;===================================================================================================

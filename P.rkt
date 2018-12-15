@@ -153,12 +153,12 @@
   (hash-ref! P<?-hash (cons p0 p1)
    (λ () ; use P-equal? in stead of eq?, because after cleanup
     (and (not (P-equal? p0 p1)) ; using eq? may cause an infite loop after cleanup.
-     (let ((even0 (P-even? p0)) (even1 (P-even? p1)))
-      (or (and even0 (not even1))
-       (and (eqv? even0 even1)
-        (let ((order0 (P-order p0)) (order1 (P-order p1)))
-         (or (< order0 order1)
-          (and (= order0 order1)
+     (let ((order0 (P-order p0)) (order1 (P-order p1)))
+      (or (< order0 order1)
+       (and (= order0 order1)
+        (let ((even0 (P-even? p0)) (even1 (P-even? p1)))
+         (or (and even0 (not even1))
+          (and (eqv? even0 even1)
            (let loop ((k 0)) ; This loop always terminates because p0 and p1 are not P-equal.
             (let ((e0 (p0 k)) (e1 (p1 k)))
              (or (< e0 e1) (and (= e0 e1) (loop (add1 k)))))))))))))))))
