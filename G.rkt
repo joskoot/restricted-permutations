@@ -10,7 +10,8 @@
 
 (provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
- G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups)
+ G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups
+ (rename-out (G-abelean? G-commutative?)))
 
 (define (G-print g port mode)
  (fprintf port "~s"

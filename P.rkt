@@ -78,6 +78,8 @@
     (let ((h (apply H-compose (map P-H-field ps))))
      (hash-ref! P-hash h (λ () (P-constr h))))))))
 
+(define (P-commute? p q) (eq? (P p q) (P q p)))
+
 (define (P/C->P p/c) (if (P? p/c) (hash-ref! P-hash (P-H-field p/c) (λ () p/c)) (C->P p/c)))
 
 (define (P-expt p/c k)
@@ -199,7 +201,5 @@
  (let ((a (length c0)) (b (length c1)))
   (or (< a b)
    (and (= a b) (< (car c0) (car c1))))))
-
-(define (P-commute? p q) (eq? (P p q) (P q p)))
 
 ;===================================================================================================

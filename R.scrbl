@@ -348,7 +348,10 @@ A C represents an @nber["R" "R"] and is one of the following:
   The order of the represented @nber["R" "R"]
   is the least common multiple of the lengths of the single Cs.})]
 
-For every C and every @nber["R" "R"] there is exactly one normalized C
+For every @nber["R" "R"] there is a representing C (ignoring memory limits).
+For every C there is exactly one normalized C (in the sense of @nbr[equal?])
+representing the same @nber["R" "R"].
+Hence for every @nber["R" "R"] there is exactly one representing normalized C
 (in the sense of @nbr[equal?] and ignoring memory limits).
 See procedure @nbr[C-normalize] for examples.
 
@@ -356,7 +359,7 @@ See procedure @nbr[C-normalize] for examples.
  (@defproc[#:kind "predicate" (C?            (x any/c)) boolean?]
   @defproc[#:kind "predicate" (C-normalized? (x any/c)) boolean?])]{
 Predicate @nbr[C?] does not discriminate between normalized and non-normalized Cs.@(lb)
-Predicate @nbr[C-normalized?] returns @nbr[#t] for @nber["normalized-C" "normalized Cs"] only.}
+Predicate @nbr[C-normalized?] returns @nbr[#t] for normalized Cs only.}
 
 @defproc[(C-normalize (c C?)) C-normalized?]{
 Returns the normalized form of its argument.
@@ -420,9 +423,9 @@ Examples:
 (C-transpositions '((0 1 2) (3 4 5)))
 (C-transpositions '((3 4 5) (0 1 2)))]
 
-The Cs shown in the example below represent the same @nber["R" "R"].@(lb)
+The Cs shown in the example below represent the same @nber["R" "R"].
 Therefore procedure @nbr[C-transpositions] produces the same list of transpositions for them
-(in the sense of @nbr[equal?]):
+@nb{(in the sense of @nbr[equal?]):}
 
 @example-table[
 (C-transpositions '((0 1) (1 2)))
@@ -649,6 +652,9 @@ even after @nbsl["Cleanup" "cleanup"].}
 Same as @nbr[(eq? x P-identity)].
 The predicate remains valid after @nbsl["Cleanup" "cleanup"].}
 
+@defproc[(P-commute? (p (or/c P? C?)) (q (or/c P? C?))) boolean?]{
+Same as @nbr[(eq? (P p q) (P q p))].}
+
 @defproc[(P->C (p P?)) C-normalized?]{
 Returns the normalized @nbsl["C" "C-representation"] of @nbr[p].}
 Examples:
@@ -699,8 +705,8 @@ Examples:
   (P b c)
   (P a b c)))]
 
-@defproc*[(((P-period (p P?)) (and/c (vectorof P?) immutable?))
-           ((P-period (c C?)) (and/c (vectorof P?) immutable?)))]{
+@defproc*[(((P-period (p P?)) (vector-immutableof P?))
+           ((P-period (c C?)) (vector-immutableof P?)))]{
 If the argument is a @nbsl["C" "C"] it is first converted to a @nbsl["P" "P"].
 @nbr[(P-period c)] is treated as @nbr[(P-period (P c))].
 Procedure @nbr[P-period] returns an immutable vector of length @nbr[(P-order p)] containing the
@@ -713,7 +719,7 @@ If @nbr[p] is not the @nbr[P-identity],
 the second element @nb{(index 1)} is @nbr[p] itself.
 The last element always is the @nbrl[P-inverse "inverse"] of @nbr[p].
 In fact, when omitting the first element (index 0, id est, the @nbr[P-identity]),
-the elements taken from right to left are the inverses of the elements
+the elements taken from right to left are the @nbrl[P-inverse "inverses"] of the elements
 taken from left to right.}
 Examples:
 
@@ -1178,7 +1184,7 @@ Therefore we can omit the labels.} Example:
 See section @nbsl["C3v"]{Group C@↓{3v}}
 for a more elaborated discussion of this group.
 
-@defproc[(G-table (g G?)) (listof (listof P?))]{
+@defproc[(G-table (g G?)) (vector-immutableof (vector-immutableof P?))]{
 Returns the @nber["composition" "composition"]
 table of @nbr[g] as an immutable vector of immutable vectors of @nbsl["P" "Ps"].
 The first row, id est @nbr[(vector-ref (G-table g) 0)]
@@ -1189,7 +1195,18 @@ are @nbrl[P-sort "sorted"].}
 @interaction0[
 (require racket "R.rkt")
 (define C3v (G '(0 1) '(0 1 2)))
-(G-table C3v)]
+(define table (G-table C3v))
+table
+(code:comment "Check that every element pq of the table is the composition of")
+(code:comment "element p in the left column and element q in the top row.")
+(define indices (in-range (G-order C3v)))
+(code:comment "(table-ref i j) = element in row i and column j.")
+(define (table-ref i j) (vector-ref (vector-ref table i) j))
+(for*/and ((i indices) (j indices))
+ (define p  (table-ref i 0))
+ (define q  (table-ref 0 j))
+ (define pq (table-ref i j))
+ (eq? pq (P p q)))]
 
 @defproc*[(((G-symmetric (n N?) (offset N? 0)) G?)
            ((G-symmetric (lst (listof N?))) G?))]{
@@ -1243,25 +1260,12 @@ g3
  (eq? (G-symmetric '(0 1 2)) (G-symmetric 3))
  (eq? (G-symmetric '(4 5 6)) (G-symmetric 3 4)))]
 
-The order of a group being a factorial does not imply that the group is symmetric.@(lb)
-For example:
-
-@interaction[
-(require "R.rkt" racket)
-(define S3 (G-symmetric 3))
-(define C3h (G '(0 1 2) '(3 4)))
-(code:line (G-order C3h) (code:comment "The order is a factorial:"))
-(code:comment "But:")
-(code:line (G-isomorphism C3h S3) (code:comment #,(red "false")))
-(code:comment "On the other hand we do have:")
-(define C3v (G '(0 1 2) '(0 1)))
-(code:line (and (G-isomorphism C3v S3) #t) (code:comment #,(green "true")))
-(code:comment "In this special case we even have:")
-(code:line (eq? C3v S3) (code:comment #,(green "true")))]
-
-@defproc[#:kind "predicate" (G-abelean? (g G?)) boolean?]{
+@deftogether[(@defproc[#:kind "predicate" (G-abelean? (g G?)) boolean?]
+              @defproc[#:kind "predicate" (G-commutative? (g G?)) boolean?])]{
 By definition, a group is abelean if and only if all its elements commute with each other.
 Sufficient is that all elements of a @nbrl[G-base]{base} commute with each other.
+@nbr[G-commutative?] is a synonym of @nbr[G-abelean?]
+in the sense of @nbr[free-identifier=?].
 Examples:}
 
 @color-example[green (G-abelean? (G '(0 1 2) '(3 4)))]
@@ -1412,7 +1416,7 @@ the order of an element of a finite group always is a divisor of the order of th
 This theorem holds for all finite groups, Gs included.}}
 
 @defproc[(G-subg? (g0 G?) (g1 G?)) boolean?]{
-@nbr[#t] if @nbr[g0] is a subset of @nbr[g1].
+@nbr[#t] if @nbr[g0] is a subgroup of @nbr[g1].@(lb)
 @red{Warning}: procedure @nbr[G-subg?] can be confused by a @nbsl["Cleanup" "cleanup"]:}
 
 @interaction[
@@ -1916,7 +1920,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (proper-subset? rotation-classes conj-classes)]
 
 The group of all cube-symmetries has ten conjugation classes,
-of which five are the conjugation classes of the invariant subgroup @tt{rotations-only}.
+of which five coincide with the conjugation classes of the invariant subgroup @tt{rotations-only}.
 Elements of the same class have the same normalized cycle structure,
 but distinct classes can have the same normalized cycle structure.
 @note{In a @nbrl[G-symmetric]{symmetric} group
@@ -1955,9 +1959,7 @@ Let's check that the inversion-symmetry commutes with all symmetries of the cube
 (define cube-symmetries (G rotation reflection))
 (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
 (for/and ((p (in-G cube-symmetries)))
- (eq?
-  (P inversion-symmetry p)
-  (P p inversion-symmetry)))]
+ (P-commute? inversion-symmetry p))]
 
 There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube.
 They can be grouped in 9 collections of symmetrically equivalent minimal bases,
@@ -1965,7 +1967,7 @@ each collection containing 24 bases.
 @note{Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if the group contains @nb{a symmetry} x such that @nb{{ax ...} = {xb ...}}.
 This is an equality of two sets:
-@nb{the order} in which @nb{the elements} appear between the curly brackets is irrelevant.}
+@nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.}
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases of the group of
 @tt{cube-symmetries} is one less than the number of conjugation classes.
@@ -2242,13 +2244,16 @@ We can verify this as follows:
    (eq? (P |-1| p) q))
   (else #f)))]
 
-In the quaternion group every subgroup is invariant.
+The quaternion group is Hamiltonian, id est,@(lb)
+it is not @nbrl[G-abelean? "Abelean"] but nevertheless every subgroup is
+@nbrl[G-invariant-subg? "invariant"].
 
 @interaction[
 (require racket "R.rkt")
 (define i (P '((0 1 2 3) (4 5 6 7))))
 (define j (P '((0 4 2 6) (1 7 3 5))))
 (define Q (G i j))
+(not (G-abelean? Q))
 (for/and ((subg (in-list (G-subgroups Q))))
   (G-invariant-subg? subg Q))]
 
@@ -2274,11 +2279,11 @@ The represented symmetries are:
 @inset{@Tabular[
 (("label" (nbsl "C" "C") "symmetry")
  ("0"     @nbr[()]       "the identity")
- ("1"     @nbr[(0 1 2)]  "rotation about 120°")
- ("2"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction")
- ("3"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
- ("4"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
- ("5"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1"))
+ ("1"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
+ ("2"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
+ ("3"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1")
+ ("4"     @nbr[(0 1 2)]  "rotation about 120°")
+ ("5"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction"))
 #:row-properties '((bottom-border top-border) () () () () () bottom-border)
 #:sep (hspace 2)]}
 
