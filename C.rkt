@@ -59,7 +59,7 @@
     (for/fold ((h H-identity) (k (car c)) #:result (hash-set h k first))
               ((current (in-list (cdr c))))
      (values (hash-set h k current) current)))))
- (unless (C? c) (raise-argument-error 'C->V "C?" c))
+ (unless (C? c) (raise-argument-error 'C->H "C?" c))
  (cond
   ((null? c) H-identity)
   ((N? (car c)) (C-single->H c))

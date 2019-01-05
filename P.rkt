@@ -173,30 +173,6 @@
 (define (P-non-fixed-points p) (sort (hash-keys (P-H-field p)) <))
 (define (P-fixed-point? p k) (= (p k) k))
 
-(require (only-in racket/generator in-generator)) 
-
-(define (V->C v)
- (let ((n (vector-length v)))
-  (if (zero? n) '()
-   (let cycle-loop ((k 0) (c '()) (done (set)))
-     (cond
-      ((= k n)
-       (cond
-        ((null? c) '())
-        ((> (length c) 1) (sort c single-C<?))
-        (else (car c))))
-      ((set-member? done k) (cycle-loop (add1 k) c done))
-      (else
-       (define first (vector-ref v k))
-       (if (= first k) (cycle-loop (add1 k) c done)
-        (let single-cycle-loop ((next (vector-ref v first)) (reversed-single-C (list first k)))
-         (if (= next k)
-          (cycle-loop
-           (add1 k)
-           (cons (reverse reversed-single-C) c)
-           (set-union (apply set reversed-single-C) done))
-          (single-cycle-loop (vector-ref v next) (cons next reversed-single-C)))))))))))
-
 (define  (single-C<? c0 c1)
  (let ((a (length c0)) (b (length c1)))
   (or (< a b)
