@@ -504,11 +504,6 @@ A P is written, printed or displayed in @constr-style as:
 @inset{@nbr[(P '#,(tt "c"))]}
 
 where @tt{c} is the normalized @nbsl["C" "C-representation"].
-An exception is made for the @nbr[P-identity], which is written as:
-
-@inset{@nbr[P-identity]}
-
-This can be regarded as @constr-style too.
 
 @defproc[(P (p (or/c P? C?)) ...) P?]{
 Returns the P representing the @nber["R" "R"]
@@ -1069,14 +1064,7 @@ written, displayed or printed in @constr-style as:
 
 @inset{@nbr[(G p ...)]}
 
-showing in @nbrl[P-sort]{sorted} order all @nbsl["P" "Ps"] representing the elements of the G.
-An exception is made for the @nbr[G-identity], which consists of the @nber["id" "identity"] only and
-is written as:
-
-@inset{@nbr[G-identity]}
-
-This can be regarded as @constr-style too.
-
+showing in @nbrl[P-sort]{sorted} order all @nbsl["P" "Ps"] representing the elements of the G.@(lb)
 Gs produced by the procedures of this section and representing the same subgroup of
 @nber["R" (bold "R")] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after a @nbsl["Cleanup" "cleanup"].

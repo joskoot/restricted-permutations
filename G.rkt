@@ -13,10 +13,7 @@
  G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups
  (rename-out (G-Abelean? G-commutative?)))
 
-(define (G-print g port mode)
- (fprintf port "~s"
-  (if (= (set-count (G-set g)) 1) 'G-identity
-   (cons 'G (G->list g)))))
+(define (G-print g port mode) (fprintf port "~s" (cons 'G (G->list g))))
 
 (struct G (set)
  #:constructor-name make-G

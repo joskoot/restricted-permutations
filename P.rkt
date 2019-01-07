@@ -21,10 +21,7 @@
 (define P-compose-hash (make-hash))
 (define P<?-hash (make-hash))
 
-(define (P-write p port mode)
- (let ((c (P->C p)))
-  (if (null? c) (write 'P-identity port)
-   (fprintf port "(P '~s)" c))))
+(define (P-write p port mode) (fprintf port "(P '~s)" (P->C p)))
 
 (define (P-clear-hashes)
  (hash-clear! P-hash)
