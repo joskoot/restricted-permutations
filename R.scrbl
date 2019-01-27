@@ -162,7 +162,7 @@ Let's call the smallest natural number m for which the restriction holds
 
 @inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
 
-as usual for functions p and q with compatible range of q and domain of p:
+as usual for functions p and q with compatible co-domain of q and domain of p:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
 
@@ -191,10 +191,10 @@ For a simple introduction see chapter 1 of
   "GroupTheoryAndItsApplicationToPhysicalProblems/"
   "Hamermesh-GroupTheoryAndItsApplicationToPhysicalProblems.pdf")
  "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
-If you know nothing about quantum mechanics,
-you'd better skip the introduction.
-Quantum mechanics play no role in chapter 1, neither do physics in more general sense.
-As an alternative see @nbhl["finite-groups.doc" "finite-groups.doc"].}}
+@nb{If you} know nothing about quantum mechanics,
+you'd better skip the intro@(-?)duction.
+Quantum mechanics plays no role in chapter 1.
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.doc" "finite-groups.doc"].}}
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
@@ -216,8 +216,7 @@ The latter is the cardinality of a group,
 but it usually is called its @italic{order}.
 The word `order' also is used for the consecution of elements in a list or vector.
 In most cases it is clear with which meaning the word is used.
-Where there may be danger of confusion,
-the present document shows a phrase that avoids confusion.}
+Where there may be danger of confusion, the present document avoids it.}
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of the composition pq.
@@ -317,15 +316,14 @@ A C represents an @nber["R" "R"] and is one of the following:
   that maps each element of the list onto the next one, the last element onto the first one
   and every @nbsl["N"]{natural number} that is not part of the single C, onto itself. 
   The empty list and every single C of one element represent the
-  @nber["id"]{identity} of @nber["R"]{@bold{R}}.
-  The @nber["id"]{identity} has order 1.
+  @nber["id"]{identity} of @nber["R"]{@bold{R}}, which has order 1.
   A non-empty single C of n elements represents an @nber["R" "R"] of order n.
   The @racket[reverse] of a single C represents the inverse
   of the @nber["R" "R"] represented by the original single C.}
  @item{
   A list of Cs.
   Represents the @nber["composition" "composition"] of the @nber["R" "Rs"] represented
-  by its elements. An element of a list of Cs can be a list of Cs, but
+  by its elements. @nb{An element} of a list of Cs can be a list of Cs, but
   superfluous pairs of parentheses can be ignored,
   because the @nber["composition" "composition"] is associative.
   The order in which the single Cs appear in the list can be relevant,
@@ -343,7 +341,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   A single C of at least two elements and the first element being the smallest one.
   @nb{A circular} shift of a single C represents the same @nber["R" "R"]
   as the original single C.
-  Therefore a non-normalized single C of at least two elements can be normalized
+  Therefore, @nb{a non-normalized} single C of at least two elements can be normalized
   by shifting it circularly until its smallest element is in front.}
  @item{
   A list of two or more disjunct non-empty normalized single Cs
@@ -358,7 +356,7 @@ A C represents an @nber["R" "R"] and is one of the following:
 Every @nber["R" "R"] can be represented by a C (in fact by many of them and ignoring memory limits).
 For every C there is exactly one (in the sense of @nbr[equal?])
 normalized C representing the same @nber["R" "R"].
-For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
+Hence, for every @nber["R" "R"] there is exactly one representing @nb{normalized C}
 (in the sense of @nbr[equal?] and ignoring memory limits).
 
 @deftogether[
@@ -443,8 +441,20 @@ Therefore procedure @nbr[C-transpositions] produces the same list of transpositi
 (C-transpositions '(1 2 0))
 (C-transpositions '(2 0 1))]}
 
+Because every @nber["R" "R"] represented by a transposition equals its inverse,
+reversal of the list of transpositions always produces a C representing the inverse.
+Example:
+
+@interaction[
+(require racket "R.rkt")
+(for/and ((p (in-G (G-symmetric 4))))
+ (define c (P->C p))
+ (define transpositions (C-transpositions c))
+ (C-identity? (list (reverse transpositions) transpositions)))]
+
 @defproc[(C-even? (c C?)) boolean?]{
-Same as @nbr[(even? (length (C-transpositions c)))]}
+Same as @nbr[(even? (length (C-transpositions c)))] but faster,
+because procedure @nbr[C-even?] does not form the intermediate list of transpositions.}
 
 @note{For every C there is a list of transpositions representing the same @nber["R" "R"].
 A C that can be written as a list of an even number of transpositions
@@ -457,9 +467,8 @@ The @nber["id"]{identity of @bold{R}} has even parity.
 The subset of all even elements of a finite group is an
 @nbrl[G-invariant-subg? "invariant subgroup"].}
 
-Because every @nber["R" "R"] represented by a transposition equals its inverse,
-reversal of the list of transpositions always produces a C representing the inverse.
-This implies that inverses of each other have the same parity.
+Inverses of each other have the same parity, because their @nber["composition" "composition"]
+is the @nber["id"]{identity} with even parity.
 Example:
 
 @interaction[
@@ -467,10 +476,9 @@ Example:
 (for/and ((p (in-G (G-symmetric 4))))
  (define c (P->C p))
  (define c-inverse (P->C (P-inverse p)))
- (define transpositions (C-transpositions c))
  (and
   (eq? (C-even? c) (C-even? c-inverse))
-  (C-identity? (list (reverse transpositions) transpositions))))]
+  (C-identity? (list c-inverse c))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
 Returns the normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -484,7 +492,7 @@ You probably never need this procedure.@(lb)@nb{@red{Advice: avoid it}.}}
 
 All objects described in this section are defined in
 module @nbhl["P.rkt" "P.rkt"].
-A P is a bijective function @nbr[(-> N? N?)] representing an @nber["R" "R"].
+A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, a P returns the same
 @seclink["N"]{natural number} as the represented @nber["R" "R"], of course.
 For every @nber["R" "R"] there is a representing P (ignoring memory limits).
@@ -493,7 +501,7 @@ In fact Ps are
 with @racketlink[prop:procedure "procedure property"].
 Nevertheless, Ps representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
-A P is identified by its @nbsl["H" "H-representation"].
+A P contains its @nbsl["H" "H-representation"].
 It memorizes its normalized @nbsl["C" "C-representation"],
 its @nbrl[P-even? #:style #f]{parity},
 its @nbrl[P-order #:style #f]{order},
@@ -542,7 +550,8 @@ are the same in the sense of @nbr[eq?]
 (define a (P '(3 4) '(4 5)))
 (define b (P '(4 5 3)))
 (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
-(code:line (for/and ((k (in-range 10))) (= (a k) (b k))) (code:comment #,(green "true")))
+(define m (max (P-restriction a) (P-restriction b)))
+(code:line (for/and ((k (in-range m))) (= (a k) (b k))) (code:comment #,(green "true")))
 (code:comment "Hence:")
 (code:line (eq? a b) (code:comment #,(green "true")))]
 
@@ -1070,10 +1079,10 @@ written, displayed or printed in @constr-style as:
 
 showing in @nbrl[P-sort]{sorted} order the written forms of all @nbsl["P" "Ps"]
 representing the elements of the G.
-Gs produced by the procedures of this section and representing the same subgroup of
+@nb{Gs produced} by the procedures of this section and representing the same subgroup of
 @nber["R" (bold "R")] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after a @nbsl["Cleanup" "cleanup"].
-For every finite group there is an isomorphic G (ignoring memory limits).
+@nb{For every} finite group there is an isomorphic G (ignoring memory limits).
 
 @defproc[(G (p (or/c P? C?)) ...) G?]{
 Returns the G representing the smallest group containing all @nber["R" "Rs"]
@@ -1366,7 +1375,7 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
  (define bases (G-bases g))
  (values
   (format "order: ~s" (G-order g))
-  (format "nr of bases ~s" (length bases))
+  (format "nr of minimal bases ~s" (length bases))
   bases))
 (code:comment " ")
 (G-order+bases (G))
@@ -1493,17 +1502,17 @@ If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 @note{
 Two elements a and b of a group @bold{X} are conjugates of each other if and only if:
 @nb{∃c∈@bold{X}: ac = cb}.
-This is an equivalence relation, which defines conjugation classes in @bold{X}.
+@nb{This is} an equivalence relation, which defines conjugation classes in @bold{X}.
 Two elements belong to the same class if and only if they are conjugates of each other.
 All elements of a conjugation class of a finite group
 have the same order and the same normalized cycle structure.
 The number of elements in a conjugation class of a finite group
 always is a divisor of the order of the group.
-A conjugation class of element @nb{x∈@bold{X}} consists of x only if and only if
+@nb{A conjugation} class of element @nb{x∈@bold{X}} consists of x only if and only if
 it commutes with all elements of @bold{X}.
 This implies that the identity always is lonesome in its class;
 it is a conjugate of itself only.
-It also implies that the class of every element of an Abelean group
+@nb{It also} implies that the class of every element of an Abelean group
 consists of this element only.}}
 
 Examples:
@@ -1742,11 +1751,12 @@ The H-representation is used internally for operations like application,
 @nber["composition" "composition"] and @nbrl[P-inverse "inversion"].
 @red{Advice}: avoid explicit use of the H-representation.
 Use the @nbsl["P" "P-representation"].
-It represents @nber["R" "Rs"] by means of functions
+It represents @nber["R" "Rs"] by functions
 and avoids multiple copies in memory of Hs, @nbsl["C" "Cs"] and
 @nbsl["P" "Ps"] representing the same @nber["R" "R"]:
 @nbsl["P" "Ps"] representing the same @nber["R" "R"]
 are the same in the sense of @nbr[eq?].
+@red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
  
 @note{@elemtag["inversion"]{
 In this document the word `@italic{inversion}' applies to bijections.
@@ -1861,8 +1871,6 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define (get-class-name conj-class)
  (hash-ref conj-name-table conj-class))
 (code:comment "")
-(define S8 (G-symmetric 8))
-(code:comment "")
 (code:comment "Procedure print-group-info prints some information about group g.")
 (code:comment "It does some tests too.")
 (code:comment "")
@@ -1876,12 +1884,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (printf
   "Order of each element divisor of the order of the group? ~s~n"
   (for/and ((p in-g)) (divisor? (P-order p) g-order)))
- (printf "Proper subgroup of S8? ~s~n"
-  (G-proper-subg? g S8))
- (printf "All elements even? ~s~n"
-  (for/and ((p in-g)) (P-even? p)))
- (printf "Size of each conjugation class divisor ")
- (printf "of order of the group? ~s~n"
+ (printf "Size of each conjugation class divisor of order of the group? ~s~n"
   (for/and ((conj-class (in-list conj-classes)))
    (divisor? (set-count conj-class) g-order)))
  (when print-classes?
@@ -2029,22 +2032,10 @@ The following example shows the details:
    (~s n #:min-width 3 #:align 'right)
    (map P->C (P-sort (set->list base))))))
 (code:comment "")
-(code:comment #,(list "Let's check the " @nber["seq" "above statement"]
-                      " about the size"))
-(code:comment "of each collection of symmetrically equivalent bases.")
+(code:comment "Using the rotations only we find the same collections of bases:")
 (code:comment "")
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
 (define rotations-only (G rotation other-rotation))
-(define order-rotations-only (G-order rotations-only))
-(for/and ((b (in-list bases)))
- (define n
-  (set-count
-   (for/set ((r (in-G rotations-only)))
-    (for/set ((b (in-set b))) (P (P-inverse r) b r)))))
- (= n order-rotations-only))
-(code:comment "")
-(code:comment "Using the rotations only we find the same collections of bases:")
-(code:comment "")
 (equal?
  (apply set
   (map set base-collections))
