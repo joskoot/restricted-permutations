@@ -288,10 +288,10 @@ and the corresponding abstract natural numbers.
   @defproc[#:kind "predicate" (N+? (x any/c)) boolean?]
   @defproc[#:kind "predicate" (Z?  (x any/c)) boolean?])]{
 @Tabular[
-  (("Predicate" "Synonym of"                     "In the sense of")
-   (@nbr[N?]    @nbr[exact-nonnegative-integer?] @nbr[free-identifier=?])
-   (@nbr[N+?]   @nbr[exact-positive-integer?]    @nbr[free-identifier=?])
-   (@nbr[Z?]    @nbr[exact-integer?]             @nbr[free-identifier=?]))
+  (("Predicate" (list "Synonym in the sense of " @nbr[free-identifier=?] " of"))
+   (@nbr[N?]    @nbr[exact-nonnegative-integer?])
+   (@nbr[N+?]   @nbr[exact-positive-integer?])
+   (@nbr[Z?]    @nbr[exact-integer?]))
   #:sep (hspace 3)
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
@@ -406,7 +406,7 @@ representing the same @nber["R" "R"] as the argument.@(lb)
 A transposition is a single C of two elements.
 For every C there is a list of transpositions
 representing the same @nber["R" "R"].
-In many cases not all, or even none, of the @nber["R" "R"]s represented
+In many cases not all of the @nber["R" "R"]s represented
 by the transpositions commute with each other.
 Hence, the order in which the transpositions appear in the list, usually is relevant.
 The list of transpositions is not uniquely defined.
@@ -454,7 +454,8 @@ Example:
 
 @defproc[(C-even? (c C?)) boolean?]{
 Same as @nbr[(even? (length (C-transpositions c)))] but faster,
-because procedure @nbr[C-even?] does not form the intermediate list of transpositions.}
+because procedure @nbr[C-even?] does not form the intermediate list of transpositions
+nor does it normalize the argument.}
 
 @note{For every C there is a list of transpositions representing the same @nber["R" "R"].
 A C that can be written as a list of an even number of transpositions
@@ -468,7 +469,7 @@ The subset of all even elements of a finite group is an
 @nbrl[G-invariant-subg? "invariant subgroup"].}
 
 Inverses of each other have the same parity, because their @nber["composition" "composition"]
-is the @nber["id"]{identity} with even parity.
+yields the @nber["id"]{identity} with even parity.
 Example:
 
 @interaction[
@@ -481,7 +482,7 @@ Example:
   (C-identity? (list c-inverse c))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
-Returns the normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
+Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
 You probably never need this procedure.@(lb)@nb{@red{Advice: avoid it}.}}
 
 @defproc[(C->H (c C?)) H?]{
@@ -930,9 +931,9 @@ has as many odd as even elements.
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
 Defines a sorting order among @nber["R" "Rs"].
-The first sorting key is the order of the @nber["R" "Rs"].
-The second sorting key is the @nbrl[P-even? #:style #f "parity"],
+The first sorting key is the @nbrl[P-even? #:style #f "parity"],
 even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].
+The second sorting key is the order of the @nber["R" "Rs"].
 The third sorting key is @nbr[(p k)] for the smallest argument @nbr[k]
 for which the two @nber["R" "Rs"] represented by the two arguments yield different values.
 @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
@@ -1060,10 +1061,9 @@ This can be done as follows:}
 You probably never need this procedure. @red{Advice: avoid it}.}
 
 @defproc[(H->P (h pseudo-H?)) P?]{
-You probably never need this procedure. @red{Advice: avoid it.}}
-                                        
-@note{Nevertheless, procedure @nbr[H->P] can sometimes be useful.@(lb)
-See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3v}}}
+You probably never need this procedure. @red{Advice: avoid it.}
+@note{Nevertheless, procedure @nbr[H->P] can sometimes be useful.
+See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3v}}.}}
 
 @(define sequenceref
   (nbhl "https://docs.racket-lang.org/reference/sequences.html" "sequence"))
@@ -1932,7 +1932,7 @@ but distinct classes can have the same normalized cycle structure.
 @note{In a @nbrl[G-symmetric]{symmetric} group
 every class has distinct normalized cycle structure.
 In other words, in a symmetric group
-two elements belong to the same conjugation class
+two elements are conjugates of each other
 if and only if they have the same normalized cycle structure.}
 In group @tt{cube-symmetries} the inversion-symmetry,
 rotations about 180° and reflections in the planes
@@ -2021,16 +2021,10 @@ The following example shows the details:
  (printf "size of each base-collection    ~a~n"
   (pad3 collection-size)))
 (code:comment "")
-(code:comment #,(list
-  "Print the base collections in " (nbsl "C" "C-notation") ", one base per line."))
+(code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
 (code:comment "")
-(for ((base-collection (in-list base-collections)) (i (in-naturals)))
- (printf " ~nbase-collection ~s~n" (add1 i))
- (for ((base (in-list base-collection))
-       (n (in-naturals (add1 (* collection-size i)))))
-  (apply printf "~a ~s and ~s~n"
-   (~s n #:min-width 3 #:align 'right)
-   (map P->C (P-sort (set->list base))))))
+(for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
+ (apply printf "~s: ~s and ~s~n" i (map P->C (set->list (car base-collection)))))
 (code:comment "")
 (code:comment "Using the rotations only we find the same collections of bases:")
 (code:comment "")
@@ -2271,11 +2265,11 @@ The represented symmetries are:
 @inset{@Tabular[
 (("label" (nbsl "C" "C") "symmetry")
  ("0"     @nbr[()]       "the identity")
- ("1"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
- ("2"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
- ("3"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1")
- ("4"     @nbr[(0 1 2)]  "rotation about 120°")
- ("5"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction"))
+ ("1"     @nbr[(0 1 2)]  "rotation about 120°")
+ ("2"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction")
+ ("3"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
+ ("4"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
+ ("5"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1"))
 #:row-properties '((bottom-border top-border) () () () () () bottom-border)
 #:sep (hspace 2)]}
 

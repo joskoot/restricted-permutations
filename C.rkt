@@ -79,6 +79,12 @@
    (else (apply append (map C-single-transpositions c)))))
  (C-transpositions (C-normalize c)))
 
-(define (C-even? c) (even? (length (C-transpositions c))))
+(define (C-even? c)
+ (cond
+  ((null? c))
+  ((N? (car c)) (odd? (length c)))
+  (else (even? (count C-odd? c)))))
+
+(define C-odd? (compose not C-even?))
 
 ;===================================================================================================
