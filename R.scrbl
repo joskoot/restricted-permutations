@@ -931,9 +931,9 @@ has as many odd as even elements.
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
 Defines a sorting order among @nber["R" "Rs"].
-The first sorting key is the @nbrl[P-even? #:style #f "parity"],
+The first sorting key is the order of the @nber["R" "Rs"].
+The second sorting key is the @nbrl[P-even? #:style #f "parity"],
 even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].
-The second sorting key is the order of the @nber["R" "Rs"].
 The third sorting key is @nbr[(p k)] for the smallest argument @nbr[k]
 for which the two @nber["R" "Rs"] represented by the two arguments yield different values.
 @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
@@ -1121,7 +1121,7 @@ Examples:
 (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
 
 @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
-Hence,: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
+Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
 @(color-example green (eq? (P '((0 1) (1 2))) (P '(0 1) '(1 2))))
@@ -1826,7 +1826,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (define cube-symmetries (G rotation reflection))
 (code:comment "")
 (code:comment "The following table associates one member of each")
-(code:comment #,(list (nbrl G-classes "conjugation class") " with a name later to be associated"))
+(code:comment #,(list
+                 (nbrl G-classes "conjugation class")
+                 " with a description later to be associated"))
 (code:comment "with the whole conjugation class of this member.")
 (code:comment "")
 (define classocs
@@ -1863,7 +1865,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "true")))
 (code:comment "")
-(code:comment "The following table maps each conjugation class to its name.")
+(code:comment "The following table maps each conjugation class to its description.")
 (code:comment "")
 (define conj-name-table
  (make-hash (map cons conj-classes class-names)))
@@ -1911,12 +1913,12 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (zero? (modulo multiple divisor)))
 (code:comment "")
 (print-group-info cube-symmetries "cube-symmetries" #t)
-(code:comment "Subgroup consisting of rotations only:")
+(code:comment "Subgroup consisting of rotations only.")
+(code:comment "rotation and other-rotation are rotations about 90°")
+(code:comment "with intersecting axes perpendicular to each other.") 
 (code:comment "")
 (define other-rotation '((0 1 5 4) (3 2 6 7)))
 (define rotations-only (G rotation other-rotation))
-(code:comment "rotation and other-rotation are rotations about 90°")
-(code:comment "with intersecting axes perpendicular to each other.") 
 (define rotation-classes (G-classes rotations-only))
 (print-group-info rotations-only "rotations-only" #f)
 (code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
@@ -2182,7 +2184,7 @@ In the quaternion group, make the following identifications:
  (list "Identify" @tt["j"]  "with" (hspace 1)               (hspace 1) (ttt (~s | j|)))
  (list "Identify" @tt["k"]  "with" (tt "ij")                "="        (ttt (~s (P | i| | j|))))
  (list "Identify" @tt["-1"] "with" (tt "i"@↑{@smaller{2}})  "="        (ttt (~s (P | i| | i|))))
- (list "Identify" @tt["1"]  "with" @tt{i@↑{@smaller{4}}}    "="        (ttt (~s (P |-1| |-1|)))))]}
+ (list "Identify" @tt["1"]  "with" @tt{(-1)@↑{@smaller{2}}} "="        (ttt (~s (P |-1| |-1|)))))]}
          
 We have
 @tt["ii=jj=kk=-1"],
@@ -2265,11 +2267,11 @@ The represented symmetries are:
 @inset{@Tabular[
 (("label" (nbsl "C" "C") "symmetry")
  ("0"     @nbr[()]       "the identity")
- ("1"     @nbr[(0 1 2)]  "rotation about 120°")
- ("2"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction")
- ("3"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
- ("4"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
- ("5"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1"))
+ ("1"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
+ ("2"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
+ ("3"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1")
+ ("4"     @nbr[(0 1 2)]  "rotation about 120°")
+ ("5"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction"))
 #:row-properties '((bottom-border top-border) () () () () () bottom-border)
 #:sep (hspace 2)]}
 
