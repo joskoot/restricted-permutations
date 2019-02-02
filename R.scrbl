@@ -219,9 +219,9 @@ In most cases it is clear with which meaning the word is used.
 Where there may be danger of confusion, the present document avoids it.}
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
-let r@↓{pq} be the restriction of the composition pq.
+let r@↓{pq} be the restriction of pq.@(lb)
 We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
-The restriction of pq not necessarily equals that of qp.
+The restriction of pq not necessarily equals that of qp.@(lb)
 See the @nber["P-example"]{example}
 in the description of procedure @nbr[P].
 
@@ -279,9 +279,11 @@ the exact integer numbers of Racket by which they are represented nor between
 @racketlink[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
 
-@bold{N} is the set of all natural numbers,
-@bold{N@↑{+}} the set of all positive natural numbers and
-@bold{Z} the set of all integer numbers.
+@Tabular[
+((@bold{N}      "is the set of all natural numbers.")
+ (@bold{N@↑{+}} "is the set of all positive natural numbers.")
+ (@bold{Z}      "is the set of all integer numbers."))
+ #:sep (hspace 1)]
 
 @deftogether[
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
@@ -936,7 +938,7 @@ The second sorting key is the @nbrl[P-even? #:style #f "parity"],
 even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].
 The third sorting key is @nbr[(p k)] for the smallest argument @nbr[k]
 for which the two @nber["R" "Rs"] represented by the two arguments yield different values.
-@nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
+@nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].@(lb)
 (@nb{See @nbr[P-sort]} for an example.)}
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
@@ -1178,7 +1180,7 @@ Every element is the @nber["composition" "composition"] pq
 of element p in the left column and element q in the top row.
 The left column and top row are @nbrl[P-sort "sorted"] and start with the
 @nbrl[P-identity "identity"].
-The columns are aligned.}
+The columns are aligned (assuming a fixed width font).}
 
 @note{For every group @bold{X} with identity e we have: @nb{∀x∈@bold{X}: ex = x = xe}.
 Hence, with the identity as the first label for both columns and rows,
