@@ -10,7 +10,7 @@
 
 (provide G-identity G-identity? G? G G-symmetric G-Abelean? G-bases G-base G-order G-equal?
  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
- G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups
+ G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups G-simple?
  (rename-out (G-Abelean? G-commutative?)))
 
 (define (G-print g port mode) (fprintf port "~s" (cons 'G (G->list g))))
@@ -148,6 +148,13 @@
             (for/seteq ((p0 (in-set (G-set g0)))) (P (P-inverse p1) p0)))))))
 
 (define (G-even-subg g) (G-constr (for/seteq ((p (in-G g)) #:when (P-even? p)) p)))
+
+(define (G-simple? g)
+ (for/and ((subg (in-list (G-subgroups g))))
+  (or
+   (eq? subg g)
+   (eq? subg G-identity)
+   (not (G-invariant-subg? subg g)))))
 
 (define (G-class p g)
  (if (G-member? p g)
