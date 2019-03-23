@@ -8,10 +8,10 @@
 (require "P.rkt" (only-in "C.rkt" H->C))
 (require (only-in math/number-theory factorial))
 
-(provide G-identity G-identity? G? G G-symmetric G-Abelean? G-bases G-base G-order G-equal?
+(provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
  G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups G-simple?
- (rename-out (G-Abelean? G-commutative?)))
+ (rename-out (G-abelean? G-commutative?)))
 
 (define (G-print g port mode) (fprintf port "~s" (cons 'G (G->list g))))
 
@@ -107,7 +107,7 @@
     (for/seteq ((x (in-permutations lst)))
      (H->P (make-immutable-hasheq (map cons lst x))))))))
 
-(define (G-Abelean? g)
+(define (G-abelean? g)
  (for*/and ((a (in-set (G-set g))) (b (in-set (G-set g))))
   (eq? (P a b) (P b a))))
 

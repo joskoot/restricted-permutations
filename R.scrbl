@@ -1,5 +1,16 @@
 #lang scribble/manual
 
+@(require
+  scribble/core
+  scribble/eval
+  racket
+  "R.rkt"
+  (for-label
+   "R.rkt"
+   racket
+   (only-in typed/racket Setof Natural Sequenceof Index))
+  (for-syntax racket))
+        
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
 @(display " │ This may take some minutes and may │\n")
@@ -20,9 +31,8 @@
    (only-in typed/racket Setof Natural Sequenceof Index))
   (for-syntax racket))
 
-@; Nothing to be provided.
-
 @(define lb linebreak)
+@(define (↑lb) (list (↑ (hspace 1)) (lb)))
 @(define nb nonbreaking)
 @(define-syntax-rule (ignore x ...) (void))
 @; Below syntaxes are used such as to allow keyword arguments
@@ -104,11 +114,10 @@
 @(define (expt-1) @↑{@(minus)1})
 @(define ↑ superscript)
 @(define ↓ subscript)
-@(define ⇒ @larger{⇒})
 
 @(define constr-style
  (nbhl "https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"))
-        
+
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
@@ -151,16 +160,15 @@ and the abstract integer numbers they represent.
 @elemtag["R" ""]
 Let @bold{N} be the set of all natural numbers, 0 included.
 Define a restricted permutation, @nb{say p},
-as a permutation of @bold{N} with the following restriction:
+as a permutation of @bold{N} with a restriction as follows:
 
-@inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m @⇒ p(k) = k}}
+@inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
 
-Let's call the smallest natural number m for which this restriction holds,
-@nb{@italic{the} restriction of p.}
+Let's call the smallest m∈@bold{N} for which this holds,
+@nb{@italic{the} restriction} @nb{of p.}
 @nb{`R' is shorthand for `restricted permutation'.}
 @nb{Let @bold{R} be the set of all Rs.}
-@nb{(In this document @bold{R} has nothing to do with the set of real numbers.)}
-@(lb)@nb{@elemtag["composition"]Define the composition:}
+@nb{@elemtag["composition"]Define the composition:}
 
 @inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
 
@@ -176,17 +184,58 @@ For some groups the composition is commutative.
 For @bold{R} it is not,
 although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
-For every finite group, @bold{R} has an isomorphic subgroup.
+For every finite group there is an isomorphic subgroup of @bold{R}.
 
 @note{In fact exactly one such subgroup
-consisting of the @nber["id"]{identity of @bold{R}} only
+consisting of the identity of @bold{R} only
 if the order @nb{(= cardinality)} of the group is 1 and
 an infinite number of them if the order is greater than 1.}
 
-@note{@elemtag["group"]{The present document is not an introduction to group theory.
-It refers to mathematical concepts without their definitions and
-mentions theorems without their proofs.
-For a simple introduction see chapter 1 of
+@elemtag["group"]
+@ignore{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
+@(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
+@(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
+such that:@(↑lb)
+@(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (ex = x) @bold{and}
+(∃x@↑{@(minus)1}∈@bold{X} : x@↑{@(minus)1}x = e) and@(↑lb)
+@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity; parentheses can be omitted).@(lb)
+e is called identity. x@↑{@(minus)1} is called inverse of x.@(↑lb)
+Starting from the definition all of the following can be proven:@(lb)
+@(hspace 3)∀x∈@bold{X} : ex = x = xe,@(↑lb)
+@(hspace 3)∀x∈@bold{X} : x@↑{@(minus)1}x = e = xx@↑{@(minus)1},@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : zx = y, in particular z=yx@↑{@(minus)1} and@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : xz = y, in particular z=x@↑{@(minus)1}y.@(↑lb)
+This implies that @bold{X} has one identity only and
+that every element of @bold{X} has one inverse only:@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=y ⇒ x=e,@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=x ⇒ y=e,@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ x=y@↑{@(minus)1} and@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ y=x@↑{@(minus)1}.@(↑lb)
+Two groups @bold{X} and @bold{Y} are isomorphic to each other if there is a bijection@(↑lb)
+@(hspace 3)@nb{ξ : x∈@bold{X} → y∈@bold{Y}} such that:@(↑lb)
+@(hspace 3)∀p,q∈@bold{X} : ξ(pq) = ξ(p)ξ(q).@(lb)
+Isomorphism is an equivalence relation: the composition of two isomorphisms
+is an isomorphism,@(↑lb)
+every group is isomorphic to itself and we have:@(lb)
+@(hspace 3)∀r,s∈@bold{Y} : ξ@↑{@(minus)1}(rs) = ξ@↑{@(minus)1}(r)ξ@↑{@(minus)1}(s).@(↑lb)
+Every group @bold{X} is isomorphic to a subgroup
+of the symmetric group of all permutations of set @bold{X}.@(↑lb)
+In particular the following two sets of maps:@(lb)
+@(hspace 2) {(y∈@bold{X} → xy∈@bold{X}) : x∈@bold{X}} and@(↑lb)
+@(hspace 2) {(y∈@bold{X} → yx∈@bold{X}) : x∈@bold{X}}@(↑lb)
+are sets of permutations of set @bold{X}
+forming two groups isomorphic to each other and to group @bold{X}.@(↑lb)
+The two sets of permutations are the same if and only if group @bold{X} is abelean.
+@nb{For every element x∈@bold{X}:}@(lb)
+@(hspace 3)the permutations y∈@bold{X} → x@↑{@(minus)1}y∈@bold{X}
+and y∈@bold{X} → xy∈@bold{X} are inverses of each other;@(↑lb)
+@(hspace 3)the permutations y∈@bold{X} → yx@↑{@(minus)1}∈@bold{X}
+and y∈@bold{X} → yx∈@bold{X} are inverses of each other.}
+
+@note{The present document is not an introduction to group theory.
+It frequently refers to mathematical concepts without their definitions
+and mentions theorems without their proofs.
+@nb{For a simple} introduction see chapter 1 of
 @hyperlink[
  (string-append
   "https://ia800307.us.archive.org/18/items/"
@@ -196,7 +245,48 @@ For a simple introduction see chapter 1 of
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["finite-groups.doc" "finite-groups.doc"].}}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.doc" "finite-groups.doc"].}
+
+@note{Nevertheless the following definition and summary.@(lb)
+In mathematics a group is a system consisting of@(lb)
+@(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
+@(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
+such that:@(↑lb)
+@(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (ex = x) @bold{and}
+(∃x@↑{@(minus)1}∈@bold{X} : x@↑{@(minus)1}x = e) and@(↑lb)
+@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity; parentheses can be omitted).@(lb)
+e is called identity. x@↑{@(minus)1} is called inverse of x.@(lb)
+Starting from the definition all of the following can be proven:@(lb)
+@(hspace 3)∀x∈@bold{X} : ex = x = xe,@(↑lb)
+@(hspace 3)∀x∈@bold{X} : x@↑{@(minus)1}x = e = xx@↑{@(minus)1},@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : zx = y, in particular z=yx@↑{@(minus)1} and@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : xz = y, in particular z=x@↑{@(minus)1}y.@(↑lb)
+This implies that @bold{X} has one identity only and
+that every element of @bold{X} has one inverse only:@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=y ⇒ x=e,@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=x ⇒ y=e,@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ x=y@↑{@(minus)1} and@(↑lb)
+@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ y=x@↑{@(minus)1}.@(↑lb)
+Two groups @bold{X} and @bold{Y} are isomorphic to each other if there is a bijection@(↑lb)
+@(hspace 3)@nb{ξ : x∈@bold{X} → y∈@bold{Y}} such that:@(↑lb)
+@(hspace 3)∀p,q∈@bold{X} : ξ(pq) = ξ(p)ξ(q).@(lb)
+Isomorphism is an equivalence relation: the composition of two isomorphisms
+is an isomorphism,@(↑lb)
+every group is isomorphic to itself and we have:@(lb)
+@(hspace 3)∀r,s∈@bold{Y} : ξ@↑{@(minus)1}(rs) = ξ@↑{@(minus)1}(r)ξ@↑{@(minus)1}(s).@(↑lb)
+Every group @bold{X} is isomorphic to a subgroup
+of the symmetric group of all permutations of set @bold{X}.@(↑lb)
+In particular the following two sets of maps:@(lb)
+@(hspace 2) {(y∈@bold{X} → xy∈@bold{X}) : x∈@bold{X}} and@(↑lb)
+@(hspace 2) {(y∈@bold{X} → yx∈@bold{X}) : x∈@bold{X}}@(↑lb)
+are sets of permutations of set @bold{X}
+forming two groups isomorphic to each other and to group @bold{X}.@(↑lb)
+The two sets of permutations are the same if and only if group @bold{X} is abelean.
+@nb{For every element x∈@bold{X}:}@(lb)
+@(hspace 3)the permutations y∈@bold{X} → x@↑{@(minus)1}y∈@bold{X}
+and y∈@bold{X} → xy∈@bold{X} are inverses of each other;@(↑lb)
+@(hspace 3)the permutations y∈@bold{X} → yx@↑{@(minus)1}∈@bold{X}
+and y∈@bold{X} → yx∈@bold{X} are inverses of each other.}
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
@@ -205,14 +295,14 @@ Quantum mechanics plays no role in chapter 1.
 This is the only R with restriction 0 and order 1.
 For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
-Inverses of each other have the same order and restriction.
+Inverses of each other have the same order and the same restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the symmetric group S@↓{n}.
 
 @note{In every group the identity is the only element of order 1 and
 inverses of each other have the same order.
 Do not confuse the order of an element with the order of a group.
-The latter is the cardinality of a group, but it usually is called its @italic{order}.
+The latter is the cardinality of a group, but usually it is called its @italic{order}.
 The word `order' also is used for the consecution of elements in a list or vector.
 In most cases it is clear with which meaning the word is used.
 Where there may be danger of confusion, the present document avoids it.}
@@ -225,9 +315,9 @@ See the @nber["P-example"]{example}
 in the description of procedure @nbr[P].
 
 @note{There is no R with restriction 1.@(lb)
-If p is a permutation of @bold{N} with @nb{∀k∈@bold{N}: k≥1 @⇒ p(k) = k},@(lb)
+If p is a permutation of @bold{N} with @nb{∀k∈@bold{N}: k≥1 ⇒ p(k) = k},@(lb)
 then necessarily @nb{p(0) = 0} and hence @nb{∀k∈@bold{N}: p(k) = k},@(lb)
-which means that p is the @nber["id" "identity"] with @nb{restriction 0.}}
+which means that p is the identity with @nb{restriction 0.}}
 
 @note{Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
@@ -381,6 +471,8 @@ Examples:}
 (C-normalize '((0 1 2) (1 2)))
 (C-normalize '((0 1) (0 1 2) (0 1)))
 (C-normalize '((0 1) (1 2) (2 3)))
+(C-normalize '(((0 1) (1 2)) (2 3)))
+(C-normalize '((0 1) ((1 2) (2 3))))
 (C-normalize '((() () ())))
 (C-normalize '(((99999999))))
 (C-normalize '((1) (2) (3)))
@@ -467,16 +559,20 @@ Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "
 The @nber["id"]{identity of @bold{R}} has even parity.
 @nb{A finite group} containing at least one odd element has as many odd ones as even ones.
 The subset of all even elements of a finite group is an
-@nbrl[G-invariant-subg? "invariant subgroup"].}
+@nbrl[G-invariant-subg? "invariant subgroup"].
+Inverses of each other have the same parity.}
 
-Inverses of each other have the same parity:
+Examples:
 
 @interaction[
 (require racket "R.rkt")
 (for/and ((p (in-G (G-symmetric 4))))
  (define c (P->C p))
  (define c-inverse (P->C (P-inverse p)))
- (eq? (C-even? c) (C-even? c-inverse)))]
+ (eq? (C-even? c) (C-even? c-inverse)))
+(for/and ((n (in-range 5)))
+ (define g (G-symmetric n))
+ (G-invariant-subg? (G-even-subg g) g))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
 Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -614,8 +710,8 @@ The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
   ...))
 (print-restrictions pq qp)]
 
-When composing two or more Ps with Racket's procedure @nbr[compose],@(lb)
-the result is a procedure that yields the same answers as when made with procedure @nbr[P],@(lb)
+When composing two or more Ps with Racket's procedure @nbr[compose],
+the result is a procedure that yields the same answers as when made with procedure @nbr[P],
 but the result is not a P. Example:
 
 @interaction[
@@ -1089,7 +1185,7 @@ If no argument is given, the @nbr[G-identity] is returned.}
 
 @note{By definition a group, say @bold{X}, recursively includes
 the composition of every pair of its elements,
-the composition of every element with itself included, id est:
+the composition of every element with itself included, id est,:
 @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.}
 
 Examples:
@@ -1193,7 +1289,7 @@ for a more elaborated discussion of this group.
 @defproc[(G-table (g G?)) (vector-immutableof (vector-immutableof P?))]{
 Returns the @nber["composition" "composition"]
 table of @nbr[g] as an immutable vector of immutable vectors of @nbsl["P" "Ps"].
-The first row, id est @nbr[(vector-ref (G-table g) 0)]
+The first row, id est, @nbr[(vector-ref (G-table g) 0)]
 and the first column, id est,
 @nbr[(for/vector ((row (in-vector (G-table g))) (vector-ref row 0)))]
 are @nbrl[P-sort "sorted"].}
@@ -1266,19 +1362,20 @@ g3
  (eq? (G-symmetric '(0 1 2)) (G-symmetric 3))
  (eq? (G-symmetric '(4 5 6)) (G-symmetric 3 4)))]
 
-@deftogether[(@defproc[#:kind "predicate" (G-Abelean? (g G?)) boolean?]
+@deftogether[(@defproc[#:kind "predicate" (G-abelean? (g G?)) boolean?]
               @defproc[#:kind "predicate" (G-commutative? (g G?)) boolean?])]{
-By definition, a group is Abelean if and only if all its elements commute with each other.
-Sufficient is that all elements of a @nbrl[G-base]{base} commute with each other.
-@nbr[G-commutative?] is a synonym of @nbr[G-Abelean?]
-in the sense of @nbr[free-identifier=?].
+@nbr[G-commutative?] is a synonym of @nbr[G-abelean?] in the sense of @nbr[free-identifier=?].
+
+@note{By definition, a group is abelean if and only if all its elements commute with each other.
+ @(lb)Sufficient is that all elements of a @nbrl[G-base]{base} commute with each other.}
+
 Examples:}
 
-@color-example[green (G-Abelean? (G '(0 1 2) '(3 4)))]
+@color-example[green (G-abelean? (G '(0 1 2) '(3 4)))]
 because: @color-example[ green (eq? (P '(0 1 2) '(3 4)) (P '(3 4) '(0 1 2)))]
 
 But: 
-@color-example[red (G-Abelean? (G '(0 1 2) '(0 1)))]
+@color-example[red (G-abelean? (G '(0 1 2) '(0 1)))]
 because: @color-example[red (eq? (P '(0 1 2) '(0 1)) (P '(0 1) '(0 1 2)))]
 In particular:@(lb)
 @example[(P '(0 1 2) '(0 1))]
@@ -1352,7 +1449,7 @@ has at least one minimal base of two elements.
      (cons new-transposition base-of-transpositions))))
   (eq? (apply G base-of-transpositions) (G-symmetric n)))
  (printf "~n ~netc.~n")
- (error 'example "failed!"))]
+ (error 'example "failed! (This should never happen)"))]
 
 For n>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
@@ -1388,9 +1485,8 @@ Returns a list of all minimal bases of @nbr[g].} Examples:
 (G-order+bases (G '((0 1 2 3) (4 5 6 7)) '((0 4 2 6) (1 7 3 5))))
 (code:comment " ")
 (define g (G '(0 1) '(0 1 2)))
-(andmap
- (lambda (base) (eq? (apply G (set->list base)) g))
- (G-bases g))]
+(for/and ((base (in-list (G-bases g))))
+ (eq? (apply G (set->list base)) g))]
 
 @elemtag["simplest base"]{To find one of the simplest bases:}
 
@@ -1521,7 +1617,7 @@ always is a divisor of the order of the group.
 it commutes with all elements of @bold{X}.
 This implies that the identity always is lonesome in its class;
 it is a conjugate of itself only.
-@nb{It also} implies that the class of every element of an Abelean group
+@nb{It also} implies that the class of every element of an abelean group
 consists of this element only.}}
 
 Examples:
@@ -1533,7 +1629,7 @@ Examples:
 (G-class (P '(0 1)) g)
 (G-class (P '(0 1 2)) g)
 (code:comment "Empty set if p∉g:")
-(G-class (P '(0 1)) (G '(0 1 2)))]
+(G-class (P '(0 3)) g)]
 
 @defproc[(G-classes (g G?)) (listof (Setof P?))]{
 Returns a list of all conjugation classes of @nbr[g]. Example:
@@ -1611,13 +1707,13 @@ Isomorphism is an
 (code:comment "Every element of V is its own inverse.")
 (define V (G '(0 1) '(2 3)))
 (G-order V)
-(G-Abelean? V)
+(G-abelean? V)
 (for/and ((p (in-G V))) (eq? (P-inverse p) p))
 (code:comment "There are two isomorphically distinct groups of order 4.")
 (code:comment "An example of the other one is:")
 (define C4 (G '(0 1 2 3)))
 (G-order C4)
-(G-Abelean? C4)
+(G-abelean? C4)
 (code:comment "C4 is not isomorphic to V")
 (code:line (G-isomorphism V C4) (code:comment #,(red "false")))
 (code:comment "In particular (P '(0 1 2 3)) not equals its own inverse:")
@@ -1836,8 +1932,8 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:comment "The following table associates one member of each")
 (code:comment #,(list
-                 (nbrl G-classes "conjugation class")
-                 " with a description later to be associated"))
+                 (nbrl G-class "conjugation class")
+                 " with a name later to be associated"))
 (code:comment "with the whole conjugation class of this member.")
 (code:comment "")
 (define classocs
@@ -1874,7 +1970,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
 (code:comment "")
 (code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "true")))
 (code:comment "")
-(code:comment "The following table maps each conjugation class to its description.")
+(code:comment "The following table maps each conjugation class to its name.")
 (code:comment "")
 (define conj-name-table
  (make-hash (map cons conj-classes class-names)))
@@ -1983,10 +2079,10 @@ Let's check that the inversion-symmetry commutes with all symmetries of the cube
 There are @nb{9×24 = 216} distinct minimal bases for the symmetries of the cube.
 They can be grouped in 9 collections of symmetrically equivalent minimal bases,
 each collection containing 24 bases.
-@note{Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
+Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if the group contains @nb{a symmetry} x such that @nb{{ax ...} = {xb ...}}.
 This is an equality of two sets:
-@nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.}
+@nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
 The number of collections of symmetrically equivalent minimal bases of the group of
 @tt{cube-symmetries} is one less than the number of conjugation classes.
@@ -2037,7 +2133,9 @@ The following example shows the details:
 (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
 (code:comment "")
 (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
- (apply printf "~s: ~s and ~s~n" i (map P->C (set->list (car base-collection)))))
+ (define-values (x y) (apply values (map P->C (set->list (car base-collection)))))
+ (apply printf "~s: ~s and ~s~n" i
+  (if (= (string-length (~s x) 21)) (list x y) (list y x))))
 (code:comment "")
 (code:comment "Using the rotations only we find the same collections of bases:")
 (code:comment "")
@@ -2074,16 +2172,16 @@ The following example shows the details:
 (for/and ((p (in-list rotation-reflections)))
  (eq? cube-symmetries (G rotation other-rotation p)))]
 
-@note{In the group of all cube-symmetries, all collections of
+In the group of all cube-symmetries, all collections of
 symmetrically equivalent minimal bases have the same size.
 This is not true for all groups. For example,
 group @tt{rotations-only} has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
 one collection of 12 bases and four collections of 24 bases.
 A simple modification of part of the above example can do the computation.
-Try it!}
+Try it!
 
-The group of all symmetries of the cube has 91 subgroups
+The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
 @interaction[
@@ -2244,7 +2342,7 @@ We can verify this as follows:
    (eq? (P |-1| p) q))
   (else #f)))]
 
-The quaternion group is not @nbrl[G-Abelean? "Abelean"].
+The quaternion group is not @nbrl[G-abelean? "abelean"].
 Nevertheless every subgroup is @nbrl[G-invariant-subg? "invariant"]:
 
 @interaction[
@@ -2252,7 +2350,7 @@ Nevertheless every subgroup is @nbrl[G-invariant-subg? "invariant"]:
 (define i (P '((0 1 2 3) (4 5 6 7))))
 (define j (P '((0 4 2 6) (1 7 3 5))))
 (define Q (G i j))
-(not (G-Abelean? Q))
+(not (G-abelean? Q))
 (for/and ((subg (in-list (G-subgroups Q))))
  (G-invariant-subg? subg Q))]
 
@@ -2299,11 +2397,11 @@ can be associated with one or two permutations of set @bold{X}:
 ∀x∈@bold{X}: (y∈@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
 ∀x∈@bold{X}: (y∈@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
 
-If the group is Abelean, the @nber["rearrangement" "rearrangements"]
+If the group is abelean, the @nber["rearrangement" "rearrangements"]
 in the rows are the same as those in the columns.
-Hence, if the group is Abelean, every element corresponds to one permutation only,
+Hence, if the group is abelean, every element corresponds to one permutation only,
 else some elements correspond to two distinct permutations of @bold{X}.
-Because C@↓{3v} is not Abelean, the set of @nber["rearrangement" "rearrangements"]
+Because C@↓{3v} is not abelean, the set of @nber["rearrangement" "rearrangements"]
 in the rows is not the same as that in the columns:
 the table is not invariant under transposition, id est, reflection
 in the diagonal from the upper left corner to the lower right corner.
@@ -2327,8 +2425,8 @@ Let's check this:
    @nbr[H->P]
    " is "
    (red "discouraged")
-   ", but here it is "
-   (green "useful")
+   ", "
+   (green "but here it is useful")
    ".")))
 
 @interaction[
@@ -2400,7 +2498,7 @@ Group C@↓{3h} has a three-fold axis of rotation and a plane of reflection
 perpendicular to the axis of rotation. The subscript `h' indicates that
 with vertical axis of rotation, the plane of reflection is horizontal.
 A minimal base of C@↓{3h} consists of one element only.
-This implies that C@↓{3h} is circular and Abelean.
+This implies that C@↓{3h} is circular and abelean.
 There are two minimal bases (consisting of inverses of each other)
 C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excluded),
 0 as identity and addition modulo 6 as @nber["composition" "composition"].
@@ -2413,7 +2511,7 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 (define C3h-base (P rotation reflection))
 (define C3h (G C3h-base))
 (G-order C3h)
-(G-Abelean? C3h)
+(G-abelean? C3h)
 (G-bases C3h)
 (define period (P-period C3h-base))
 (define h
