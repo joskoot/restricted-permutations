@@ -192,7 +192,7 @@ if the order @nb{(= cardinality)} of the group is 1 and
 an infinite number of them if the order is greater than 1.}
 
 @elemtag["group"]
-@note{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
+@ignore{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
 @(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
 @(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
 such that:@(↑lb)
