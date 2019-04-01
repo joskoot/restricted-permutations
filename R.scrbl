@@ -192,14 +192,15 @@ if the order @nb{(= cardinality)} of the group is 1 and
 an infinite number of them if the order is greater than 1.}
 
 @elemtag["group"]
-@ignore{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
+@note{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
 @(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
 @(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
 such that:@(↑lb)
 @(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (ex = x) @bold{and}
 (∃x@↑{@(minus)1}∈@bold{X} : x@↑{@(minus)1}x = e) and@(↑lb)
-@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity; parentheses can be omitted).@(lb)
-e is called identity. x@↑{@(minus)1} is called inverse of x.@(↑lb)
+@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity of the composition).@(lb)
+e is called identity. x@↑{@(minus)1} is called inverse of x.@(lb)
+Because the composition is associative, parentheses can be omitted: @nb{xyz ≡ x(yz) = (xy)z}.@(lb)
 Starting from the definition all of the following can be proven:@(lb)
 @(hspace 3)∀x∈@bold{X} : ex = x = xe,@(↑lb)
 @(hspace 3)∀x∈@bold{X} : x@↑{@(minus)1}x = e = xx@↑{@(minus)1},@(↑lb)
@@ -213,20 +214,20 @@ that every element of @bold{X} has one inverse only:@(↑lb)
 @(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ y=x@↑{@(minus)1}.@(↑lb)
 Two groups @bold{X} and @bold{Y} are isomorphic to each other if there is a bijection@(↑lb)
 @(hspace 3)@nb{ξ : x∈@bold{X} → y∈@bold{Y}} such that:@(↑lb)
-@(hspace 3)∀p,q∈@bold{X} : ξ(pq) = ξ(p)ξ(q).@(lb)
-Isomorphism is an equivalence relation: the composition of two isomorphisms
-is an isomorphism,@(↑lb)
-every group is isomorphic to itself and we have:@(lb)
-@(hspace 3)∀r,s∈@bold{Y} : ξ@↑{@(minus)1}(rs) = ξ@↑{@(minus)1}(r)ξ@↑{@(minus)1}(s).@(↑lb)
-Every group @bold{X} is isomorphic to a subgroup
-of the symmetric group of all permutations of set @bold{X}.@(↑lb)
+@(hspace 3)∀p,q∈@bold{X} : ξ(pq) = ξ(p)ξ(q).@(↓ (hspace 1))@(lb)
+We have:@(↑lb)
+@(hspace 3)∀r,s∈@bold{Y} : ξ@↑{@(minus)1}(rs) = ξ@↑{@(minus)1}(r)ξ@↑{@(minus)1}(s).
+@(↓ (hspace 1))@(↑lb)
+Isomorphism is an equivalence relation. Every group @bold{X} is isomorphic to a subgroup
+of the symmetric group of all permutations of the set of @bold{X}.
 In particular the following two sets of maps:@(lb)
 @(hspace 2) {(y∈@bold{X} → xy∈@bold{X}) : x∈@bold{X}} and@(↑lb)
-@(hspace 2) {(y∈@bold{X} → yx∈@bold{X}) : x∈@bold{X}}@(↑lb)
-are sets of permutations of set @bold{X}
-forming two groups isomorphic to each other and to group @bold{X}.@(↑lb)
-The two sets of permutations are the same if and only if group @bold{X} is abelean.
-@nb{For every element x∈@bold{X}:}@(lb)
+@(hspace 2) {(y∈@bold{X} → yx∈@bold{X}) : x∈@bold{X}}@(↓ (hspace 1))@(↑lb)
+are sets of permutations of the set of @bold{X}.
+With composition as usual for permutations,
+they form two groups isomorphic to each other and to group @bold{X}.
+The two sets are the same if and only if group @bold{X} is abelean.
+@nb{For every x∈@bold{X}:}@(lb)
 @(hspace 3)the permutations y∈@bold{X} → x@↑{@(minus)1}y∈@bold{X}
 and y∈@bold{X} → xy∈@bold{X} are inverses of each other;@(↑lb)
 @(hspace 3)the permutations y∈@bold{X} → yx@↑{@(minus)1}∈@bold{X}
@@ -246,47 +247,6 @@ and mentions theorems without their proofs.
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
 @nb{As an} alter@(-?)native see @nbhl["finite-groups.doc" "finite-groups.doc"].}
-
-@note{Nevertheless the following definition and summary.@(lb)
-In mathematics a group is a system consisting of@(lb)
-@(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
-@(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
-such that:@(↑lb)
-@(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (ex = x) @bold{and}
-(∃x@↑{@(minus)1}∈@bold{X} : x@↑{@(minus)1}x = e) and@(↑lb)
-@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity; parentheses can be omitted).@(lb)
-e is called identity. x@↑{@(minus)1} is called inverse of x.@(lb)
-Starting from the definition all of the following can be proven:@(lb)
-@(hspace 3)∀x∈@bold{X} : ex = x = xe,@(↑lb)
-@(hspace 3)∀x∈@bold{X} : x@↑{@(minus)1}x = e = xx@↑{@(minus)1},@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : zx = y, in particular z=yx@↑{@(minus)1} and@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : xz = y, in particular z=x@↑{@(minus)1}y.@(↑lb)
-This implies that @bold{X} has one identity only and
-that every element of @bold{X} has one inverse only:@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : xy=y ⇒ x=e,@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : xy=x ⇒ y=e,@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ x=y@↑{@(minus)1} and@(↑lb)
-@(hspace 3)∀x,y∈@bold{X} : xy=e ⇒ y=x@↑{@(minus)1}.@(↑lb)
-Two groups @bold{X} and @bold{Y} are isomorphic to each other if there is a bijection@(↑lb)
-@(hspace 3)@nb{ξ : x∈@bold{X} → y∈@bold{Y}} such that:@(↑lb)
-@(hspace 3)∀p,q∈@bold{X} : ξ(pq) = ξ(p)ξ(q).@(lb)
-Isomorphism is an equivalence relation: the composition of two isomorphisms
-is an isomorphism,@(↑lb)
-every group is isomorphic to itself and we have:@(lb)
-@(hspace 3)∀r,s∈@bold{Y} : ξ@↑{@(minus)1}(rs) = ξ@↑{@(minus)1}(r)ξ@↑{@(minus)1}(s).@(↑lb)
-Every group @bold{X} is isomorphic to a subgroup
-of the symmetric group of all permutations of set @bold{X}.@(↑lb)
-In particular the following two sets of maps:@(lb)
-@(hspace 2) {(y∈@bold{X} → xy∈@bold{X}) : x∈@bold{X}} and@(↑lb)
-@(hspace 2) {(y∈@bold{X} → yx∈@bold{X}) : x∈@bold{X}}@(↑lb)
-are sets of permutations of set @bold{X}
-forming two groups isomorphic to each other and to group @bold{X}.@(↑lb)
-The two sets of permutations are the same if and only if group @bold{X} is abelean.
-@nb{For every element x∈@bold{X}:}@(lb)
-@(hspace 3)the permutations y∈@bold{X} → x@↑{@(minus)1}y∈@bold{X}
-and y∈@bold{X} → xy∈@bold{X} are inverses of each other;@(↑lb)
-@(hspace 3)the permutations y∈@bold{X} → yx@↑{@(minus)1}∈@bold{X}
-and y∈@bold{X} → yx∈@bold{X} are inverses of each other.}
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
@@ -491,7 +451,7 @@ Therefore procedure @nbr[C-normalize] returns the same normalized C for them
 (C-normalize '(2 0 1))]
 
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
-Same as @nbr[(and (C? x) (null? (C-normalize x)))]}
+Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
 
 @defproc[(C-transpositions (c C?)) C?]{
 Returns a list of normalized transpositions
@@ -867,7 +827,7 @@ though.
 @interaction[
 (require "R.rkt" racket)
 (code:line (define big (* 6 (expt 10 1000000))) (code:comment "= #e6e1000000"))
-(define exponents (range -6 7))
+(define exponents (range -10 11))
 (define big-exponents (map (curry + big) exponents))
 (define -big-exponents (map - big-exponents))
 (define p (P '(0 1 2) '(3 4)))
@@ -973,12 +933,12 @@ Examples:
 (filter (compose not P-even?) S3-list)]
 
 Let's check that a @nbsl["G" "G"] with at least one odd element
-has as many odd as even elements.
+has as many odd elements as even ones.
 
 @interaction[
 (require "R.rkt" racket/set)
 (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
-(code:comment "\"as many evens as odds\" if g has as many odd as even elements.")
+(code:comment "\"as many odd elements as even ones\" if g has as many odd elements as even ones.")
 (code:comment "Else raises an error, which should never happen.")
 (define (check g)
  (define in-g (in-G g))
@@ -994,25 +954,20 @@ has as many odd as even elements.
      (equal?
       (for/seteq ((even-p (in-set even-set))) (P odd-p even-p))
       odd-set)))
-   "as many evens as odds")
+   "as many odd elements as even ones")
   (else (error 'check "this should never happen: ~s" g))))
-(code:comment "Checks on some symmetric groups.")
 (code:comment "A symmetric group of order greater than 1")
-(code:comment "has as many odd as even elements.")
+(code:comment "has as many odd elements as even ones.")
 (for/and ((n (in-range 2 6)))
- (equal? (check (G-symmetric n)) "as many evens as odds"))
+ (equal? (check (G-symmetric n)) "as many odd elements as even ones"))
 (code:comment "The statement holds for all groups containing at least one odd element.")
-(code:comment "Two checks on a non-symmetric group:")
+(code:comment "Two checks on non-symmetric grou:")
 (define g (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
 (G-order g)
-(code:comment "This order shows that g is not a symmetric group,")
-(code:comment "for the order of a symmetric group always is a factorial.")
 (check g)
 (code:comment "")
 (define h (G '((0 1) (2 3)) '((4 5) (6 7)) '(0 1)))
 (G-order h)
-(code:comment "This order shows that h is not a symmetric group,")
-(code:comment "for the order of a symmetric group always is a factorial.")
 (check h)
 (code:comment "")
 (code:comment "Checks on groups without odd elements.")
@@ -1184,7 +1139,7 @@ Duplicate arguments representing the same @nber["R" "R"] do no harm.
 If no argument is given, the @nbr[G-identity] is returned.}
 
 @note{By definition a group, say @bold{X}, recursively includes
-the composition of every pair of its elements,
+the composition of every pair of its elements,@(lb)
 the composition of every element with itself included, id est,:
 @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.}
 
@@ -1544,7 +1499,7 @@ can be confused by a @nbsl["Cleanup" "cleanup"].}
 
 @defproc[(G-even-subg (g G?)) G?]{
 Returns the G representing the invariant subgroup of all even Ps of @nbr[g].
-Same as:
+Same, but faster, as:
 @inset{@nbr[(list->G (filter P-even? (G->list g)))]}
 Example:}
 
@@ -1567,7 +1522,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
 (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
 (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
 (define line
- "─────────────────────────────────────────────────────────────~n")
+ "──────────────────────────────────────────────────────────────────~n")
 (begin
  (printf line)
  (printf "Proper? Invariant? Order Subgroup (in C-notation)~n")
@@ -1989,9 +1944,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (printf "Order of the group: ~s~n" g-order)
  (printf "Number of conjugation classes: ~s~n" (length conj-classes))
  (printf
-  "Order of each element divisor of the order of the group? ~s~n"
+  "Check: order of each element divisor of the order of the group? ~s~n"
   (for/and ((p in-g)) (divisor? (P-order p) g-order)))
- (printf "Size of each conjugation class divisor of order of the group? ~s~n"
+ (printf "Check: size of each conjugation class divisor of order of the group? ~s~n"
   (for/and ((conj-class (in-list conj-classes)))
    (divisor? (set-count conj-class) g-order)))
  (when print-classes?
@@ -2135,7 +2090,7 @@ The following example shows the details:
 (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
  (define-values (x y) (apply values (map P->C (set->list (car base-collection)))))
  (apply printf "~s: ~s and ~s~n" i
-  (if (= (string-length (~s x) 21)) (list x y) (list y x))))
+  (if (= (string-length (~s x)) 21) (list x y) (list y x))))
 (code:comment "")
 (code:comment "Using the rotations only we find the same collections of bases:")
 (code:comment "")
@@ -2216,7 +2171,7 @@ of which 30 contain rotations only.
      x-invariant? (not y-invariant?))))))
  
 (define header "order rotations-only? invariant? nr-of-subgroups~n")
-(define line   "────────────────────────────────────────────────~n")
+(define line   "────────────────────────────────────────────────────~n")
 (define (~b x) (if x "yes" "no"))
 
 (begin
@@ -2342,8 +2297,7 @@ We can verify this as follows:
    (eq? (P |-1| p) q))
   (else #f)))]
 
-The quaternion group is not @nbrl[G-abelean? "abelean"].
-Nevertheless every subgroup is @nbrl[G-invariant-subg? "invariant"]:
+Every subgroup of the quaternion group is @nbrl[G-invariant-subg? "invariant"]:
 
 @interaction[
 (require racket "R.rkt")
@@ -2390,7 +2344,7 @@ a subgroup of the symmetric group S@↓{m}.
 Every row of the table of @nber["composition" "composition"]s of a group
 is a distinct @nber["rearrangement" "rearrangement"] of the elements.
 Likewise every column is a distinct @nber["rearrangement" "rearrangement"].
-Therefore every element of a group @bold{X}
+There@(-?)fore every element of a group @bold{X}
 can be associated with one or two permutations of set @bold{X}:
 
 @inset{
