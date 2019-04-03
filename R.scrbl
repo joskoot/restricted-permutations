@@ -246,7 +246,7 @@ and mentions theorems without their proofs.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["finite-groups.doc" "finite-groups.doc"].}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
 
 @elemtag["id" "The identity"] of @bold{R} is:
 
