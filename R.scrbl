@@ -34,6 +34,7 @@
 @(define lb linebreak)
 @(define (↑lb) (list (↑ (hspace 1)) (lb)))
 @(define nb nonbreaking)
+@; ignore is a syntax such as to prevent arguments to be evaluated.
 @(define-syntax-rule (ignore x ...) (void))
 @; Below syntaxes are used such as to allow keyword arguments
 @; without explicitly mentioning them in the definitions.
@@ -136,8 +137,8 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
 @section{Introduction}
-In this document the word `permutation' is used in mathematical sense,
-id est, such as to mean a bijection of a set onto the same set.
+In this document the word `permutation' is used in mathematical sense, id est,@(lb)
+such as to mean a bijection of a set onto the same set.
 
 @elemtag["rearrangement" ""]
 @note{The word `permutation' often is used for rearrangements.
@@ -187,21 +188,36 @@ but certainly not for all of them.
 For every finite group there is an isomorphic subgroup of @bold{R}.
 
 @note{In fact exactly one such subgroup
-consisting of the identity of @bold{R} only
+consisting of the @nber["id"]{identity of @bold{R}} only
 if the order @nb{(= cardinality)} of the group is 1 and
 an infinite number of them if the order is greater than 1.}
 
 @elemtag["group"]
-@ignore{@bold{Definition}: in mathematics a group is a system consisting of@(lb)
-@(hspace 3)a non-empty set, say @bold{X}, and@(↑lb)
-@(hspace 3)a composition x,y∈@bold{X} → xy∈@bold{X}@(lb)
+@note{The present document is not an introduction to group theory.
+It frequently refers to mathematical concepts without their definitions
+and mentions theorems without their proofs.
+@nb{For a simple} introduction see chapter 1 of
+@hyperlink[
+ "Hamermesh-GroupTheory.pdf"
+ "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
+@nb{If you} know nothing about quantum mechanics,
+you'd better skip the intro@(-?)duction.
+Quantum mechanics plays no role in chapter 1.
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
+
+@ignore{Nevertheless a brief summary:@(lb)
+@bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
+@(hspace 3)@bold{X} is a non-empty set and@(↑lb)
+@(hspace 3)φ a composition x,y∈@bold{X} → φ(x,y)∈@bold{X}@(lb)
 such that:@(↑lb)
-@(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (ex = x) @bold{and}
-(∃x@↑{@(minus)1}∈@bold{X} : x@↑{@(minus)1}x = e) and@(↑lb)
-@(hspace 3)∀x,y,z∈@bold{X} : (xy)z = x(yz) (associativity of the composition).@(lb)
-e is called identity. x@↑{@(minus)1} is called inverse of x.@(lb)
-Because the composition is associative, parentheses can be omitted: @nb{xyz ≡ x(yz) = (xy)z}.@(lb)
-Starting from the definition all of the following can be proven:@(lb)
+@(hspace 3)∃e∈@bold{X} : ∀x∈@bold{X} : (φ(e,y) = x) @bold{and}
+(∃x@↑{@(minus)1}∈@bold{X} : φ(x@↑{@(minus)1},x) = e) and@(↑lb)
+@(hspace 3)∀x,y,z∈@bold{X} : φ(φ(x,y),z) = φ(x,φ(y,z)) (associativity of the composition).@(lb)
+e is called identity. x@↑{@(minus)1} is called inverse of x. We write @nb{xy ≡ φ(x,y)}.
+Because the composition is associative, parentheses can be omitted: @nb{xyz ≡ x(yz) = (xy)z}.
+If it is obvious or irrelevant which composition a group has,
+the latter can be identified by its set only.
+The definition implies all of the following:@(lb)
 @(hspace 3)∀x∈@bold{X} : ex = x = xe,@(↑lb)
 @(hspace 3)∀x∈@bold{X} : x@↑{@(minus)1}x = e = xx@↑{@(minus)1},@(↑lb)
 @(hspace 3)∀x,y∈@bold{X} : ∃|z∈@bold{X} : zx = y, in particular z=yx@↑{@(minus)1} and@(↑lb)
@@ -233,21 +249,6 @@ and y∈@bold{X} → xy∈@bold{X} are inverses of each other;@(↑lb)
 @(hspace 3)the permutations y∈@bold{X} → yx@↑{@(minus)1}∈@bold{X}
 and y∈@bold{X} → yx∈@bold{X} are inverses of each other.}
 
-@note{The present document is not an introduction to group theory.
-It frequently refers to mathematical concepts without their definitions
-and mentions theorems without their proofs.
-@nb{For a simple} introduction see chapter 1 of
-@hyperlink[
- (string-append
-  "https://ia800307.us.archive.org/18/items/"
-  "GroupTheoryAndItsApplicationToPhysicalProblems/"
-  "Hamermesh-GroupTheoryAndItsApplicationToPhysicalProblems.pdf")
- "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
-@nb{If you} know nothing about quantum mechanics,
-you'd better skip the intro@(-?)duction.
-Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
-
 @elemtag["id" "The identity"] of @bold{R} is:
 
 @inset{@nb{∀k∈@bold{N}: k → k}}
@@ -265,24 +266,23 @@ Do not confuse the order of an element with the order of a group.
 The latter is the cardinality of a group, but usually it is called its @italic{order}.
 The word `order' also is used for the consecution of elements in a list or vector.
 In most cases it is clear with which meaning the word is used.
-Where there may be danger of confusion, the present document avoids it.}
+Where appropriate, the present document uses a phrase that avoids confusion.}
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of pq.@(lb)
 We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.@(lb)
-See the @nber["P-example"]{example}
-in the description of procedure @nbr[P].
+See the @nber["P-example"]{example} in the description of procedure @nbr[P].
 
-@note{There is no R with restriction 1.@(lb)
+There is no R with restriction 1.@(lb)
 If p is a permutation of @bold{N} with @nb{∀k∈@bold{N}: k≥1 ⇒ p(k) = k},@(lb)
 then necessarily @nb{p(0) = 0} and hence @nb{∀k∈@bold{N}: p(k) = k},@(lb)
-which means that p is the identity with @nb{restriction 0.}}
+which means that p is the identity with @nb{restriction 0.}
 
-@note{Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
+Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
 This implies: @nb{a(1) = 0.} Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
-where m runs from 0 up to and including n.}
+where m runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
 The following @nber["representations" "representations"]
@@ -295,7 +295,7 @@ in terms of Racket objects are used:
  (list "H" @seclink["H"]{Hash-representation of Rs})
  (list "G" @seclink["G"]{Representation of finite subgroups of @bold{R}}))]}
 
-@note{H is for internal use behind the screen. @red{@smaller{Advice}}: avoid explicit use of H.}
+H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
 
 @note{@elemtag["representations"]{
 In this document the word `representation' refers to the way abstract mathematical concepts
@@ -386,8 +386,7 @@ A C represents an @nber["R" "R"] and is one of the following:
 (list
  @item{
   The empty list. It is the one and only normalized C representing the
-  @nber["id"]{identity of @bold{R}}.@(lb)
-  The normalized form of a single C of one element is the empty list.}
+  @nber["id"]{identity of @bold{R}}.}
  @item{
   A single C of at least two elements and the first element being the smallest one.
   @nb{A circular} shift of a single C represents the same @nber["R" "R"]
@@ -518,9 +517,10 @@ Composition of two @nber["R" "Rs"] with the same parity yields an even @nber["R"
 Composition of two @nber["R" "Rs"] with opposit parity yields an odd @nber["R" "R"].
 The @nber["id"]{identity of @bold{R}} has even parity.
 @nb{A finite group} containing at least one odd element has as many odd ones as even ones.
-The subset of all even elements of a finite group is an
+Combined with the same composition,
+the subset of all even elements of a finite group forms an
 @nbrl[G-invariant-subg? "invariant subgroup"].
-Inverses of each other have the same parity.}
+Inverses of each other have the same parity. The same holds for conjugate elements.}
 
 Examples:
 
@@ -961,7 +961,7 @@ has as many odd elements as even ones.
 (for/and ((n (in-range 2 6)))
  (equal? (check (G-symmetric n)) "as many odd elements as even ones"))
 (code:comment "The statement holds for all groups containing at least one odd element.")
-(code:comment "Two checks on non-symmetric grou:")
+(code:comment "Two checks on non-symmetric groups:")
 (define g (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
 (G-order g)
 (check g)
@@ -1338,7 +1338,7 @@ In particular:@(lb)
 
 @defproc[(G-base (g G?)) (Setof P?)]{
 Returns a @nbr[seteq] with a minimal base for @nbr[g].
-@(nbsl "G" "G")s of order greater than 2 always have more than one minimal base.
+@(nbsl "G" "G")s of order greater than 2 have more than one minimal base.
 @nbr[G-base] returns one of them only. See @nbr[G-bases].} Example:
 
 @(random-seed 1)
@@ -1556,7 +1556,7 @@ A group is simple if none of its non-trivial subgroups is invariant.} Examples:
 (G-simple? (G '(0 1) '(2 3)))]
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
-Returns the conjugation class of @nbr[p] within @nbr[g].@(lb)
+Returns the conjugation class of @nbr[g] containing element @nbr[p].@(lb)
 If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
 
 @note{
