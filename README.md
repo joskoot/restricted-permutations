@@ -1,6 +1,13 @@
 Restricted permutations
 
-(require ".../R.rkt")
+Go to file/package manager.
+Choose Do what I mean,
+Enter https://github.com/joskoot/restricted-permutations.git
+If needed choose defaults in all fields.
+Click Install.
+
+Require the package as follows:
+(require restricted-permutations/R)
 
 A restricted permutation p is a bijection of the set
 of all natural numbers onto the same set such that:
