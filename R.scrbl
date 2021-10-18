@@ -122,7 +122,9 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule "R.rkt" #:packages ())
+@(defmodule restricted-permutations/R #:packages ())
+@;@(defmodule "circuits.rkt" #:packages ())
+@;@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -1389,19 +1391,11 @@ has at least one minimal base of two elements.
   (code:comment "transposition and cycle form a minimal base.")
   (define transposition (P (list 0 n-1)))
   (define cycle (P (range 0 n-1)))
-  (code:comment "From cycle we van construct inversed-cycle.")
-  (define inversed-cycle (P-expt cycle (- n 2)))
   (code:comment "base-of-transposition is not minimal for n>3.")
   (define base-of-transpositions
-   (for/fold
-    ((transposition transposition)
-     (base-of-transpositions (list transposition))
-     #:result base-of-transpositions) ((k (in-range n-1)))
-    (printf "~s~n" transposition)
-    (define new-transposition
-     (P cycle transposition inversed-cycle))
-    (values new-transposition
-     (cons new-transposition base-of-transpositions))))
+   (for/list ((k (in-range n-1)))
+    (P (P-expt cycle k) transposition (P-expt cycle (- k)))))
+  (for-each (curry printf "~s~n") base-of-transpositions)
   (eq? (apply G base-of-transpositions) (G-symmetric n)))
  (printf "~n ~netc.~n")
  (error 'example "failed! (This should never happen)"))]
@@ -1410,8 +1404,8 @@ For n>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
 forms a (non-minimal) base @nb{for S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
-every relevant transposition @nb{(i j)} not in the set can be
-obtained by composing three transpositions of the set as follows:
+every relevant transposition @nb{(i j)} not in the list of transpositions can be
+obtained by composing three transpositions of the list as follows:
 @nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
 where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
@@ -1522,7 +1516,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
 (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
 (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
 (define line
- "──────────────────────────────────────────────────────────────────~n")
+ "──────────────────────────────────────────────────────────~n")
 (begin
  (printf line)
  (printf "Proper? Invariant? Order Subgroup (in C-notation)~n")
@@ -2171,7 +2165,7 @@ of which 30 contain rotations only.
      x-invariant? (not y-invariant?))))))
  
 (define header "order rotations-only? invariant? nr-of-subgroups~n")
-(define line   "────────────────────────────────────────────────────~n")
+(define line   "────────────────────────────────────────────────~n")
 (define (~b x) (if x "yes" "no"))
 
 (begin
