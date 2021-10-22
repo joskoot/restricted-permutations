@@ -200,12 +200,12 @@ It frequently refers to mathematical concepts without their definitions
 and mentions theorems without their proofs.
 @nb{For a simple} introduction see chapter 1 of
 @hyperlink[
- "Hamermesh-GroupTheory.pdf"
+ "../../Hamermesh-GroupTheory.pdf"
  "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
