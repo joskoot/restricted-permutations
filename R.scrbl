@@ -168,7 +168,7 @@ as a permutation of @bold{N} with a restriction as follows:
 @inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
 
 Let's call the smallest m∈@bold{N} for which this holds,
-@nb{@italic{the} restriction} @nb{of p.}
+@nb{@italic{@bold{the}} restriction} @nb{of p.}
 @nb{`R' is shorthand for `restricted permutation'.}
 @nb{Let @bold{R} be the set of all Rs.}
 @nb{@elemtag["composition"]Define the composition:}
