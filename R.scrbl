@@ -129,11 +129,11 @@ Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports al
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
 (("Module" "Documentation in section") 
- (@nbhl["N.rkt" "N.rkt"] @(nbsr "N"))
- (@nbhl["C.rkt" "C.rkt"] @(nbsr "C"))
- (@nbhl["P.rkt" "P.rkt"] @(nbsr "P"))
- (@nbhl["H.rkt" "H.rkt"] @(nbsr "H"))
- (@nbhl["G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
+ (@nbhl["../../N.rkt" "N.rkt"] @(nbsr "N"))
+ (@nbhl["../../C.rkt" "C.rkt"] @(nbsr "C"))
+ (@nbhl["../../P.rkt" "P.rkt"] @(nbsr "P"))
+ (@nbhl["../../H.rkt" "H.rkt"] @(nbsr "H"))
+ (@nbhl["../../G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
  #:sep (hspace 3)
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
