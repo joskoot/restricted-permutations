@@ -125,7 +125,7 @@
 @(defmodule restricted-permutations/R #:packages ())
 @;@(defmodule "R.rkt" #:packages ())
 
-Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
+Module @nbhl["../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
 (("Module" "Documentation in section") 
