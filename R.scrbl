@@ -125,15 +125,15 @@
 @(defmodule restricted-permutations/R #:packages ())
 @;@(defmodule "R.rkt" #:packages ())
 
-Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
+Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
 (("Module" "Documentation in section") 
- (@nbhl["../../N.rkt" "N.rkt"] @(nbsr "N"))
- (@nbhl["../../C.rkt" "C.rkt"] @(nbsr "C"))
- (@nbhl["../../P.rkt" "P.rkt"] @(nbsr "P"))
- (@nbhl["../../H.rkt" "H.rkt"] @(nbsr "H"))
- (@nbhl["../../G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
+ (@nbhl["N.rkt" "N.rkt"] @(nbsr "N"))
+ (@nbhl["C.rkt" "C.rkt"] @(nbsr "C"))
+ (@nbhl["P.rkt" "P.rkt"] @(nbsr "P"))
+ (@nbhl["H.rkt" "H.rkt"] @(nbsr "H"))
+ (@nbhl["G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
  #:sep (hspace 3)
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
@@ -204,7 +204,7 @@ and mentions theorems without their proofs.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -330,11 +330,11 @@ the exact integer numbers of Racket by which they are represented nor between
 @racketlink[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
 
-@Tabular[
+@inset{@Tabular[
 ((@bold{N}      "is the set of all natural numbers.")
  (@bold{N@↑{+}} "is the set of all positive natural numbers.")
  (@bold{Z}      "is the set of all integer numbers."))
- #:sep (hspace 1)]
+ #:sep (hspace 1)]}
 
 @deftogether[
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
@@ -348,7 +348,7 @@ and the corresponding abstract natural numbers.
   #:sep (hspace 3)
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
-The synonyms are provided by module @nbhl["../../N.rkt" "N.rkt"].
+The synonyms are provided by module @nbhl["N.rkt" "N.rkt"].
 They are used as shorthands in the description of the procedures shown in this document,
 particularly in their specifications of data types.
 
@@ -357,7 +357,7 @@ and has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
 
-All objects described in this section are defined in module @nbhl["../../C.rkt" "C.rkt"].
+All objects described in this section are defined in module @nbhl["C.rkt" "C.rkt"].
 `C' is shorthand for `cycle notation'.
 A C represents an @nber["R" "R"] and is one of the following:
 
@@ -406,6 +406,8 @@ A C represents an @nber["R" "R"] and is one of the following:
   is the smallest common multiple of the lengths of the single Cs.})]
 
 Every @nber["R" "R"] can be represented by a C (in fact by many of them and ignoring memory limits).
+For every C there is exactly one (in the sense of @nbr[equal?])
+normalized C representing the same @nber["R" "R"].
 For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
 (in the sense of @nbr[equal?] and ignoring memory limits).
 
@@ -545,7 +547,7 @@ You probably never need this procedure.@(lb)@nb{@red{Advice: avoid it}.}}
 @section[#:tag "P"]{Function representation}
 
 All objects described in this section are defined in
-module @nbhl["../../P.rkt" "P.rkt"].
+module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, a P returns the same
 @seclink["N"]{@nb{natural number}} as the represented @nber["R" "R"], of course.
@@ -1119,7 +1121,7 @@ See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
 
 All objects described in this section are defined in
-module @nbhl["../../G.rkt" "G.rkt"].
+module @nbhl["G.rkt" "G.rkt"].
 A G represents a finite subgroup of @nber["R" (bold "R")] and is
 written, displayed or printed in @constr-style as:
 
@@ -1726,7 +1728,7 @@ Examples:}
 @defproc*[
  (((R-hashes-count) N+?)
   ((R-clear-hashes) void?))]{
-Modules @nbhl["../../P.rkt" "P.rkt"] and @nbhl["../../G.rkt" "G.rkt"]
+Modules @nbhl["P.rkt" "P.rkt"] and @nbhl["G.rkt" "G.rkt"]
 use hashes in order to avoid repeated identical computations
 and to guarantee that
 @nbsl["P" "P"]s and @nbsl["G" "G"]s that represent the same @nber["R" "R"]s and
@@ -1764,8 +1766,8 @@ See section @nbsr["Distinct-instances"] too.}
 (code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "true")))
 (code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "true")))]
 
-@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["../../R.rkt" "R.rkt"]}
-Two distinct instances of module @nbhl["../../R.rkt" "R.rkt"]
+@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["R.rkt" "R.rkt"]}
+Two distinct instances of module @nbhl["R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
 
@@ -1798,7 +1800,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 
 @section[#:tag "H"]{Hash representation}
 
-All objects described in this section are defined in module @nbhl["../../H.rkt" "H.rkt"].
+All objects described in this section are defined in module @nbhl["H.rkt" "H.rkt"].
 The H-representation is used internally for operations like application,
 @nber["composition" "composition"] and @nbrl[P-inverse "inversion"].
 @red{Advice}: avoid explicit use of the H-representation.
