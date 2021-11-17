@@ -122,18 +122,17 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
-Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
+Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
 (("Module" "Documentation in section") 
- (@nbhl["../../N.rkt" "N.rkt"] @(nbsr "N"))
- (@nbhl["../../C.rkt" "C.rkt"] @(nbsr "C"))
- (@nbhl["../../P.rkt" "P.rkt"] @(nbsr "P"))
- (@nbhl["../../H.rkt" "H.rkt"] @(nbsr "H"))
- (@nbhl["../../G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
+ (@nbhl["N.rkt" "N.rkt"] @(nbsr "N"))
+ (@nbhl["C.rkt" "C.rkt"] @(nbsr "C"))
+ (@nbhl["P.rkt" "P.rkt"] @(nbsr "P"))
+ (@nbhl["H.rkt" "H.rkt"] @(nbsr "H"))
+ (@nbhl["G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
  #:sep (hspace 3)
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
@@ -198,9 +197,8 @@ an infinite number of them if the order is greater than 1.}
 It frequently refers to mathematical concepts without their definitions
 and mentions theorems without their proofs.
 @nb{For a simple} introduction see chapter 1 of
-@hyperlink[
- "Hamermesh-GroupTheory.pdf"
- "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
+@hyperlink["Hamermesh-GroupTheory.pdf"]{
+Group Theory and its Application to Physical Problems by Morton Hamermesh}.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
@@ -282,8 +280,7 @@ which means that p is the identity with @nb{restriction 0.}
 
 Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
-This implies: @nb{a(1) = 0.}
-Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
+This implies: @nb{a(1) = 0.} Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
 where m runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
@@ -330,11 +327,11 @@ the exact integer numbers of Racket by which they are represented nor between
 @racketlink[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
 
-@inset{@Tabular[
+@Tabular[
 ((@bold{N}      "is the set of all natural numbers.")
  (@bold{N@↑{+}} "is the set of all positive natural numbers.")
  (@bold{Z}      "is the set of all integer numbers."))
- #:sep (hspace 1)]}
+ #:sep (hspace 1)]
 
 @deftogether[
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
@@ -348,7 +345,7 @@ and the corresponding abstract natural numbers.
   #:sep (hspace 3)
   #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
-The synonyms are provided by module @nbhl["../../N.rkt" "N.rkt"].
+The synonyms are provided by module @nbhl["N.rkt" "N.rkt"].
 They are used as shorthands in the description of the procedures shown in this document,
 particularly in their specifications of data types.
 
@@ -357,7 +354,7 @@ and has nothing to do with the set of real numbers.}
 
 @section[#:tag "C"]{Cycle notation}
 
-All objects described in this section are defined in module @nbhl["../../C.rkt" "C.rkt"].
+All objects described in this section are defined in module @nbhl["C.rkt" "C.rkt"].
 `C' is shorthand for `cycle notation'.
 A C represents an @nber["R" "R"] and is one of the following:
 
@@ -388,7 +385,8 @@ A C represents an @nber["R" "R"] and is one of the following:
 (list
  @item{
   The empty list. It is the one and only normalized C representing the
-  @nber["id"]{identity of @bold{R}}.}
+  @nber["id"]{identity of @bold{R}}.@(lb)
+  The normalized form of a single C of one element is the empty list.}
  @item{
   A single C of at least two elements and the first element being the smallest one.
   @nb{A circular} shift of a single C represents the same @nber["R" "R"]
@@ -522,7 +520,7 @@ The @nber["id"]{identity of @bold{R}} has even parity.
 Combined with the same composition,
 the subset of all even elements of a finite group forms an
 @nbrl[G-invariant-subg? "invariant subgroup"].
-Inverses of each other have the same parity. The same holds for conjugate elements.}
+Inverses of each other have the same parity.}
 
 Examples:
 
@@ -547,7 +545,7 @@ You probably never need this procedure.@(lb)@nb{@red{Advice: avoid it}.}}
 @section[#:tag "P"]{Function representation}
 
 All objects described in this section are defined in
-module @nbhl["../../P.rkt" "P.rkt"].
+module @nbhl["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, a P returns the same
 @seclink["N"]{@nb{natural number}} as the represented @nber["R" "R"], of course.
@@ -963,7 +961,7 @@ has as many odd elements as even ones.
 (for/and ((n (in-range 2 6)))
  (equal? (check (G-symmetric n)) "as many odd elements as even ones"))
 (code:comment "The statement holds for all groups containing at least one odd element.")
-(code:comment "Two checks on non-symmetric groups:")
+(code:comment "Two checks on non-symmetric grou:")
 (define g (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
 (G-order g)
 (check g)
@@ -1121,7 +1119,7 @@ See the @elemref["H->P-example" "example"] in section @nbsl["C3v"]{Group C@↓{3
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
 
 All objects described in this section are defined in
-module @nbhl["../../G.rkt" "G.rkt"].
+module @nbhl["G.rkt" "G.rkt"].
 A G represents a finite subgroup of @nber["R" (bold "R")] and is
 written, displayed or printed in @constr-style as:
 
@@ -1391,11 +1389,19 @@ has at least one minimal base of two elements.
   (code:comment "transposition and cycle form a minimal base.")
   (define transposition (P (list 0 n-1)))
   (define cycle (P (range 0 n-1)))
+  (code:comment "From cycle we van construct inversed-cycle.")
+  (define inversed-cycle (P-expt cycle (- n 2)))
   (code:comment "base-of-transposition is not minimal for n>3.")
   (define base-of-transpositions
-   (for/list ((k (in-range n-1)))
-    (P (P-expt cycle k) transposition (P-expt cycle (- k)))))
-  (for-each (curry printf "~s~n") base-of-transpositions)
+   (for/fold
+    ((transposition transposition)
+     (base-of-transpositions (list transposition))
+     #:result base-of-transpositions) ((k (in-range n-1)))
+    (printf "~s~n" transposition)
+    (define new-transposition
+     (P cycle transposition inversed-cycle))
+    (values new-transposition
+     (cons new-transposition base-of-transpositions))))
   (eq? (apply G base-of-transpositions) (G-symmetric n)))
  (printf "~n ~netc.~n")
  (error 'example "failed! (This should never happen)"))]
@@ -1404,8 +1410,8 @@ For n>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
 forms a (non-minimal) base @nb{for S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
-every relevant transposition @nb{(i j)} not in the list of transpositions can be
-obtained by composing three transpositions of the list as follows:
+every relevant transposition @nb{(i j)} not in the set can be
+obtained by composing three transpositions of the set as follows:
 @nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
 where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
@@ -1516,7 +1522,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
 (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
 (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
 (define line
- "─────────────────────────────────────────────────────────────~n")
+ "──────────────────────────────────────────────────────────────────~n")
 (begin
  (printf line)
  (printf "Proper? Invariant? Order Subgroup (in C-notation)~n")
@@ -1728,7 +1734,7 @@ Examples:}
 @defproc*[
  (((R-hashes-count) N+?)
   ((R-clear-hashes) void?))]{
-Modules @nbhl["../../P.rkt" "P.rkt"] and @nbhl["../../G.rkt" "G.rkt"]
+Modules @nbhl["P.rkt" "P.rkt"] and @nbhl["G.rkt" "G.rkt"]
 use hashes in order to avoid repeated identical computations
 and to guarantee that
 @nbsl["P" "P"]s and @nbsl["G" "G"]s that represent the same @nber["R" "R"]s and
@@ -1766,8 +1772,8 @@ See section @nbsr["Distinct-instances"] too.}
 (code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "true")))
 (code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "true")))]
 
-@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["../../R.rkt" "R.rkt"]}
-Two distinct instances of module @nbhl["../../R.rkt" "R.rkt"]
+@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["R.rkt" "R.rkt"]}
+Two distinct instances of module @nbhl["R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
 
@@ -1800,7 +1806,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 
 @section[#:tag "H"]{Hash representation}
 
-All objects described in this section are defined in module @nbhl["../../H.rkt" "H.rkt"].
+All objects described in this section are defined in module @nbhl["H.rkt" "H.rkt"].
 The H-representation is used internally for operations like application,
 @nber["composition" "composition"] and @nbrl[P-inverse "inversion"].
 @red{Advice}: avoid explicit use of the H-representation.
@@ -2165,7 +2171,7 @@ of which 30 contain rotations only.
      x-invariant? (not y-invariant?))))))
  
 (define header "order rotations-only? invariant? nr-of-subgroups~n")
-(define line   "────────────────────────────────────────────────~n")
+(define line   "────────────────────────────────────────────────────~n")
 (define (~b x) (if x "yes" "no"))
 
 (begin
