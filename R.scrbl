@@ -122,7 +122,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutation/restricted-permutation #:packages ())
+@(defmodule restricted-permutations/R #:packages ())
+@;@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -197,8 +198,9 @@ an infinite number of them if the order is greater than 1.}
 It frequently refers to mathematical concepts without their definitions
 and mentions theorems without their proofs.
 @nb{For a simple} introduction see chapter 1 of
-@hyperlink["../../Hamermesh-GroupTheory.pdf"]{
-Group Theory and its Application to Physical Problems by Morton Hamermesh}.
+@hyperlink[
+ "../../Hamermesh-GroupTheory.pdf"
+ "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
@@ -280,7 +282,8 @@ which means that p is the identity with @nb{restriction 0.}
 
 Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
-This implies: @nb{a(1) = 0.} Furthermore: @nb{@larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
+This implies: @nb{a(1) = 0.}
+Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
 where m runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
@@ -327,11 +330,11 @@ the exact integer numbers of Racket by which they are represented nor between
 @racketlink[exact-nonnegative-integer? "exact non-negative integers of Racket"]
 and the corresponding abstract natural numbers.
 
-@Tabular[
+@inset{@Tabular[
 ((@bold{N}      "is the set of all natural numbers.")
  (@bold{N@↑{+}} "is the set of all positive natural numbers.")
  (@bold{Z}      "is the set of all integer numbers."))
- #:sep (hspace 1)]
+ #:sep (hspace 1)]}
 
 @deftogether[
  (@defproc[#:kind "predicate" (N?  (x any/c)) boolean?]
@@ -385,8 +388,7 @@ A C represents an @nber["R" "R"] and is one of the following:
 (list
  @item{
   The empty list. It is the one and only normalized C representing the
-  @nber["id"]{identity of @bold{R}}.@(lb)
-  The normalized form of a single C of one element is the empty list.}
+  @nber["id"]{identity of @bold{R}}.}
  @item{
   A single C of at least two elements and the first element being the smallest one.
   @nb{A circular} shift of a single C represents the same @nber["R" "R"]
@@ -520,7 +522,7 @@ The @nber["id"]{identity of @bold{R}} has even parity.
 Combined with the same composition,
 the subset of all even elements of a finite group forms an
 @nbrl[G-invariant-subg? "invariant subgroup"].
-Inverses of each other have the same parity.}
+Inverses of each other have the same parity. The same holds for conjugate elements.}
 
 Examples:
 
@@ -961,7 +963,7 @@ has as many odd elements as even ones.
 (for/and ((n (in-range 2 6)))
  (equal? (check (G-symmetric n)) "as many odd elements as even ones"))
 (code:comment "The statement holds for all groups containing at least one odd element.")
-(code:comment "Two checks on non-symmetric grou:")
+(code:comment "Two checks on non-symmetric groups:")
 (define g (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
 (G-order g)
 (check g)
@@ -1389,19 +1391,11 @@ has at least one minimal base of two elements.
   (code:comment "transposition and cycle form a minimal base.")
   (define transposition (P (list 0 n-1)))
   (define cycle (P (range 0 n-1)))
-  (code:comment "From cycle we van construct inversed-cycle.")
-  (define inversed-cycle (P-expt cycle (- n 2)))
   (code:comment "base-of-transposition is not minimal for n>3.")
   (define base-of-transpositions
-   (for/fold
-    ((transposition transposition)
-     (base-of-transpositions (list transposition))
-     #:result base-of-transpositions) ((k (in-range n-1)))
-    (printf "~s~n" transposition)
-    (define new-transposition
-     (P cycle transposition inversed-cycle))
-    (values new-transposition
-     (cons new-transposition base-of-transpositions))))
+   (for/list ((k (in-range n-1)))
+    (P (P-expt cycle k) transposition (P-expt cycle (- k)))))
+  (for-each (curry printf "~s~n") base-of-transpositions)
   (eq? (apply G base-of-transpositions) (G-symmetric n)))
  (printf "~n ~netc.~n")
  (error 'example "failed! (This should never happen)"))]
@@ -1410,8 +1404,8 @@ For n>2 the set of @nbrl[C-transpositions]{transpositions}
 @nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
 forms a (non-minimal) base @nb{for S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
-every relevant transposition @nb{(i j)} not in the set can be
-obtained by composing three transpositions of the set as follows:
+every relevant transposition @nb{(i j)} not in the list of transpositions can be
+obtained by composing three transpositions of the list as follows:
 @nb{((i n@(minus)1) (j n@(minus)1) (i n@(minus)1)) = (i j)},
 where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
@@ -1522,7 +1516,7 @@ Returns a list of all subgroups of @nbr[g]. Example:
 (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
 (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
 (define line
- "──────────────────────────────────────────────────────────────────~n")
+ "─────────────────────────────────────────────────────────────~n")
 (begin
  (printf line)
  (printf "Proper? Invariant? Order Subgroup (in C-notation)~n")
@@ -2171,7 +2165,7 @@ of which 30 contain rotations only.
      x-invariant? (not y-invariant?))))))
  
 (define header "order rotations-only? invariant? nr-of-subgroups~n")
-(define line   "────────────────────────────────────────────────────~n")
+(define line   "────────────────────────────────────────────────~n")
 (define (~b x) (if x "yes" "no"))
 
 (begin
