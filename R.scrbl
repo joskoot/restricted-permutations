@@ -122,7 +122,7 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule "R.rkt" #:packages ())
+@(defmodule restricted-permutation/restricted-permutations #:packages ())
 
 Module @nbhl["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -197,7 +197,7 @@ an infinite number of them if the order is greater than 1.}
 It frequently refers to mathematical concepts without their definitions
 and mentions theorems without their proofs.
 @nb{For a simple} introduction see chapter 1 of
-@hyperlink["Hamermesh-GroupTheory.pdf"]{
+@hyperlink["../../Hamermesh-GroupTheory.pdf"]{
 Group Theory and its Application to Physical Problems by Morton Hamermesh}.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
