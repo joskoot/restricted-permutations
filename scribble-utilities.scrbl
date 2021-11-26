@@ -111,5 +111,3 @@
 
 @(define constr-style
  (nbhl "https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"))
-        
-aap noot mies
