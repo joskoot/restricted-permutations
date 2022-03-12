@@ -1870,6 +1870,51 @@ Same as @nbr[(and (pseudo-H? x) (equal? (H-normalize x) H-identity))]}
 Returns the @nber["R" "restriction"] of the @nber["R" "R"] represented by @nbr[h].}
 
 @section{Elaborated examples}
+@subsection{Symmetries of a square}
+
+Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.
+Name the symmetries as follows:
+@Tabular[(("name" "description")
+("E" "identity")
+("R" "clockwise rotation about 90°")
+("R2" "clockwise rotation about 180°")
+("R2" "clockwise rotation about 270°")
+("Sv" "reflection in vertical center line")
+("Sh" "reflection in horizontal center line")
+("Sd1" "reflection in diagional 0-2")
+("Sd2" "reflection in diagional 1-3"))
+#:sep (hspace 2)]
+@interaction[
+(require "R.rkt" racket)
+
+(define E   P-identity)         (set-P-name! E   'E)   
+(define R   (P '(0 1 2 3)))     (set-P-name! R   'R)
+(define R2  (P R R))            (set-P-name! R2  'R2)
+(define R3  (P R R2))           (set-P-name! R3  'R3)
+(define Sv  (P '((0 1) (2 3)))) (set-P-name! Sv  'Sv)
+(define Sh  (P R2 Sv))          (set-P-name! Sh  'Sh)
+(define Sd1 (P R Sh))           (set-P-name! Sd1 'Sd1)
+(define Sd2 (P R2 Sd1))         (set-P-name! Sd2 'Sd2)
+
+(define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
+(define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
+(eq? (apply G g-list) (G R Sv))
+
+(define (print-aligned lst-of-lst #:sep (sep " ") #:align (align 'left))
+ (define transposed-lst-of-lst (apply map list lst-of-lst))
+ (define lst-of-lst-of-str (map (curry map ~s) transposed-lst-of-lst))
+ (define widths (map (λ (lst-of-str) (apply max (map string-length lst-of-str))) lst-of-lst-of-str))
+ (for ((lst (in-list lst-of-lst)))
+  (printf "~a" (~s (car lst) #:align align #:min-width (car widths)))
+  (for ((element (in-list (cdr lst))) (width (in-list (cdr widths))))
+   (printf "~a~a" sep (~s element #:align align #:min-width width)))
+  (newline)))
+
+(print-aligned #:sep "  "
+ (for/list ((p (in-list g-list)))
+  (for/list ((q (in-list g-list))) (P-name (P p q)))))
+]
+
 @subsection{Symmetries of a cube}
 
 Number the vertices of a cube as shown in the following figure:
