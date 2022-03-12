@@ -8,7 +8,7 @@
 (require "H.rkt" "C.rkt" "N.rkt" (only-in racket/generator generator yield))
 (provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
-(provide P-fixed-point? P->H H->P P-commute?)
+(provide P-fixed-point? P->H H->P P-commute? P-name set-P-name!)
 
 (define (P->C p)                  ; This definition comes before that of P-write because
  (or (P-C-field p)                ; the debugger can be caught in an infinite sequence of
@@ -38,6 +38,7 @@
 (struct P
  (H-field
   (C-field       #:auto #:mutable)
+  (name          #:auto #:mutable)
   (order-field   #:auto #:mutable)
   (period-field  #:auto #:mutable)  ; Vector of powers of Ps in order of the exponent.
   (inverse-field #:auto #:mutable)  ; Inverse of P

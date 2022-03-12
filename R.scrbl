@@ -718,6 +718,17 @@ even after @nbsl["Cleanup" "cleanup"].}
 Same as @nbr[(eq? x P-identity)].
 The predicate remains valid after @nbsl["Cleanup" "cleanup"].}
 
+@deftogether[(@defproc[(P-name (p P?)) any/c]
+@defproc[(set-P-name! (p P?) (name any/c)) P?])]{
+A P can be given a @nbr[name]. This does not alter the identity of the P.
+@interaction[
+(require "R.rkt")
+(define a (P '(1 2 3)))
+(define b (P '(1 2 3)))
+(set-P-name! a 'a-name)
+(P-name b)
+(eq? a b)]}
+
 @defproc[(P-commute? (p (or/c P? C?)) (q (or/c P? C?))) boolean?]{
 Same as @nbr[(eq? (P p q) (P q p))].
 Not disturbed by @nbsl["Cleanup" "cleanup"].}
