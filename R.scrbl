@@ -708,10 +708,6 @@ writing x@(expt-1) for the inverse of x.}
 
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]
 
-@defproc[(P-name (p P?)) any/c]
-
-@defproc[(set-P-name! (p P?) (name any/c)) void?]
-
 @defidform[#:kind "constant" P-identity]{
 The P representing the @nber["id" "identity"] of @nber["R"]{@bold{R}.}
 A P representing the identity always is the same as @nbr[P-identity]
