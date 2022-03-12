@@ -204,7 +204,7 @@ and mentions theorems without their proofs.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -707,6 +707,10 @@ but the result is not a P. Example:
 writing x@(expt-1) for the inverse of x.}
 
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]
+
+@defproc[(P-name (p P?)) any/c]
+
+@defproc[(set-P-name! (p P?) (name any/c)) void?]
 
 @defidform[#:kind "constant" P-identity]{
 The P representing the @nber["id" "identity"] of @nber["R"]{@bold{R}.}
