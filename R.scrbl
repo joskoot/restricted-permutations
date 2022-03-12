@@ -1903,7 +1903,9 @@ Name the symmetries as follows:
 (define (print-aligned lst-of-lst #:sep (sep " ") #:align (align 'left))
  (define transposed-lst-of-lst (apply map list lst-of-lst))
  (define lst-of-lst-of-str (map (curry map ~s) transposed-lst-of-lst))
- (define widths (map (λ (lst-of-str) (apply max (map string-length lst-of-str))) lst-of-lst-of-str))
+ (define widths
+  (map (λ (lst-of-str) (apply max (map string-length lst-of-str)))
+   lst-of-lst-of-str))
  (for ((lst (in-list lst-of-lst)))
   (printf "~a" (~s (car lst) #:align align #:min-width (car widths)))
   (for ((element (in-list (cdr lst))) (width (in-list (cdr widths))))
