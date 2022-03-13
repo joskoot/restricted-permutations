@@ -1885,25 +1885,34 @@ Name the symmetries as follows:
 ("Sd2" "reflection in diagional 1-3"))
 #:sep (hspace 2)]
 @interaction[
-(require "R.rkt" fmt/fmt)
+(require "R.rkt" racket)
 
-(code:line (define E   P-identity)         (set-P-name! E   'E))
-(code:line (define R   (P '(0 1 2 3)))     (set-P-name! R   'R))
-(code:line (define R2  (P R R))            (set-P-name! R2  'R2))
-(code:line (define R3  (P R R2))           (set-P-name! R3  'R3))
-(code:line (define Sv  (P '((0 1) (2 3)))) (set-P-name! Sv  'Sv))
-(code:line (define Sh  (P R2 Sv))          (set-P-name! Sh  'Sh))
-(code:line (define Sd1 (P R Sh))           (set-P-name! Sd1 'Sd1))
-(code:line (define Sd2 (P R2 Sd1))         (set-P-name! Sd2 'Sd2))
+(define E   P-identity)         (set-P-name! E   'E)   
+(define R   (P '(0 1 2 3)))     (set-P-name! R   'R)
+(define R2  (P R R))            (set-P-name! R2  'R2)
+(define R3  (P R R2))           (set-P-name! R3  'R3)
+(define Sv  (P '((0 1) (2 3)))) (set-P-name! Sv  'Sv)
+(define Sh  (P R2 Sv))          (set-P-name! Sh  'Sh)
+(define Sd1 (P R Sh))           (set-P-name! Sd1 'Sd1)
+(define Sd2 (P R2 Sd1))         (set-P-name! Sd2 'Sd2)
 
 (define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
 (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
 (eq? (apply G g-list) (G R Sv))
 
-(define (print-aligned lst-of-lst)
- ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
+(define (print-aligned lst-of-lst #:sep (sep " ") #:align (align 'left))
+ (define transposed-lst-of-lst (apply map list lst-of-lst))
+ (define lst-of-lst-of-str (map (curry map ~s) transposed-lst-of-lst))
+ (define widths
+  (map (λ (lst-of-str) (apply max (map string-length lst-of-str)))
+   lst-of-lst-of-str))
+ (for ((lst (in-list lst-of-lst)))
+  (printf "~a" (~s (car lst) #:align align #:min-width (car widths)))
+  (for ((element (in-list (cdr lst))) (width (in-list (cdr widths))))
+   (printf "~a~a" sep (~s element #:align align #:min-width width)))
+  (newline)))
 
-(print-aligned
+(print-aligned #:sep "  "
  (for/list ((p (in-list g-list)))
   (for/list ((q (in-list g-list))) (P-name (P p q)))))
 ]
