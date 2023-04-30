@@ -2,5 +2,5 @@
 
 ; By Jacob J. A. Koot
 
-(define scribblings '(("R.scrbl" (multi-page))))
+(define scribblings '(("R.scrbl" ())))
 (define collection "restricted-permutations")
