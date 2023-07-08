@@ -1757,9 +1757,7 @@ will not recognize newly constructed @nbsl["P" "P"]s.
 Therefore @nbr[R-clear-hashes] should not be used preceding code that refers to
 @nbsl["P" "P"]s or @nbsl["G" "G"]s made before cleanup.
 Procedures @nbr[P-equal?], @nbr[G-equal?], @nbr[P<?] and @nbr[P-sort]
-remain comparing correctly after cleanup.
-
-See section @nbsr["Distinct-instances"] too.}
+remain comparing correctly after cleanup.}
 
 @deftogether[
 (@defproc[#:kind "equivalence relation" (P-equal? (p0 P?) (p1 P?)) boolean?]
