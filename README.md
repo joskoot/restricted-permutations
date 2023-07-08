@@ -20,9 +20,9 @@ R.rkt provides functions for restricted permutations
 and finite groups of restricted permutations.
 
 Restricted permutations are represented by procedures,
-but in such a way that two procedures representing the same
+but in such a way that procedures representing the same
 mathematical permutation are the same in the sense of [eq?].
-Groups are represented in a way that two representations of
+Groups too are represented in a way that representations of
 the same mathematical group are the same in the sense of [eq?].
 
 Have fun,
