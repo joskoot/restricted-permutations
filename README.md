@@ -1,9 +1,11 @@
 Restricted permutations
 
-Go to file/package manager.
-Choose Do what I mean,
-Enter https://github.com/joskoot/restricted-permutations.git
-If needed choose defaults in all fields.
+Install the package as follows:
+
+Go to file/package manager.\
+Choose Do what I mean,\
+Enter https://github.com/joskoot/restricted-permutations.git \
+If needed choose defaults in all fields.\
 Click Install.
 
 Require the package as follows:
@@ -22,13 +24,6 @@ but in such a way that two procedures representing the same
 mathematical permutation are the same in the sense of [eq?].
 Groups are represented in a way that two representations of
 the same mathematical group are the same in the sense of [eq?].
-
-Download all files from https://github.com/joskoot/restricted-permutations.
-Run module R.scrbl and make sure it produces a html file,
-for example by opening it with DrRacket an clicking the scribble button.
-Keep all files in the same directory.
-More info in R.html as produced by R.scrbl.
-R.scrbl may require some time and memory because of elaborated examples.
 
 Have fun,
 Jacob J. A. Koot
