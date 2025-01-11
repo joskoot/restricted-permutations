@@ -1876,7 +1876,7 @@ Name the symmetries as follows:
 ("E" "identity")
 ("R" "clockwise rotation about 90°")
 ("R2" "clockwise rotation about 180°")
-("R2" "clockwise rotation about 270°")
+("R3" "clockwise rotation about 270°")
 ("Sv" "reflection in vertical center line")
 ("Sh" "reflection in horizontal center line")
 ("Sd1" "reflection in diagional 0-2")
