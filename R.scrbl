@@ -204,7 +204,7 @@ and mentions theorems without their proofs.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -1757,7 +1757,9 @@ will not recognize newly constructed @nbsl["P" "P"]s.
 Therefore @nbr[R-clear-hashes] should not be used preceding code that refers to
 @nbsl["P" "P"]s or @nbsl["G" "G"]s made before cleanup.
 Procedures @nbr[P-equal?], @nbr[G-equal?], @nbr[P<?] and @nbr[P-sort]
-remain comparing correctly after cleanup.}
+remain comparing correctly after cleanup.
+
+See section @nbsr["Distinct-instances"] too.}
 
 @deftogether[
 (@defproc[#:kind "equivalence relation" (P-equal? (p0 P?) (p1 P?)) boolean?]
@@ -1874,9 +1876,9 @@ Number the vertices of a square anticlockwise starting left below with 0, 1, 2 a
 Name the symmetries as follows:
 @Tabular[(("name" "description")
 ("E" "identity")
-("R" "clockwise rotation about 90°")
-("R2" "clockwise rotation about 180°")
-("R3" "clockwise rotation about 270°")
+("R" "anti clockwise rotation about 90°")
+("R2" "anti clockwise rotation about 180°")
+("R2" "anti clockwise rotation about 270°")
 ("Sv" "reflection in vertical center line")
 ("Sh" "reflection in horizontal center line")
 ("Sd1" "reflection in diagional 0-2")
