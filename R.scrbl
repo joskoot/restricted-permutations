@@ -205,7 +205,7 @@ and mentions theorems without their proofs.
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
 @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
-@nb{As an} alter@(-?)native see @nbhl["../finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
