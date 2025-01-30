@@ -122,8 +122,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@;@(defmodule restricted-permutations/R #:packages ())
-@(defmodule "R.rkt" #:packages ())
+@(defmodule restricted-permutations/R #:packages ())
+@;@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
