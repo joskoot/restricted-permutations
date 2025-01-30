@@ -1899,6 +1899,8 @@ Name the symmetries as follows:
 (define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
 (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
 (for ((p (in-list g-list)) (name (in-list names))) (set-P-name! p name))
+
+(code:comment "R and Sv form a minimal base.")
 (eq? (apply G g-list) (G R Sv))
 
 (define (print-aligned lst-of-lst)
