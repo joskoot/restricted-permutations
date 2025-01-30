@@ -122,8 +122,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -1876,9 +1876,9 @@ Number the vertices of a square anticlockwise starting left below with 0, 1, 2 a
 Name the symmetries as follows:
 @Tabular[(("name" "description")
 ("E" "identity")
-("R" "clockwise rotation about 90°")
-("R2" "clockwise rotation about 180°")
-("R2" "clockwise rotation about 270°")
+("R" "anticlockwise rotation about 90°")
+("R2" "anticlockwise rotation about 180°")
+("R3" "anticlockwise rotation about 270°")
 ("Sv" "reflection in vertical center line")
 ("Sh" "reflection in horizontal center line")
 ("Sd1" "reflection in diagional 0-2")
