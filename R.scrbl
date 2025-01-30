@@ -204,8 +204,7 @@ and mentions theorems without their proofs.
 @nb{If you} know nothing about quantum mechanics,
 you'd better skip the intro@(-?)duction.
 Quantum mechanics plays no role in chapter 1.
-@;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
-@nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
 @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -1877,9 +1876,9 @@ Number the vertices of a square anticlockwise starting left below with 0, 1, 2 a
 Name the symmetries as follows:
 @Tabular[(("name" "description")
 ("E" "identity")
-("R" "anti clockwise rotation about 90°")
-("R2" "anti clockwise rotation about 180°")
-("R3" "anti clockwise rotation about 270°")
+("R" "clockwise rotation about 90°")
+("R2" "clockwise rotation about 180°")
+("R2" "clockwise rotation about 270°")
 ("Sv" "reflection in vertical center line")
 ("Sh" "reflection in horizontal center line")
 ("Sd1" "reflection in diagional 0-2")
@@ -1888,17 +1887,18 @@ Name the symmetries as follows:
 @interaction[
 (require "R.rkt" fmt/fmt)
 
-(code:line (define E   P-identity)         (set-P-name! E   'E))
-(code:line (define R   (P '(0 1 2 3)))     (set-P-name! R   'R))
-(code:line (define R2  (P R R))            (set-P-name! R2  'R2))
-(code:line (define R3  (P R R2))           (set-P-name! R3  'R3))
-(code:line (define Sv  (P '((0 1) (2 3)))) (set-P-name! Sv  'Sv))
-(code:line (define Sh  (P R2 Sv))          (set-P-name! Sh  'Sh))
-(code:line (define Sd1 (P R Sh))           (set-P-name! Sd1 'Sd1))
-(code:line (define Sd2 (P R2 Sd1))         (set-P-name! Sd2 'Sd2))
+(define E   P-identity)
+(define R   (P '(0 1 2 3)))
+(define R2  (P R R))
+(define R3  (P R R2))
+(define Sv  (P '((0 1) (2 3))))
+(define Sh  (P R2 Sv))
+(define Sd1 (P R Sh))
+(define Sd2 (P R2 Sd1))
 
 (define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
 (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
+(for ((p (in-list g-list)) (name (in-list names))) (set-P-name! p name))
 (eq? (apply G g-list) (G R Sv))
 
 (define (print-aligned lst-of-lst)
