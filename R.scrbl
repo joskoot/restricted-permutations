@@ -122,8 +122,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -1900,7 +1900,7 @@ Name the symmetries as follows:
 (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
 (for ((p (in-list g-list)) (name (in-list names))) (set-P-name! p name))
 
-(code:comment "R and Sv form a minimal base.")
+(code:comment #,(list "R and Sv form a " @nbrl[G-base "minimal base"] "."))
 (eq? (apply G g-list) (G R Sv))
 
 (define (print-aligned lst-of-lst)
