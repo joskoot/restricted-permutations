@@ -1,4 +1,4 @@
-#lang scribble/manual 
+#lang scribble/manual
 
 @(require
    scribble/core
