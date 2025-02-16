@@ -50,6 +50,7 @@
 @(define red   (make-color-style "red"))
 @(define green (make-color-style "green"))
 @(define black (make-color-style "black"))
+@(define yellow (make-color-style "yellow"))
 
 @(define example-ns (make-base-namespace))
 
@@ -111,3 +112,5 @@
 
 @(define constr-style
  (nbhl "https://docs.racket-lang.org/drracket/output-syntax.html" "constructor style"))
+        
+aap noot mies

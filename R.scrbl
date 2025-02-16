@@ -10,6 +10,17 @@
      racket
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
+
+@(define-syntax-rule
+  (Interaction x ...)
+  (interaction
+   #:eval
+   (make-base-eval
+    #:lang
+    '(begin
+      (require racket "R.rkt")
+      (print-reader-abbreviations #f)
+      (print-as-expression #f))) x ...))
         
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
@@ -122,8 +133,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -180,7 +191,7 @@ as usual for functions p and q with compatible domain of p and co-domain of q:
 
 In this document @bold{R} always will be associated with this composition,
 thus forming @nb{a @nber["group"]{group}},
-in particular a denumerable infinite group.
+in particular a denumerably infinite group.
 As required, the composition is associative.
 For some groups the composition is commutative.
 For @bold{R} it is not,
@@ -205,7 +216,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  you'd better skip the intro@(-?)duction.
  Quantum mechanics plays no role in chapter 1.
  @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+ @nb{As an} alter@(-?)native see @nbhl["../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -500,8 +511,7 @@ Because every @nber["R" "R"] represented by a transposition equals its inverse,
 reversal of the list of transpositions produces a C representing the inverse.
 Example:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (for/and ((p (in-G (G-symmetric 4))))
    (define c (P->C p))
    (define transpositions (C-transpositions c))
@@ -527,8 +537,7 @@ Example:
 
 Examples:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (for/and ((p (in-G (G-symmetric 4))))
    (define c (P->C p))
    (define c-inverse (P->C (P-inverse p)))
@@ -565,11 +574,32 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
-@nb{A P} is written, printed or displayed in @constr-style as:
 
-@inset{@nbr[(P '#,(italic (tt "c")))]}
+@deftogether[(@defproc[(P-name (p P?)) any/c]
+               @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
+ A P can be given a @nbr[name]. This does not alter the identity of the P.
+ @Interaction[
+ (require "R.rkt")
+ (define a (P '(1 2 3)))
+ (define b (P '(1 2 3)))
+ (set-P-name! a 'a-name)
+ (P-name b)
+ (eq? a b)]}
 
-where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
+@defparam*[P-print-by-name yes/no any/c boolean?]{
+ If this parameter is true, a @italic{@tt{p}} that has a name
+ is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
+ If this parameter is @nbr[#f] @nb{a P} is written, printed or displayed in @constr-style as:
+
+ @inset{@nbr[(P '#,(italic (tt "c")))]}
+
+ where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
+
+@Interaction[
+ (define p (P))
+ (set-P-name! p 'E)
+ (parameterize ((P-print-by-name #f)) (writeln p))
+ (parameterize ((P-print-by-name #t)) (writeln p))]}
 
 @defproc[(P (p (or/c P? C?)) ...) (and/c (-> N? N?) P?)]{
  Returns the P representing the @nber["R" "R"]
@@ -581,8 +611,7 @@ where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
 
  Examples:}
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define p (P '(2 3) '(4 5 6)))
  (for ((k (in-range 10))) (printf "p(~s) = ~s~n" k (p k)))]
 
@@ -602,8 +631,7 @@ Let's do a check that two Ps representing the same @nber["R" "R"]
 are the same in the sense of @nbr[eq?]
 (provided no disturbing @nbsl["Cleanup" "cleanup"] is made)
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define a (P '(3 4) '(4 5)))
  (define b (P '(4 5 3)))
  (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
@@ -614,8 +642,7 @@ are the same in the sense of @nbr[eq?]
 
 Another example:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define p (P '((0 2) (3 4 5))))
  (define q (P-inverse p))
  q
@@ -628,8 +655,7 @@ Another example:
 
 @nbr[P] is associative, of course. For example:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define in-S4 (in-G (G-symmetric 4)))
  (for*/and ((a in-S4) (b in-S4) (c in-S4)) (code:comment #,(green "true"))
    (define x (P a (P b c)))
@@ -639,8 +665,7 @@ Another example:
 
 Some checks on the properties of @nber["composition" "compositions"] of @nber["R" "Rs"]:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define S4 (G-symmetric 4))
  (define in-S4 (in-G S4))
  (for*/and ((p in-S4) (q in-S4)) (code:comment #,(green "true"))
@@ -661,8 +686,7 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
 @elemtag["P-example"]{
  The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define p (P '((1 2) (3 4))))
  (define q (P '( 1 2   3 4)))
  (define pq (P p q))
@@ -677,8 +701,7 @@ When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
 but the result is not a P. Example:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define a (P '(0 1 2)))
  (define b (P '(1 2 3)))
  (define c (P '(2 3 4)))
@@ -719,17 +742,6 @@ but the result is not a P. Example:
  Same as @nbr[(eq? x P-identity)].
  The predicate remains valid after @nbsl["Cleanup" "cleanup"].}
 
-@deftogether[(@defproc[(P-name (p P?)) any/c]
-               @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
- A P can be given a @nbr[name]. This does not alter the identity of the P.
- @interaction[
- (require "R.rkt")
- (define a (P '(1 2 3)))
- (define b (P '(1 2 3)))
- (set-P-name! a 'a-name)
- (P-name b)
- (eq? a b)]}
-
 @defproc[(P-commute? (p (or/c P? C?)) (q (or/c P? C?))) boolean?]{
  Same as @nbr[(eq? (P p q) (P q p))].
  Not disturbed by @nbsl["Cleanup" "cleanup"].}
@@ -763,8 +775,7 @@ Examples:
 
 Examples:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define a (P '(0 1)))
  (define b (P '(2 3 4)))
  (define c (P '(5 6 7 8 9)))
@@ -807,7 +818,7 @@ Examples:
  (P-period (P '(0 1)))
  (P-period (P '(3 5 7)))]
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (for/and ((p (in-G (G-symmetric 4)))) (code:comment #,(green "true"))
    (define period (P-period p))
@@ -838,7 +849,7 @@ though.
 
 @(collect-garbage)
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (code:line (define big (* 6 (expt 10 1000000))) (code:comment "= #e6e1000000"))
  (define exponents (range -10 11))
@@ -864,7 +875,7 @@ For every group @bold{X} we have:
 
 This applies to @nber["R" (bold "R")] too, of course. For example:
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (define p (P '(0 1) '(3 4 5)))
  (P-order p)
@@ -895,8 +906,7 @@ Examples:
  (P-inverse (P '(0 1 2)))
  (P-inverse (P '(0 1 2) '(3 4)))]
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define S4 (G-symmetric 4))
  (G-order S4)
  (for/and ((p (in-G S4))) (code:comment #,(green "true"))
@@ -915,8 +925,7 @@ For every group @bold{X} we have:
 
 This applies to @nber["R" @bold{R}] too:
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define in-S4 (in-G (G-symmetric 4)))
  (for*/and ((a in-S4) (b in-S4)) (code:comment #,(green "true"))
    (eq?
@@ -940,7 +949,7 @@ Examples:
  (not (P-even? (P '(0 2 4 6))))
  (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2)))]
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (define S3-list (G->list (G-symmetric 3)))
  (filter P-even? S3-list)
@@ -949,7 +958,7 @@ Examples:
 Let's check that a @nbsl["G" "G"] with at least one odd element
 has as many odd elements as even ones.
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket/set)
  (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
  (code:comment "\"as many odd elements as even ones\" if g has as many odd elements as even ones.")
@@ -1029,8 +1038,7 @@ has as many odd elements as even ones.
 
 @(random-seed 1)
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (random-seed 1)
  (code:line (define S3-list0 (G->list (G-symmetric 3))) (code:comment "S3-list0 is sorted."))
  (code:line (R-clear-hashes) (code:comment #,(list "Does not disturb procedure " (nbr P-sort))))
@@ -1039,7 +1047,7 @@ has as many odd elements as even ones.
  (map P->C S3-list0)
  (code:comment "")
  (code:line (define in-rearrangements in-permutations) (code:comment #,(list
-        "See " (elemref "note" "note below")".")))
+  "See " (elemref "note" "note below")".")))
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
@@ -1086,8 +1094,7 @@ Examples:
 @example[(P-non-fixed-points P-identity)]
 @example[(P-non-fixed-points (P '(5 6) '(0 1 2)))]
 
-@interaction[
- (require racket "R.rkt")
+@Interaction[
  (define in-S4 (in-G (G-symmetric 4)))
  (for/and ((p in-S4)) (code:comment #,(green "true"))
    (define nfps (P-non-fixed-points p))
@@ -1106,9 +1113,7 @@ Examples:
  of some @nbsl["G"]{finite subgroup of @bold{R}}.
  This can be done as follows:}
 
-@interaction[
- (require racket "R.rkt")
- (define (fixed-points p n)
+@Interaction[(define (fixed-points p n)
    (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
  (fixed-points (P '(0 1) '(5 6 7)) 10)
  (define (pad x k) (~s #:width k x))
@@ -1175,9 +1180,7 @@ Examples:
 
 @(example/n (G '(0 1) '(0 1 2)))
 
-@interaction[
- (require racket "R.rkt")
- (define X (G '(0 3) '(0 1 2)))
+@Interaction[(define X (G '(0 3) '(0 1 2)))
  (G-order X)
  (define in-X (in-G X))
  (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
@@ -1212,9 +1215,7 @@ In particular:@(lb)
  else returns @nbr[#f].}
 Examples:
 
-@interaction[
- (require racket "R.rkt")
- (define g (G '(0 1) '(0 2)))
+@Interaction[(define g (G '(0 1) '(0 2)))
  (define in-g (in-G g))
  (code:comment "By definition, for every pair of elements of g")
  (code:comment "the composition is an element of g too.")
@@ -1225,9 +1226,8 @@ Examples:
 
 @red{Warning}: procedure @nbr[G-member?] can be confused by a @nbsl["Cleanup" "cleanup"]:
 
-@interaction[
- (require racket "R.rkt")
- (define c '(0 1))
+@Interaction[
+(define c '(0 1))
  (define g (G c))
  (code:line (G-member? c g)  (code:comment #,(green "true")))
  (code:line (R-clear-hashes) (code:comment #,(red "caution")))
@@ -1247,9 +1247,8 @@ Examples:
  the first row and first column of the table proper are the same as the labels.
  Therefore we can omit the labels.} Example:
 
-@interaction[
- (require racket "R.rkt")
- (define C3v (G '(0 1) '(0 1 2)))
+@Interaction[
+(define C3v (G '(0 1) '(0 1 2)))
  (G-print-table C3v)]
 
 See section @nbsl["C3v"]{Group C@↓{3v}}
@@ -1263,9 +1262,8 @@ for a more elaborated discussion of this group.
  @nbr[(for/vector ((row (in-vector (G-table g))) (vector-ref row 0)))]
  are @nbrl[P-sort "sorted"].}
 
-@interaction0[
- (require racket "R.rkt")
- (define C3v (G '(0 1) '(0 1 2)))
+@Interaction[
+(define C3v (G '(0 1) '(0 1 2)))
  (define table (G-table C3v))
  table
  (code:comment "Check that every element pq of the table is the composition of")
@@ -1310,7 +1308,7 @@ for a more elaborated discussion of this group.
 
 Example:
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (define g0 (G-symmetric 3))
  (define g1 (G-symmetric 3 1))
@@ -1357,9 +1355,8 @@ In particular:@(lb)
 
 @(random-seed 1)
 
-@interaction[
- (require racket "R.rkt")
- (random-seed 1)
+@Interaction[
+(random-seed 1)
  (define g (G '(4 5) '(0 1) '(2 3)))
  (define g-base (G-base g))
  (code:comment #,(list
@@ -1374,9 +1371,8 @@ both have one minimal base of one element.
 Every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements, @nb{for example:}
 
-@interaction[
- (require racket "R.rkt")
- (G-base (G-symmetric 0))
+@Interaction[
+(G-base (G-symmetric 0))
  (G-base (G-symmetric 1))
  (G-base (G-symmetric 2))
  (for/and ((n (in-range 3 8)))
@@ -1393,9 +1389,8 @@ The following example is not a proof,
 but shows how to prove that every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements.
 
-@interaction[
- (require racket "R.rkt")
- (code:comment "")
+@Interaction[
+(code:comment "")
  (if
    (for/and ((n (in-range 2 8)))
      (printf " ~nn = ~s~n ~n" n)
@@ -1424,7 +1419,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 @defproc[(G-bases (g G?)) (listof (Setof P?))]{
  Returns a list of all minimal bases of @nbr[g].} Examples:
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (define (G-order+bases g)
    (define bases (G-bases g))
@@ -1451,7 +1446,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
 @elemtag["simplest base"]{To find one of the simplest bases:}
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (code:comment "")
  (define (find-simple-base g)
@@ -1484,9 +1479,8 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  @nbr[#t] if @nbr[g0] is a subgroup of @nbr[g1].@(lb)
  @red{Warning}: procedure @nbr[G-subg?] can be confused by a @nbsl["Cleanup" "cleanup"]:}
 
-@interaction[
- (require racket "R.rkt")
- (define g0a (G '(0 1)))
+@Interaction[
+(define g0a (G '(0 1)))
  (define g1  (G '(0 1) '(0 2)))
  (code:line (G-subg?  g0a g1)  (code:comment #,(green "true")))
  (code:line (R-clear-hashes)   (code:comment #,(red "caution")))
@@ -1509,7 +1503,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  @inset{@nbr[(list->G (filter P-even? (G->list g)))]}
  Example:}
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (define g (G '(0 1) '(0 1 2)))
  (define h (G-even-subg g))
@@ -1521,9 +1515,8 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 @defproc[(G-subgroups (g G?)) (listof G?)]{
  Returns a list of all subgroups of @nbr[g]. Example:
 
- @interaction[
- (require racket "R.rkt")
- (define g (G '(0 1 2) '(0 1)))
+ @Interaction[
+(define g (G '(0 1 2) '(0 1)))
  (code:comment #,(list "Print subgroups in " (nbsl "C" "C-notation.")))
  (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
  (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
@@ -1583,9 +1576,8 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
 Examples:
 
-@interaction[
- (require racket "R.rkt")
- (define g (G '(0 1) '(0 2)))
+@Interaction[
+(define g (G '(0 1) '(0 2)))
  (G-class P-identity g)
  (G-class (P '(0 1)) g)
  (G-class (P '(0 1 2)) g)
@@ -1595,7 +1587,7 @@ Examples:
 @defproc[(G-classes (g G?)) (listof (Setof P?))]{
  Returns a list of all conjugation classes of @nbr[g]. Example:
 
- @interaction[
+ @Interaction[
  (require "R.rkt" racket)
  (define (print-G-classes g)
    (for ((class (in-list (G-classes g))) (n (in-naturals 1)))
@@ -1635,9 +1627,8 @@ Examples:
 
 The subset of all even elements of a G is an invariant subgroup. For example:
 
-@interaction[
- (require racket "R.rkt")
- (define g (G-symmetric 4))
+@Interaction[
+(define g (G-symmetric 4))
  (define h (G-even-subg g))
  (G-order g)
  (G-order h)
@@ -1662,9 +1653,8 @@ The subset of all even elements of a G is an invariant subgroup. For example:
    Isomorphism is an
    @nbhl["https://en.wikipedia.org/wiki/Equivalence_relation" "equivalence relation."]}}} Examples:
 
-@interaction[
- (require racket "R.rkt")
- (code:comment "Abelean group of 4 elements, called the `four group' or `V'.")
+@Interaction[
+(code:comment "Abelean group of 4 elements, called the `four group' or `V'.")
  (code:comment "Every element of V is its own inverse.")
  (define V (G '(0 1) '(2 3)))
  (G-order V)
@@ -1680,9 +1670,8 @@ The subset of all even elements of a G is an invariant subgroup. For example:
  (code:comment "In particular (P '(0 1 2 3)) not equals its own inverse:")
  (code:line (let ((p (P '(0 1 2 3)))) (eq? (P-inverse p) p)) (code:comment #,(red "false")))]
 
-@interaction[
- (require racket "R.rkt")
- (define g0 (G '(0 1) '(2 3)))
+@Interaction[
+(define g0 (G '(0 1) '(2 3)))
  (define g1 (G '((1 2) (7 8)) '((5 6) (3 4))))
  (define-values (p0->p1 p1->p0)
    (apply values (G-isomorphism g0 g1 'p0->p1 'p1->p0)))
@@ -1697,7 +1686,7 @@ The subset of all even elements of a G is an invariant subgroup. For example:
 @red{Warning}: after @nbsl["Cleanup" "cleaning up"]
 isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (define iso
    (G-isomorphism
@@ -1726,7 +1715,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
  Examples:}
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (list->G (list P-identity (P '(0 1 2)) (P '(0 2 1))))
  (code:comment "duplicates do no harm:")
@@ -1766,7 +1755,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  (@defproc[#:kind "equivalence relation" (P-equal? (p0 P?) (p1 P?)) boolean?]
    @defproc[#:kind "equivalence relation" (G-equal? (g0 G?) (g1 G?)) boolean?])]{Example:}
 
-@interaction[
+@Interaction[
  (require "R.rkt")
  (define p (P '(0 1 2)))
  (define g (G '(0 1 2) '(0 1)))
@@ -1783,9 +1772,8 @@ Two distinct instances of module @nbhl["../../R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
 
-@interaction[
- (require racket "R.rkt")
- (define other-eval
+@Interaction[
+(define other-eval
    (let ((namespace (make-base-namespace)))
      (parameterize ((current-namespace namespace))
        (namespace-require 'racket)
@@ -1885,7 +1873,7 @@ Name the symmetries as follows:
           ("Sd1" "reflection in diagional 0-2")
           ("Sd2" "reflection in diagional 1-3"))
          #:sep (hspace 2)]
-@interaction[
+@Interaction[
  (require "R.rkt" fmt/fmt)
  (define E   P-identity)
  (define R   (P '(0 1 2 3)))
@@ -1922,9 +1910,8 @@ in particular @nbr[(P '((0 1 2 3) (4 5 6 7)))], and
 reflection in the diagonal plane containing the vertices 2, 3, 4 and 5,
 id est, @nbr[(P '((0 7) (1 6)))].
 
-@interaction[
- (require racket "R.rkt")
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (code:comment "")
@@ -2065,9 +2052,8 @@ which is not part of subgroup @element['tt "rotations-only"], produces:
 This is a symmetry of order 6.
 Let's check that the inversion-symmetry commutes with all symmetries of the cube:
 
-@interaction[
- (require racket "R.rkt")
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
@@ -2096,9 +2082,8 @@ In addition, given a minimal base, every @tt{rotations-only}-symmetry
 produces a dictinct symmetrically equivalent minimal base.
 The following example shows the details:
 
-@interaction[
- (require racket "R.rkt")
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (define bases (G-bases cube-symmetries))
@@ -2182,9 +2167,8 @@ Try it!
 The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
-@interaction[
- (require racket "R.rkt")
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define other-rotation '((0 1 5 4) (3 2 6 7)))
  (define cube-symmetries (G rotation reflection))
@@ -2241,7 +2225,7 @@ of which 30 contain rotations only.
      "Q is (a group isomorphic to) the "
      (nbhl "https://en.wikipedia.org/wiki/Quaternion_group" "quaternion group") "."))
 
-@interaction[
+@Interaction[
  (require "R.rkt" racket)
  (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
@@ -2324,9 +2308,8 @@ The @nbrl[G-classes "conjugation classes"] are:
 
 We can verify this as follows:
 
-@interaction[
- (require racket "R.rkt")
- (define i (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
  (define |-1| (P i i))
@@ -2342,9 +2325,8 @@ We can verify this as follows:
 
 Every subgroup of the quaternion group is @nbrl[G-invariant-subg? "invariant"]:
 
-@interaction[
- (require racket "R.rkt")
- (define i (P '((0 1 2 3) (4 5 6 7))))
+@Interaction[
+(define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
  (not (G-abelean? Q))
@@ -2360,9 +2342,8 @@ the axis of rotation and one of the vertices, in fact three such reflections
 and assuming the triangle to be located in a horizontal plane.
 Naming the vertices 0, 1 and 2 we can map the symmetries isomorphically onto @nber["R" "Rs"]:
 
-@interaction[
- (require racket "R.rkt")
- (define C3v (G '(0 1) '(0 1 2)))
+@Interaction[
+(define C3v (G '(0 1) '(0 1 2)))
  (G-print-table C3v)
  (code:comment #,(list "C" (↓ "3v") " is isomorphic to S" (↓ "3") ". In this case we even have:"))
  (eq? C3v (G-symmetric 3))]
@@ -2426,9 +2407,8 @@ Let's check this:
                               (green "but here it is useful")
                               ".")))
 
-@interaction[
- (require racket "R.rkt")
- (define (pad7-P->C p) (~s #:width 7 (P->C p)))
+@Interaction[
+(define (pad7-P->C p) (~s #:width 7 (P->C p)))
  (define C3v (G '(0 1) '(0 1 2)))
  (define in-C3v (in-G C3v))
  (code:comment "-------------------------------------------------------------------")
@@ -2500,9 +2480,8 @@ There are two minimal bases (consisting of inverses of each other)
 C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excluded),
 0 as identity and addition modulo 6 as @nber["composition" "composition"].
 
-@interaction[
- (require racket "R.rkt")
- (define rotation (P '(0 1 2) '(3 4 5)))
+@Interaction[
+(define rotation (P '(0 1 2) '(3 4 5)))
  (define reflection (P '(0 3) '(1 4) '(2 5)))
  (eq? (P rotation reflection) (P reflection rotation))
  (define C3h-base (P rotation reflection))
