@@ -575,32 +575,6 @@ its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
 
-@deftogether[(@defproc[(P-name (p P?)) any/c]
-               @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
- A P can be given a @nbr[name]. This does not alter the identity of the P.
- @Interaction[
- (require "R.rkt")
- (define a (P '(1 2 3)))
- (define b (P '(1 2 3)))
- (set-P-name! a 'a-name)
- (P-name b)
- (eq? a b)]}
-
-@defparam*[P-print-by-name yes/no any/c boolean?]{
- If this parameter is true, a @italic{@tt{p}} that has a name
- is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
- If this parameter is @nbr[#f] @nb{a P} is written, printed or displayed in @constr-style as:
-
- @inset{@nbr[(P '#,(italic (tt "c")))]}
-
- where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
-
-@Interaction[
- (define p (P))
- (set-P-name! p 'E)
- (parameterize ((P-print-by-name #f)) (writeln p))
- (parameterize ((P-print-by-name #t)) (writeln p))]}
-
 @defproc[(P (p (or/c P? C?)) ...) (and/c (-> N? N?) P?)]{
  Returns the P representing the @nber["R" "R"]
  formed by @nber["composition" "composition"] of the
@@ -731,6 +705,32 @@ but the result is not a P. Example:
  writing x@(expt-1) for the inverse of x.}
 
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]
+
+@deftogether[(@defproc[(P-name (p P?)) any/c]
+               @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
+ A P can be given a @nbr[name]. This does not alter the identity of the P.
+ @Interaction[
+ (require "R.rkt")
+ (define a (P '(1 2 3)))
+ (define b (P '(1 2 3)))
+ (set-P-name! a 'a-name)
+ (P-name b)
+ (eq? a b)]}
+
+@defparam*[P-print-by-name yes/no any/c boolean?]{
+ If this parameter is true, a @italic{@tt{p}} that has a name
+ is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
+ If this parameter is @nbr[#f] @nb{a P} is written, printed or displayed in @constr-style as:
+
+ @inset{@nbr[(P '#,(italic (tt "c")))]}
+
+ where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
+
+@Interaction[
+ (define p (P))
+ (set-P-name! p 'E)
+ (parameterize ((P-print-by-name #f)) (writeln p))
+ (parameterize ((P-print-by-name #t)) (writeln p))]}
 
 @defidform[#:kind "constant" P-identity]{
  The P representing the @nber["id" "identity"] of @nber["R"]{@bold{R}.}
