@@ -1870,8 +1870,8 @@ Name the symmetries as follows:
           ("R3" "anti clockwise rotation about 270°")
           ("Sv" "reflection in vertical center line")
           ("Sh" "reflection in horizontal center line")
-          ("Sd1" "reflection in diagional 0-2")
-          ("Sd2" "reflection in diagional 1-3"))
+          ("Sd1" "reflection in diagonal 0-2")
+          ("Sd2" "reflection in diagonal 1-3"))
          #:sep (hspace 2)]
 @Interaction[
  (require "R.rkt" fmt/fmt)
