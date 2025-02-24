@@ -133,8 +133,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -216,7 +216,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  you'd better skip the intro@(-?)duction.
  Quantum mechanics plays no role in chapter 1.
  @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+ @nb{As an} alter@(-?)native see @nbhl["../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -710,7 +710,6 @@ but the result is not a P. Example:
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
  A P can be given a @nbr[name]. This does not alter the identity of the P.
  @Interaction[
- (require "R.rkt")
  (define a (P '(1 2 3)))
  (define b (P '(1 2 3)))
  (set-P-name! a 'a-name)
@@ -819,7 +818,6 @@ Examples:
  (P-period (P '(3 5 7)))]
 
 @Interaction[
- (require "R.rkt")
  (for/and ((p (in-G (G-symmetric 4)))) (code:comment #,(green "true"))
    (define period (P-period p))
    (define order (P-order p))
@@ -850,7 +848,6 @@ though.
 @(collect-garbage)
 
 @Interaction[
- (require "R.rkt" racket)
  (code:line (define big (* 6 (expt 10 1000000))) (code:comment "= #e6e1000000"))
  (define exponents (range -10 11))
  (define big-exponents (map (curry + big) exponents))
@@ -876,7 +873,6 @@ For every group @bold{X} we have:
 This applies to @nber["R" (bold "R")] too, of course. For example:
 
 @Interaction[
- (require "R.rkt")
  (define p (P '(0 1) '(3 4 5)))
  (P-order p)
  (define in-exponents (in-range -10 10))
@@ -950,7 +946,6 @@ Examples:
  (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2)))]
 
 @Interaction[
- (require "R.rkt")
  (define S3-list (G->list (G-symmetric 3)))
  (filter P-even? S3-list)
  (filter (compose not P-even?) S3-list)]
@@ -959,7 +954,7 @@ Let's check that a @nbsl["G" "G"] with at least one odd element
 has as many odd elements as even ones.
 
 @Interaction[
- (require "R.rkt" racket/set)
+ (require racket/set)
  (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
  (code:comment "\"as many odd elements as even ones\" if g has as many odd elements as even ones.")
  (code:comment "Else raises an error, which should never happen.")
@@ -1309,7 +1304,6 @@ for a more elaborated discussion of this group.
 Example:
 
 @Interaction[
- (require "R.rkt" racket)
  (define g0 (G-symmetric 3))
  (define g1 (G-symmetric 3 1))
  (define g2 (G-symmetric 3 2))
@@ -1420,7 +1414,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  Returns a list of all minimal bases of @nbr[g].} Examples:
 
 @Interaction[
- (require "R.rkt" racket)
  (define (G-order+bases g)
    (define bases (G-bases g))
    (values
@@ -1447,7 +1440,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 @elemtag["simplest base"]{To find one of the simplest bases:}
 
 @Interaction[
- (require "R.rkt" racket)
  (code:comment "")
  (define (find-simple-base g)
    (define bases (G-bases g))
@@ -1504,7 +1496,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  Example:}
 
 @Interaction[
- (require "R.rkt")
  (define g (G '(0 1) '(0 1 2)))
  (define h (G-even-subg g))
  g
@@ -1588,7 +1579,6 @@ Examples:
  Returns a list of all conjugation classes of @nbr[g]. Example:
 
  @Interaction[
- (require "R.rkt" racket)
  (define (print-G-classes g)
    (for ((class (in-list (G-classes g))) (n (in-naturals 1)))
      (printf "Class ~s: " n)
@@ -1687,7 +1677,6 @@ The subset of all even elements of a G is an invariant subgroup. For example:
 isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 
 @Interaction[
- (require "R.rkt" racket)
  (define iso
    (G-isomorphism
      (G '(0 1 2))
@@ -1716,7 +1705,6 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  Examples:}
 
 @Interaction[
- (require "R.rkt")
  (list->G (list P-identity (P '(0 1 2)) (P '(0 2 1))))
  (code:comment "duplicates do no harm:")
  (list->G (list P-identity P-identity (P '(0 1)) (P '(0 1))))
@@ -1756,7 +1744,6 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
    @defproc[#:kind "equivalence relation" (G-equal? (g0 G?) (g1 G?)) boolean?])]{Example:}
 
 @Interaction[
- (require "R.rkt")
  (define p (P '(0 1 2)))
  (define g (G '(0 1 2) '(0 1)))
  (eq? p (P '(1 2 0)))
@@ -1867,14 +1854,14 @@ Name the symmetries as follows:
           ("E" "identity")
           ("R" "anti clockwise rotation about 90°")
           ("R2" "anti clockwise rotation about 180°")
-          ("R3" "anti clockwise rotation about 270°")
+          ("R2" "anti clockwise rotation about 270°")
           ("Sv" "reflection in vertical center line")
           ("Sh" "reflection in horizontal center line")
-          ("Sd1" "reflection in diagonal 0-2")
-          ("Sd2" "reflection in diagonal 1-3"))
+          ("Sd1" "reflection in diagional 0-2")
+          ("Sd2" "reflection in diagional 1-3"))
          #:sep (hspace 2)]
 @Interaction[
- (require "R.rkt" fmt/fmt)
+ (require fmt/fmt)
  (define E   P-identity)
  (define R   (P '(0 1 2 3)))
  (define R2  (P R R))
@@ -2226,7 +2213,6 @@ of which 30 contain rotations only.
      (nbhl "https://en.wikipedia.org/wiki/Quaternion_group" "quaternion group") "."))
 
 @Interaction[
- (require "R.rkt" racket)
  (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (code:comment #,Q-comment)
