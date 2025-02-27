@@ -216,7 +216,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  you'd better skip the intro@(-?)duction.
  Quantum mechanics plays no role in chapter 1.
  @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+ @nb{As an} alter@(-?)native see @nbhl["../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -266,7 +266,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 
 @inset{@nb{∀k∈@bold{N}: k → k}}
 
-This is the only R with restriction 0 and order 1.
+This is the only R with restriction 0 and @nbrl[P-order "order"] 1.
 For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
 Inverses of each other have the same order and the same restriction.
