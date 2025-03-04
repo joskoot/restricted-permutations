@@ -1,6 +1,6 @@
 #lang scribble/manual
 
-@(require 
+@(require
    scribble/core
    scribble/eval
    racket
