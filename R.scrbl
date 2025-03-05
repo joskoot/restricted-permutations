@@ -214,9 +214,9 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  "Group Theory and its Application to Physical Problems by Morton Hamermesh"].
  @nb{If you} know nothing about quantum mechanics,
  you'd better skip the intro@(-?)duction.
- Quantum mechanics plays no role in chapter 1.
+ Quantum mechanics play no role in chapter 1.
  @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @hyperlink["../../finite-groups.pdf" "finite-groups.pdf"].}
+ @nb{As an} alter@(-?)native see @nbhl["../finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
