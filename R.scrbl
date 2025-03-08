@@ -1878,9 +1878,10 @@ Name the symmetries as follows:
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
 
- (print-aligned
-   (for/list ((p (in-list g-list)))
-     (for/list ((q (in-list g-list))) (P-name (P p q)))))
+ (parameterize ((P-print-by-name 'yes))
+   (print-aligned
+     (for/list ((p (in-list g-list)))
+       (for/list ((q (in-list g-list))) (P p q)))))
  ]
 
 @subsection{Symmetries of a cube}
