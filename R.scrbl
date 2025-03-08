@@ -716,7 +716,7 @@ but the result is not a P. Example:
  (P-name b)
  (eq? a b)]}
 
-@defparam*[P-print-by-name yes/no any/c boolean?]{
+@defparam*[P-print-by-name yes/no any/c boolean? #:value #f]{
  If this parameter is true, a @italic{@tt{p}} that has a name
  is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
  If this parameter is @nbr[#f] @nb{a P} is written, printed or displayed in @constr-style as:
