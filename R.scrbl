@@ -12,15 +12,15 @@
    (for-syntax racket))
 
 @(define-syntax-rule
-  (Interaction x ...)
-  (interaction
-   #:eval
-   (make-base-eval
-    #:lang
-    '(begin
-      (require racket "R.rkt")
-      (print-reader-abbreviations #f)
-      (print-as-expression #f))) x ...))
+   (Interaction x ...)
+   (interaction
+     #:eval
+     (make-base-eval
+       #:lang
+       '(begin
+          (require racket "R.rkt")
+          (print-reader-abbreviations #f)
+          (print-as-expression #f))) x ...))
         
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
@@ -133,8 +133,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -283,7 +283,7 @@ These form a finite subgroup of @bold{R} isomorphic to the symmetric group S@↓
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of pq.@(lb)
-We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,}r@↓{q}).}
+We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,} r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.@(lb)
 See the @nber["P-example"]{example} in the description of procedure @nbr[P].
 
@@ -725,7 +725,7 @@ but the result is not a P. Example:
 
  where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
 
-@Interaction[
+ @Interaction[
  (define p (P))
  (set-P-name! p 'E)
  (parameterize ((P-print-by-name #f)) (writeln p))
@@ -1042,7 +1042,7 @@ has as many odd elements as even ones.
  (map P->C S3-list0)
  (code:comment "")
  (code:line (define in-rearrangements in-permutations) (code:comment #,(list
-  "See " (elemref "note" "note below")".")))
+   "See " (elemref "note" "note below")".")))
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
@@ -1109,15 +1109,15 @@ Examples:
  This can be done as follows:}
 
 @Interaction[(define (fixed-points p n)
-   (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
- (fixed-points (P '(0 1) '(5 6 7)) 10)
- (define (pad x k) (~s #:width k x))
- (for ((n (in-range 1 4)))
-   (printf "~n ~nS~s~n" n)
-   (for ((p (in-G (G-symmetric n))))
-     (printf "~a has fixed points ~a and every k≥~s~n"
-       (pad p 12) (pad (fixed-points p n) 7) n))
-   (newline))]
+               (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
+             (fixed-points (P '(0 1) '(5 6 7)) 10)
+             (define (pad x k) (~s #:width k x))
+             (for ((n (in-range 1 4)))
+               (printf "~n ~nS~s~n" n)
+               (for ((p (in-G (G-symmetric n))))
+                 (printf "~a has fixed points ~a and every k≥~s~n"
+                   (pad p 12) (pad (fixed-points p n) 7) n))
+               (newline))]
 
 @defproc[(P->H (p P?)) H?]{
  You probably never need this procedure. @red{Advice: avoid it}.}
@@ -1176,9 +1176,9 @@ Examples:
 @(example/n (G '(0 1) '(0 1 2)))
 
 @Interaction[(define X (G '(0 3) '(0 1 2)))
- (G-order X)
- (define in-X (in-G X))
- (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
+             (G-order X)
+             (define in-X (in-G X))
+             (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
 
 @nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
 Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
@@ -1211,10 +1211,10 @@ In particular:@(lb)
 Examples:
 
 @Interaction[(define g (G '(0 1) '(0 2)))
- (define in-g (in-G g))
- (code:comment "By definition, for every pair of elements of g")
- (code:comment "the composition is an element of g too.")
- (for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
+             (define in-g (in-G g))
+             (code:comment "By definition, for every pair of elements of g")
+             (code:comment "the composition is an element of g too.")
+             (for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
 
 @color-example[green (G-member? P-identity G-identity)]
 @color-example[red   (G-member? '(2 3) G-identity)]
@@ -1222,7 +1222,7 @@ Examples:
 @red{Warning}: procedure @nbr[G-member?] can be confused by a @nbsl["Cleanup" "cleanup"]:
 
 @Interaction[
-(define c '(0 1))
+ (define c '(0 1))
  (define g (G c))
  (code:line (G-member? c g)  (code:comment #,(green "true")))
  (code:line (R-clear-hashes) (code:comment #,(red "caution")))
@@ -1243,7 +1243,7 @@ Examples:
  Therefore we can omit the labels.} Example:
 
 @Interaction[
-(define C3v (G '(0 1) '(0 1 2)))
+ (define C3v (G '(0 1) '(0 1 2)))
  (G-print-table C3v)]
 
 See section @nbsl["C3v"]{Group C@↓{3v}}
@@ -1258,7 +1258,7 @@ for a more elaborated discussion of this group.
  are @nbrl[P-sort "sorted"].}
 
 @Interaction[
-(define C3v (G '(0 1) '(0 1 2)))
+ (define C3v (G '(0 1) '(0 1 2)))
  (define table (G-table C3v))
  table
  (code:comment "Check that every element pq of the table is the composition of")
@@ -1350,7 +1350,7 @@ In particular:@(lb)
 @(random-seed 1)
 
 @Interaction[
-(random-seed 1)
+ (random-seed 1)
  (define g (G '(4 5) '(0 1) '(2 3)))
  (define g-base (G-base g))
  (code:comment #,(list
@@ -1366,7 +1366,7 @@ Every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements, @nb{for example:}
 
 @Interaction[
-(G-base (G-symmetric 0))
+ (G-base (G-symmetric 0))
  (G-base (G-symmetric 1))
  (G-base (G-symmetric 2))
  (for/and ((n (in-range 3 8)))
@@ -1384,7 +1384,7 @@ but shows how to prove that every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements.
 
 @Interaction[
-(code:comment "")
+ (code:comment "")
  (if
    (for/and ((n (in-range 2 8)))
      (printf " ~nn = ~s~n ~n" n)
@@ -1472,7 +1472,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  @red{Warning}: procedure @nbr[G-subg?] can be confused by a @nbsl["Cleanup" "cleanup"]:}
 
 @Interaction[
-(define g0a (G '(0 1)))
+ (define g0a (G '(0 1)))
  (define g1  (G '(0 1) '(0 2)))
  (code:line (G-subg?  g0a g1)  (code:comment #,(green "true")))
  (code:line (R-clear-hashes)   (code:comment #,(red "caution")))
@@ -1507,7 +1507,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  Returns a list of all subgroups of @nbr[g]. Example:
 
  @Interaction[
-(define g (G '(0 1 2) '(0 1)))
+ (define g (G '(0 1 2) '(0 1)))
  (code:comment #,(list "Print subgroups in " (nbsl "C" "C-notation.")))
  (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
  (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
@@ -1568,7 +1568,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 Examples:
 
 @Interaction[
-(define g (G '(0 1) '(0 2)))
+ (define g (G '(0 1) '(0 2)))
  (G-class P-identity g)
  (G-class (P '(0 1)) g)
  (G-class (P '(0 1 2)) g)
@@ -1618,7 +1618,7 @@ Examples:
 The subset of all even elements of a G is an invariant subgroup. For example:
 
 @Interaction[
-(define g (G-symmetric 4))
+ (define g (G-symmetric 4))
  (define h (G-even-subg g))
  (G-order g)
  (G-order h)
@@ -1644,7 +1644,7 @@ The subset of all even elements of a G is an invariant subgroup. For example:
    @nbhl["https://en.wikipedia.org/wiki/Equivalence_relation" "equivalence relation."]}}} Examples:
 
 @Interaction[
-(code:comment "Abelean group of 4 elements, called the `four group' or `V'.")
+ (code:comment "Abelean group of 4 elements, called the `four group' or `V'.")
  (code:comment "Every element of V is its own inverse.")
  (define V (G '(0 1) '(2 3)))
  (G-order V)
@@ -1661,7 +1661,7 @@ The subset of all even elements of a G is an invariant subgroup. For example:
  (code:line (let ((p (P '(0 1 2 3)))) (eq? (P-inverse p) p)) (code:comment #,(red "false")))]
 
 @Interaction[
-(define g0 (G '(0 1) '(2 3)))
+ (define g0 (G '(0 1) '(2 3)))
  (define g1 (G '((1 2) (7 8)) '((5 6) (3 4))))
  (define-values (p0->p1 p1->p0)
    (apply values (G-isomorphism g0 g1 'p0->p1 'p1->p0)))
@@ -1760,7 +1760,7 @@ do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
 
 @Interaction[
-(define other-eval
+ (define other-eval
    (let ((namespace (make-base-namespace)))
      (parameterize ((current-namespace namespace))
        (namespace-require 'racket)
@@ -1878,10 +1878,9 @@ Name the symmetries as follows:
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
 
- (parameterize ((P-print-by-name 'yes))
-   (print-aligned
-     (for/list ((p (in-list g-list)))
-       (for/list ((q (in-list g-list))) (P p q)))))
+ (print-aligned
+   (for/list ((p (in-list g-list)))
+     (for/list ((q (in-list g-list))) (P-name (P p q)))))
  ]
 
 @subsection{Symmetries of a cube}
@@ -1899,7 +1898,7 @@ reflection in the diagonal plane containing the vertices 2, 3, 4 and 5,
 id est, @nbr[(P '((0 7) (1 6)))].
 
 @Interaction[
-(define rotation (P '((0 1 2 3) (4 5 6 7))))
+ (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (code:comment "")
@@ -1992,18 +1991,19 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (code:comment "")
  (print-group-info cube-symmetries "cube-symmetries" #t)
  (code:comment "Subgroup consisting of rotations only.")
- (code:comment "rotation and other-rotation are rotations about 90°")
+ (code:comment "Rotation and other-rotation are rotations about 90°")
  (code:comment "with intersecting axes perpendicular to each other.") 
  (code:comment "")
  (define other-rotation '((0 1 5 4) (3 2 6 7)))
  (define rotations-only (G rotation other-rotation))
- (define rotation-classes (G-classes rotations-only))
  (print-group-info rotations-only "rotations-only" #f)
  (code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
  (G-invariant-subg? rotations-only cube-symmetries)
  (code:comment "Each conjugation class of the group of rotations-only")
  (code:comment "also is a conjugation class of the group of all cube-symmetries")
- (proper-subset? rotation-classes conj-classes)]
+ (proper-subset?
+   (apply set (G-classes rotations-only))
+   (apply set (G-classes cube-symmetries)))]
 
 The group of all cube-symmetries has ten conjugation classes,
 of which five coincide with the conjugation classes of subgroup @tt{rotations-only}.
@@ -2041,7 +2041,7 @@ This is a symmetry of order 6.
 Let's check that the inversion-symmetry commutes with all symmetries of the cube:
 
 @Interaction[
-(define rotation (P '((0 1 2 3) (4 5 6 7))))
+ (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
@@ -2056,10 +2056,6 @@ if the group contains @nb{a symmetry} x such that @nb{{ax ...} = {xb ...}}.
 This is an equality of two sets:
 @nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.
 Symmetrically equivalent minimal bases have the same normalized cycle structure.
-The number of collections of symmetrically equivalent minimal bases of the group of
-@tt{cube-symmetries} is one less than the number of conjugation classes.
-This is no coincidence, because both the identity and the inversion-symmetry
-leave every minimal base as it is and are the only ones that commute with all symmetries.
 
 @elemtag["seq" ""]
 The number of minimal bases in a collection of symmetrically equivalent
@@ -2071,77 +2067,41 @@ produces a dictinct symmetrically equivalent minimal base.
 The following example shows the details:
 
 @Interaction[
-(define rotation (P '((0 1 2 3) (4 5 6 7))))
+ (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
- (define cube-symmetries (G rotation reflection))
- (define bases (G-bases cube-symmetries))
- (code:comment "")
- (define ((make-base-eqv g) a b)
-   (for/or ((p (in-G g)))
-     (equal? a
-       (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
- (code:comment "")
- (define (eqv-classes lst eq) (group-by values lst eq))
- (code:comment "")
- (define base-collections
-   (eqv-classes bases (make-base-eqv cube-symmetries)))
- (code:comment "")
- (define collection-size (/ (length bases) (length base-collections)))
- (code:comment "")
- (define (pad3 datum) (~s #:align 'right #:min-width 3 datum))
- (begin
-   (printf " ~n")
-   (printf "nr of bases                     ~a~n"
-     (pad3 (length bases)))
-   (printf "nr of base-collections          ~a~n"
-     (pad3 (length base-collections)))
-   (printf "all base-collections same size? ~a~n"
-     (pad3
-       (apply = collection-size (map length base-collections))))
-   (printf "size of each base-collection    ~a~n"
-     (pad3 collection-size)))
- (code:comment "")
- (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
- (code:comment "")
- (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
-   (define-values (x y) (apply values (map P->C (set->list (car base-collection)))))
-   (apply printf "~s: ~s and ~s~n" i
-     (if (= (string-length (~s x)) 21) (list x y) (list y x))))
- (code:comment "")
- (code:comment "Using the rotations only we find the same collections of bases:")
- (code:comment "")
  (define other-rotation '((0 1 5 4) (3 2 6 7)))
+ (define cube-symmetries (G rotation reflection))
  (define rotations-only (G rotation other-rotation))
- (equal?
-   (apply set
-     (map set base-collections))
-   (apply set
-     (map set
-       (eqv-classes bases (make-base-eqv rotations-only)))))
  (code:comment "")
- (code:comment "This is consistent with the fact that adding the inversion-symmetry to")
- (code:comment "a base of group rotations-only yields the group of all cube-symmetries.")
+ (define (print-G-info g)
+   (define bases (G-bases g))
+   (code:comment "")
+   (define ((make-base-eqv g) a b)
+     (for/or ((p (in-G g)))
+       (equal? a
+         (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
+   (code:comment "")
+   (define (eqv-classes lst eq) (group-by values lst eq))
+   (code:comment "")
+   (define base-collections
+     (eqv-classes bases (make-base-eqv g)))
+   (code:comment "")
+   (code:comment "")
+   (printf " ~n")
+   (printf "nr of bases ~a~n" (length bases))
+   (printf "nr of base-collections ~a~n" (length base-collections))
+   (printf "base-collection sizes ~a~n" (map length base-collections))
+   (code:comment "")
+   (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
+   (code:comment "")
+   (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
+     (define-values (x y) (apply values (map P->C (set->list (car base-collection)))))
+     (apply printf "~s: ~s and ~s~n" i
+       (if (= (string-length (~s x)) 21) (list x y) (list y x)))))
  (code:comment "")
- (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
- (eq? cube-symmetries (G rotation other-rotation inversion-symmetry))
- (code:comment "")
- (code:comment "In fact adding an arbitrary rotation-reflection will do.")
- (code:comment "A rotation-reflection is a reflection or")
- (code:comment "the composition of a rotation with a reflection.")
- (code:comment "The inversion-symmetry is a rotation-reflection too,")
- (code:comment "for example: reflection in the horizontal plane")
- (code:comment "followed by 180° rotation around the vertical axis,")
- (code:comment "both containing the center of the cube.")
- (code:comment "")
- (eq? (P '((0 2) (1 3) (4 6) (5 7))  (code:comment "rotation 180°")
-        '((0 4) (1 5) (2 6) (3 7))) (code:comment "reflection")
-   inversion-symmetry)
- (code:comment "")
- (define rotation-reflections
-   (remove* (G->list rotations-only) (G->list cube-symmetries)))
- (code:comment "")
- (for/and ((p (in-list rotation-reflections)))
-   (eq? cube-symmetries (G rotation other-rotation p)))]
+ (print-G-info cube-symmetries)
+ (print-G-info rotations-only)
+ ]
 
 In the group of all cube-symmetries, all collections of
 symmetrically equivalent minimal bases have the same size.
@@ -2149,14 +2109,12 @@ This is not true for all groups. For example,
 group @tt{rotations-only} has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
 one collection of 12 bases and four collections of 24 bases.
-A simple modification of part of the above example can do the computation.
-Try it!
 
 The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
 @Interaction[
-(define rotation (P '((0 1 2 3) (4 5 6 7))))
+ (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define other-rotation '((0 1 5 4) (3 2 6 7)))
  (define cube-symmetries (G rotation reflection))
@@ -2296,7 +2254,7 @@ The @nbrl[G-classes "conjugation classes"] are:
 We can verify this as follows:
 
 @Interaction[
-(define i (P '((0 1 2 3) (4 5 6 7))))
+ (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
  (define |-1| (P i i))
@@ -2313,7 +2271,7 @@ We can verify this as follows:
 Every subgroup of the quaternion group is @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction[
-(define i (P '((0 1 2 3) (4 5 6 7))))
+ (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
  (not (G-abelean? Q))
@@ -2330,7 +2288,7 @@ and assuming the triangle to be located in a horizontal plane.
 Naming the vertices 0, 1 and 2 we can map the symmetries isomorphically onto @nber["R" "Rs"]:
 
 @Interaction[
-(define C3v (G '(0 1) '(0 1 2)))
+ (define C3v (G '(0 1) '(0 1 2)))
  (G-print-table C3v)
  (code:comment #,(list "C" (↓ "3v") " is isomorphic to S" (↓ "3") ". In this case we even have:"))
  (eq? C3v (G-symmetric 3))]
@@ -2395,7 +2353,7 @@ Let's check this:
                               ".")))
 
 @Interaction[
-(define (pad7-P->C p) (~s #:width 7 (P->C p)))
+ (define (pad7-P->C p) (~s #:width 7 (P->C p)))
  (define C3v (G '(0 1) '(0 1 2)))
  (define in-C3v (in-G C3v))
  (code:comment "-------------------------------------------------------------------")
@@ -2468,7 +2426,7 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 0 as identity and addition modulo 6 as @nber["composition" "composition"].
 
 @Interaction[
-(define rotation (P '(0 1 2) '(3 4 5)))
+ (define rotation (P '(0 1 2) '(3 4 5)))
  (define reflection (P '(0 3) '(1 4) '(2 5)))
  (eq? (P rotation reflection) (P reflection rotation))
  (define C3h-base (P rotation reflection))
