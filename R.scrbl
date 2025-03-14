@@ -2086,7 +2086,6 @@ The following example shows the details:
    (define base-collections
      (eqv-classes bases (make-base-eqv g)))
    (code:comment "")
-   (code:comment "")
    (printf " ~n")
    (printf "nr of bases ~a~n" (length bases))
    (printf "nr of base-collections ~a~n" (length base-collections))
@@ -2100,7 +2099,7 @@ The following example shows the details:
        (if (= (string-length (~s x)) 21) (list x y) (list y x)))))
  (code:comment "")
  (print-G-info cube-symmetries)
- (print-G-info rotations-only)
+ (code:comment "") (print-G-info rotations-only)
  ]
 
 In the group of all cube-symmetries, all collections of
