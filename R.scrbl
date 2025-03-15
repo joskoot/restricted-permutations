@@ -2055,15 +2055,8 @@ Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if the group contains @nb{a symmetry} x such that @nb{{ax ...} = {xb ...}}.
 This is an equality of two sets:
 @nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.
-Symmetrically equivalent minimal bases have the same normalized cycle structure.
-
-@elemtag["seq" ""]
-The number of minimal bases in a collection of symmetrically equivalent
-minimal bases of group @tt{cube-symmetries} equals the order of group @tt{rotations-only}.
-Indeed, for every pair of symmetrically equivalent minimal bases
-there is a @tt{rotations-only}-symmetry showing the equivalence.
-In addition, given a minimal base, every @tt{rotations-only}-symmetry
-produces a dictinct symmetrically equivalent minimal base.
+Symmetrically equivalent minimal bases have the same normalized cycle structure,
+but not all bases with the same cycle structure are symmetrically equivalent.
 The following example shows the details:
 
 @Interaction[
@@ -2076,30 +2069,29 @@ The following example shows the details:
  (define (print-G-info g)
    (define bases (G-bases g))
    (code:comment "")
-   (define ((make-base-eqv g) a b)
+   (define (base-eqv? a b)
      (for/or ((p (in-G g)))
        (equal? a
          (for/seteq ((c (in-set b))) (P (P-inverse p) c p)))))
    (code:comment "")
-   (define (eqv-classes lst eq) (group-by values lst eq))
-   (code:comment "")
-   (define base-collections
-     (eqv-classes bases (make-base-eqv g)))
+   (define base-collections (group-by values bases base-eqv?))
    (code:comment "")
    (printf " ~n")
    (printf "nr of bases ~a~n" (length bases))
    (printf "nr of base-collections ~a~n" (length base-collections))
-   (printf "base-collection sizes ~a~n" (map length base-collections))
    (code:comment "")
    (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
    (code:comment "")
    (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
-     (define-values (x y) (apply values (map P->C (set->list (car base-collection)))))
-     (apply printf "~s: ~s and ~s~n" i
+     (define-values (x y)
+       (apply values (map P->C (set->list (car base-collection)))))
+     (apply printf "~s: size: ~s: example: ~s and ~s~n"
+       i (length base-collection)
        (if (= (string-length (~s x)) 21) (list x y) (list y x)))))
  (code:comment "")
  (print-G-info cube-symmetries)
- (code:comment "") (print-G-info rotations-only)
+ (code:comment "")
+ (print-G-info rotations-only)
  ]
 
 In the group of all cube-symmetries, all collections of
