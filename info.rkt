@@ -4,3 +4,4 @@
 
 (define scribblings '(("R.scrbl" ())))
 (define collections "restricted-permutations")
+(define main "R.rkt")
