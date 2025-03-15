@@ -2223,7 +2223,7 @@ In the quaternion group, make the following identifications:
 
  @nested[#:style 'inset (verbatim table)]})
 
-@note{This table has been @italic{computed} in module @nbhl["R.scrbl" "R.scrbl"].
+@note{This table has been @italic{computed} in module @nbhl["../../R.scrbl" "R.scrbl"].
  It has @italic{not} been typed @italic{manually}.}
 
 Because @element['tt "1"] is the identity, it commutes with all elements.
