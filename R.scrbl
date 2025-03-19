@@ -2057,6 +2057,14 @@ This is an equality of two sets:
 @nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.
 Symmetrically equivalent minimal bases have the same normalized cycle structure,
 but not all bases with the same cycle structure are symmetrically equivalent.
+For group @tt{cube-symmetries}
+the number of collections of symmetrically equivalent minimal bases is one less
+than the number of conjugation classes.
+This is no coincidence,
+because both the identity and the inversion symmetry form a conjugation class by itself.
+They commute with all symmetries and are the only ones with this property.
+In group @tt{rotations-only} the number of collections of symmetrically equivalent minimal bases
+is the same as the number of conjugation classes. It does not contain the inversion symmetry.
 The following example shows the details:
 
 @Interaction[
