@@ -2086,7 +2086,7 @@ The following example shows the details:
    (code:comment "")
    (printf " ~n")
    (printf "nr of bases ~a~n" (length bases))
-   (printf "nr of base-collections ~a~n" (length base-collections))
+   (printf "nr of collections of symmetrically equivalent bases: ~a~n" (length base-collections))
    (code:comment "")
    (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
    (code:comment "")
