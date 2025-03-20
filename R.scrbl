@@ -2109,7 +2109,8 @@ The following example shows the details:
    (code:comment "")
    (printf " ~n")
    (printf "nr of bases ~a~n" (length bases))
-   (printf "nr of collections of symmetrically equivalent bases: ~a~n" (length base-collections))
+   (printf "nr of collections of symmetrically equivalent bases: ~a~n"
+     (length base-collections))
    (code:comment "")
    (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
    (code:comment "")
@@ -2279,7 +2280,7 @@ We can verify this as follows:
  (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
- (for ((p (in-G Q))) (printf "order: ~s, p: ~s~n" (P.order p) p))
+ (for ((p (in-G Q))) (printf "order: ~s, p: ~s~n" (P-order p) p))
  (define |-1| (P i i))
  (for/and ((g-class (in-list (G-classes Q))))
    (case (set-count g-class)
