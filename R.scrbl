@@ -21,7 +21,7 @@
           (require racket "R.rkt")
           (print-reader-abbreviations #f)
           (print-as-expression #f))) x ...))
-        
+
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
 @(display " │ This may take some minutes and may │\n")
@@ -1848,7 +1848,7 @@ If there is such key=value pair, the hash is called a pseudo H.
 @section{Elaborated examples}
 @subsection{Symmetries of a square}
 
-Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.
+Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.@(lb)
 Name the symmetries as follows:
 @Tabular[(("name" "description")
           ("E" "identity")
@@ -1873,13 +1873,36 @@ Name the symmetries as follows:
  (define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
  (for-each set-P-name! g-list names)
- (eq? (apply G g-list) (G R Sv))
-
+ (define (sort-bases bases)
+   (sort (map (compose P-sort set->list) bases)
+     base<?))
+ (define (base<? a b)
+   (or (P<? (car a) (car b))
+     (and (eq? (car a) (car b)) (P<? (cadr a) (cadr b)))))
+ (code:line)
+ (code:comment "R and Sv form a minimal base")
+ (define g (G R Sv))
+ (eq? (apply G g-list) g)
+ (code:line)
+ (code:comment "There are 12 minimal bases")
+ (for ((base (in-list (sort-bases (G-bases g)))) (i (in-naturals 1)))
+   (when (= i 1) (displayln " "))
+   (apply (fmt 'cur "R2DXL3DXD/") i
+     (map P-name base)))
+ (code:line)
+ (code:comment "There are 5 conjugation classes:")
+ (for
+   ((class (in-list (sort (map set->list (G-classes g)) < #:key length)))
+    (i (in-naturals 1)))
+   (when (= i 1) (displayln " "))
+   (apply (fmt 'cur "D':'XL3*(DX)/") i (map P-name class)))
+ (code:line)
+ (code:comment "Table of compositions:")
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
-
  (print-aligned
-   (for/list ((p (in-list g-list)))
+   (for/list ((p (in-list g-list)) (first (in-naturals 0)))
+     (when (= first 0) (displayln " "))
      (for/list ((q (in-list g-list))) (P-name (P p q)))))
  ]
 
@@ -2256,6 +2279,7 @@ We can verify this as follows:
  (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (define Q (G i j))
+ (for ((p (in-G Q))) (printf "order: ~s, p: ~s~n" (P.order p) p))
  (define |-1| (P i i))
  (for/and ((g-class (in-list (G-classes Q))))
    (case (set-count g-class)
