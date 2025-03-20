@@ -1966,13 +1966,13 @@ id est, @nbr[(P '((0 7) (1 6)))].
    (printf "Check: size of each conjugation class divisor of order of the group? ~s~n"
      (for/and ((conj-class (in-list conj-classes)))
        (divisor? (set-count conj-class) g-order)))
-   (when print-classes?
-     (printf " ~nThe conjugation classes are:~n")
-     (for ((conj-class (in-list conj-classes)))
-       (printf " ~n~a~n" (get-class-name conj-class))
-       (printf "Order: ~s, class-size: ~s~n"
-         (P-order (set-first conj-class))
-         (set-count conj-class))
+   (printf " ~nThe conjugation classes are:~n")
+   (for ((conj-class (in-list conj-classes)))
+     (printf " ~n~a~n" (get-class-name conj-class))
+     (printf "Order: ~s, class-size: ~s~n"
+       (P-order (set-first conj-class))
+       (set-count conj-class))
+     (when print-classes?
        (for ((p (in-list (P-sort (set->list conj-class)))))
          (printf "~s~n" (P->C p)))))
    (printf " ~n"))
