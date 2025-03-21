@@ -415,7 +415,7 @@ A C represents an @nber["R" "R"] and is one of the following:
   Sorting is possible because @nber["R" "Rs"] represented by disjunct single Cs
   commute with each other.
   The order of the represented @nber["R" "R"]
-  is the smallest common multiple of the lengths of the single Cs.})]
+  is the least common multiple of the lengths of the single Cs.})]
 
 Every @nber["R" "R"] can be represented by a C (in fact by many of them and ignoring memory limits).
 For every C there is exactly one (in the sense of @nbr[equal?])
