@@ -22,6 +22,22 @@
           (print-reader-abbreviations #f)
           (print-as-expression #f))) x ...))
 
+@(define-syntax-rule
+   (Interaction* x ...)
+   (interaction/no-prompt #:eval evaller x ...))
+
+@(define (make-evaller)
+   (make-base-eval
+     #:pretty-print? #f
+     #:lang
+     '(begin
+        (require racket "R.rkt")
+        (print-reader-abbreviations #f)
+        (print-as-expression #f))))
+
+@(define evaller (make-evaller))
+@(define (reset-Interaction*) (set! evaller (make-evaller)))
+
 @(newline)
 @(display " ┌────────────────────────────────────┐\n")
 @(display " │ This may take some minutes and may │\n")
@@ -1896,7 +1912,7 @@ in particular @nbr[(P '((0 1 2 3) (4 5 6 7)))], and
 reflection in the diagonal plane containing the vertices 2, 3, 4 and 5,
 id est, @nbr[(P '((0 7) (1 6)))].
 
-@Interaction[
+@Interaction*[
  (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
@@ -2039,10 +2055,7 @@ which is not part of subgroup @element['tt "rotations-only"], produces:
 This is a symmetry of order 6.
 Let's check that the inversion-symmetry commutes with all symmetries of the cube:
 
-@Interaction[
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
- (define reflection (P '((0 7) (1 6))))
- (define cube-symmetries (G rotation reflection))
+@Interaction*[
  (define inversion-symmetry (P '((0 6) (1 7) (2 4) (3 5))))
  (for/and ((p (in-G cube-symmetries)))
    (P-commute? inversion-symmetry p))]
@@ -2066,13 +2079,7 @@ In group @tt{rotations-only} the number of collections of symmetrically equivale
 is the same as the number of conjugation classes. It does not contain the inversion symmetry.
 The following example shows the details:
 
-@Interaction[
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
- (define reflection (P '((0 7) (1 6))))
- (define other-rotation '((0 1 5 4) (3 2 6 7)))
- (define cube-symmetries (G rotation reflection))
- (define rotations-only (G rotation other-rotation))
- (code:comment "")
+@Interaction*[
  (define (print-G-info g)
    (define bases (G-bases g))
    (code:comment "")
@@ -2090,13 +2097,16 @@ The following example shows the details:
    (code:comment "")
    (code:comment #,(list "Print one base of each collection in " (nbsl "C" "C-notation") "."))
    (code:comment "")
-   (for ((base-collection (in-list base-collections)) (i (in-naturals 1)))
+   (for
+     ((base-collection (in-list (sort base-collections < #:key length)))
+      (i (in-naturals 1)))
      (define-values (x y)
        (apply values (map P->C (set->list (car base-collection)))))
-     (apply printf "~s: size: ~s: example: ~s and ~s~n"
+     (apply printf " ~n~s: size: ~s: example: ~s and ~s~n"
        i (length base-collection)
-       (if (= (string-length (~s x)) 21) (list x y) (list y x)))))
- (code:comment "")
+       (if (= (string-length (~s x)) 21) (list x y) (list y x)))
+     (for ((b (in-set (car base-collection))))
+       (displayln (get-class-name (G-class b g))))))
  (print-G-info cube-symmetries)
  (code:comment "")
  (print-G-info rotations-only)
@@ -2104,22 +2114,17 @@ The following example shows the details:
 
 In the group of all cube-symmetries, all collections of
 symmetrically equivalent minimal bases have the same size.
-This is not true for all groups. For example,
-group @tt{rotations-only} has 108 distinct minimal bases
+This is not true for group @tt{rotations-only}.
+It has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
 one collection of 12 bases and four collections of 24 bases.
 
 The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
-@Interaction[
- (define rotation (P '((0 1 2 3) (4 5 6 7))))
- (define reflection (P '((0 7) (1 6))))
- (define other-rotation '((0 1 5 4) (3 2 6 7)))
- (define cube-symmetries (G rotation reflection))
- (define rotations (G rotation other-rotation))
+@Interaction*[
  (define all-subgs (G-subgroups cube-symmetries))
- (define rotation-subgs (apply set (G-subgroups rotations)))
+ (define rotation-subgs (apply set (G-subgroups rotations-only)))
 
  (define order-hash
    (for/fold ((h (hash))) ((subg (in-list all-subgs)))
