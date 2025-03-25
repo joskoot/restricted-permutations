@@ -1878,7 +1878,7 @@ Name the symmetries as follows:
           ("Sd2" "reflection in diagional 1-3"))
          #:sep (hspace 2)]
 @Interaction[
- (require fmt/fmt)
+ (require format/fmt)
  (define E   P-identity)
  (define R   (P '(0 1 2 3)))
  (define R2  (P R R))
