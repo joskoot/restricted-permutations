@@ -855,7 +855,9 @@ Examples:
  recollected from @nbr[p] without computing them again.}
 
 @note{Let x be a group element of finite order m.
- Then @nb{∀k∈@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}}.}
+ Then @nb{∀k∈@bold{Z}: x@↑{k} = x@↑{k @bold{modulo} m}},@(lb)
+ defining k @bold{modulo} m = k@tt{-}m⌊k/m⌋ for k,m∈@bold{Z} and m≠0.@(lb)
+ This does the same as procedure @nbr[modulo] of Racket.}
 
 Large exponents do no harm.
 The power is computed almost as fast as for small exponents.
@@ -1059,7 +1061,7 @@ has as many odd elements as even ones.
  (map P->C S3-list0)
  (code:comment "")
  (code:line (define in-rearrangements in-permutations) (code:comment #,(list
-   "See " (elemref "note" "note below")".")))
+      "See " (elemref "note" "note below")".")))
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
@@ -2009,7 +2011,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (code:comment "Rotation and other-rotation are rotations about 90°")
  (code:comment "with intersecting axes perpendicular to each other.") 
  (code:comment "")
- (define other-rotation '((0 1 5 4) (3 2 6 7)))
+ (define other-rotation '((0 1 5 4) (2 6 7 3)))
  (define rotations-only (G rotation other-rotation))
  (print-group-info rotations-only "rotations-only" #f)
  (code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
