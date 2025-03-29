@@ -149,8 +149,8 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@;@(defmodule restricted-permutations/R #:packages ())
+@(defmodule "R.rkt" #:packages ())
 
 Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
@@ -1158,8 +1158,8 @@ written, displayed or printed in @constr-style as:
 
 @inset{@nbr[(G (P '()) (P '#,(italic (tt "c"))) ...)]}
 
-showing in @nbrl[P-sort]{sorted} order the written forms of all @nbsl["P" "Ps"]
-representing the elements of the G.
+showing in @nbrl[P-sort]{sorted} order all @nbsl["P" "Ps"]
+representing the elements of the G (ignoring parameter @nbr[P-print-by-name]).
 @nb{Gs produced} by the procedures of this section and representing the same subgroup of
 @nber["R" (bold "R")] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after a @nbsl["Cleanup" "cleanup"].
