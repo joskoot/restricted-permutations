@@ -2170,6 +2170,8 @@ of which 30 contain rotations only.
        (~s #:min-width 15 #:align 'right n)))
    (printf line))]
 
+@(reset-Interaction*)
+
 @subsection{The quaternion group}
 
 @(define Q-comment
@@ -2177,7 +2179,7 @@ of which 30 contain rotations only.
      "Q is (a group isomorphic to) the "
      (nbhl "https://en.wikipedia.org/wiki/Quaternion_group" "quaternion group") "."))
 
-@Interaction[
+@Interaction*[
  (define i (P '((0 1 2 3) (4 5 6 7))))
  (define j (P '((0 4 2 6) (1 7 3 5))))
  (code:comment #,Q-comment)
@@ -2259,11 +2261,7 @@ The @nbrl[G-classes "conjugation classes"] are:
 
 We can verify this as follows:
 
-@Interaction[
- (define i (P '((0 1 2 3) (4 5 6 7))))
- (define j (P '((0 4 2 6) (1 7 3 5))))
- (define Q (G i j))
- (for ((p (in-G Q))) (printf "order: ~s, p: ~s~n" (P-order p) p))
+@Interaction*[
  (define |-1| (P i i))
  (for/and ((g-class (in-list (G-classes Q))))
    (case (set-count g-class)
@@ -2277,13 +2275,11 @@ We can verify this as follows:
 
 Every subgroup of the quaternion group is @nbrl[G-invariant-subg? "invariant"]:
 
-@Interaction[
- (define i (P '((0 1 2 3) (4 5 6 7))))
- (define j (P '((0 4 2 6) (1 7 3 5))))
- (define Q (G i j))
+@Interaction*[
  (not (G-abelean? Q))
  (for/and ((subg (in-list (G-subgroups Q))))
    (G-invariant-subg? subg Q))]
+@(reset-Interaction*)
 
 @subsection[#:tag "C3v"]{Group C@↓{3v}}
 
