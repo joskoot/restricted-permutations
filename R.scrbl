@@ -2012,18 +2012,18 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (code:comment "with intersecting axes perpendicular to each other.") 
  (code:comment "")
  (define other-rotation '((0 1 5 4) (2 6 7 3)))
- (define rotations-only (G rotation other-rotation))
- (print-group-info rotations-only "rotations-only" #f)
- (code:comment "rotations-only is an invariant subgroup of all cube-symmetries.")
- (G-invariant-subg? rotations-only cube-symmetries)
- (code:comment "Each conjugation class of the group of rotations-only")
+ (define cube-rotations (G rotation other-rotation))
+ (print-group-info cube-rotations "cube-rotations" #f)
+ (code:comment "cube-rotations is an invariant subgroup of all cube-symmetries.")
+ (G-invariant-subg? cube-rotations cube-symmetries)
+ (code:comment "Each conjugation class of the group of cube-rotations")
  (code:comment "also is a conjugation class of the group of all cube-symmetries")
  (proper-subset?
-   (apply set (G-classes rotations-only))
+   (apply set (G-classes cube-rotations))
    (apply set (G-classes cube-symmetries)))]
 
 The group of all cube-symmetries has ten conjugation classes,
-of which five coincide with the conjugation classes of subgroup @tt{rotations-only}.
+of which five coincide with the conjugation classes of subgroup @tt{cube-rotations}.
 Elements of the same class have the same normalized cycle structure,
 but distinct classes can have the same normalized cycle structure.
 @note{In a @nbrl[G-symmetric]{symmetric} group
@@ -2038,7 +2038,7 @@ have the same normalized cycle structure, but form distinct conjugation classes.
 The @nbr[P-identity] always is the only member of its class.
 
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
-which does not occur in subgroup @element['tt "rotations-only"], is lonesome too.
+which does not occur in subgroup @element['tt "cube-rotations"], is lonesome too.
 This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
 
@@ -2050,7 +2050,7 @@ axes orthogonal to each other produces a rotation about 120°, for example:
 
 This is a rotation about 120° around axis 0-6.
 Composition of this rotation with the inversion-symmetry,
-which is not part of subgroup @element['tt "rotations-only"], produces:
+which is not part of subgroup @element['tt "cube-rotations"], produces:
 
 @example/n[(P (P '((1 3 4) (2 7 5))) (P '((0 6) (1 7) (2 4) (3 5))))]
 
@@ -2077,7 +2077,7 @@ than the number of conjugation classes.
 This is no coincidence,
 because both the identity and the inversion symmetry form a conjugation class by itself.
 They commute with all symmetries and are the only ones with this property.
-In group @tt{rotations-only} the number of collections of symmetrically equivalent minimal bases
+In group @tt{cube-rotations} the number of collections of symmetrically equivalent minimal bases
 is the same as the number of conjugation classes. It does not contain the inversion symmetry.
 The following example shows the details:
 
@@ -2111,12 +2111,12 @@ The following example shows the details:
        (displayln (get-class-name (G-class b g))))))
  (print-G-info cube-symmetries)
  (code:comment "")
- (print-G-info rotations-only)
+ (print-G-info cube-rotations)
  ]
 
 In the group of all cube-symmetries, all collections of
 symmetrically equivalent minimal bases have the same size.
-This is not true for group @tt{rotations-only}.
+This is not true for group @tt{cube-rotations}.
 It has 108 distinct minimal bases
 in five collections of symmetrically equivalent bases,
 one collection of 12 bases and four collections of 24 bases.
@@ -2126,7 +2126,7 @@ of which 30 contain rotations only.
 
 @Interaction*[
  (define all-subgs (G-subgroups cube-symmetries))
- (define rotation-subgs (apply set (G-subgroups rotations-only)))
+ (define rotation-subgs (apply set (G-subgroups cube-rotations)))
 
  (define order-hash
    (for/fold ((h (hash))) ((subg (in-list all-subgs)))
