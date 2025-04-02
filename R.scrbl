@@ -2186,7 +2186,8 @@ of which 30 contain rotations only.
  (define Q (G i j))
  (G-order Q)
  (for ((p (in-G Q))) (printf "order = ~s, p = ~s~n" (P-order p) p))
- (G-classes Q)]
+ (define Q-classes (G-classes Q))
+ (for ((class (in-list Q-classes))) (printf "~s~n"class))]
 
 In the quaternion group, make the following identifications:
 
@@ -2263,13 +2264,13 @@ We can verify this as follows:
 
 @Interaction*[
  (define |-1| (P i i))
- (for/and ((g-class (in-list (G-classes Q))))
-   (case (set-count g-class)
+ (for/and ((class (in-list Q-classes)))
+   (case (set-count class)
      ((1)
-      (define x (set-first g-class))
+      (define x (set-first class))
       (or (P-identity? x) (eq? x |-1|)))
      ((2)
-      (define-values (p q) (apply values (set->list g-class)))
+      (define-values (p q) (apply values (set->list class)))
       (eq? (P |-1| p) q))
      (else #f)))]
 
