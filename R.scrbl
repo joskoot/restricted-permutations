@@ -187,8 +187,8 @@ such as to mean a bijection of a set onto the same set.
  @nb{See section} @nbsl["N" "Natural/integer numbers"].}
 
 @elemtag["R" ""]
-Let @bold{N} be the set of all natural numbers, 0 included.
-Define a restricted permutation, @nb{say p},
+Let @bold{N} be the set of all natural numbers, 0 included.@(lb)
+Define a restricted permutation, @nb{say p},@(lb)
 as a permutation of @bold{N} with a restriction as follows:
 
 @inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
