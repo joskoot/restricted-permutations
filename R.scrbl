@@ -1052,6 +1052,8 @@ has as many odd elements as even ones.
 
 @(random-seed 1)
 
+@(define permutations-note (list "See " (elemref "note" "note below")"."))
+
 @Interaction[
  (random-seed 1)
  (code:line (define S3-list0 (G->list (G-symmetric 3))) (code:comment "S3-list0 is sorted."))
@@ -1060,8 +1062,7 @@ has as many odd elements as even ones.
  (code:comment "")
  (map P->C S3-list0)
  (code:comment "")
- (code:line (define in-rearrangements in-permutations) (code:comment #,(list
-      "See " (elemref "note" "note below")".")))
+ (code:line (define in-rearrangements in-permutations) (code:comment #,permutations-note))
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
@@ -1869,16 +1870,18 @@ If there is such key=value pair, the hash is called a pseudo H.
 
 Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.@(lb)
 Name the symmetries as follows:
-@Tabular[(("name" "description")
-          ("E" "identity")
-          ("R" "anti clockwise rotation about 90°")
-          ("R2" "anti clockwise rotation about 180°")
-          ("R3" "anti clockwise rotation about 270°")
-          ("Sv" "reflection in vertical center line")
-          ("Sh" "reflection in horizontal center line")
-          ("Sd1" "reflection in diagional 0-2")
-          ("Sd2" "reflection in diagional 1-3"))
-         #:sep (hspace 2)]
+@inset[
+ @Tabular[(("name" "description")
+           ("E" "identity")
+           ("R" "anti clockwise rotation about 90°")
+           ("R2" "anti clockwise rotation about 180°")
+           ("R3" "anti clockwise rotation about 270°")
+           ("Sv" "reflection in vertical center line")
+           ("Sh" "reflection in horizontal center line")
+           ("Sd1" "reflection in diagional 0-2")
+           ("Sd2" "reflection in diagional 1-3"))
+          #:sep (hspace 2)
+          #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
 @Interaction[
  (require format/fmt)
  (define E   P-identity)
@@ -1934,7 +1937,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
      (cons (P '((0 1) (2 3) (4 5) (6 7)))
        "Reflection, plane // to a side.")
      (cons (P '((0 7) (1 6)))
-       "Reflection, diagonal plane.")
+       "Reflection in diagonal plane.")
      (cons (P '((0 2 5) (3 6 4)))
        "Rotation 120° or 240°, axis a diagonal.")
      (cons (P '((0 7 2 5) (1 4 3 6)))
