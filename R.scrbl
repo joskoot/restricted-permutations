@@ -1901,7 +1901,25 @@ Name the symmetries as follows:
  (print-aligned
    (for/list ((p (in-list g-list)))
      (for/list ((q (in-list g-list))) (P-name (P p q)))))
- ]
+ (code:comment "Subgroups:")
+ (define g (list->G g-list))
+ (eq? g (G R Sv))
+ (define subgs
+   (sort (G-subgroups g)
+     (λ (x y) (< (G-order x) (G-order y)))))
+ (define-values (invariant variant)
+   (partition (λ (x) (G-invariant-subg? x g)) subgs))
+ (define (print-subgroups <in>variant subgs)
+   ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
+    <in>variant
+    (for/list ((sg (in-list subgs)))
+      (sort (map P-name (G->list sg)) symbol<?))))
+ (print-subgroups 'Invariant invariant)
+ (print-subgroups 'Variant variant)
+ (code:comment "For example, (E Sv), (E Sh), (E Sd1) and (E Sd2)")
+ (code:comment "are not invariant under transformation R:")
+ (for ((s (in-list (list Sv Sd1))))
+   (printf "~s ≠ ~s~n" (P-name s) (P-name (P R s (P-inverse R)))))]
 
 @subsection{Symmetries of a cube}
 
