@@ -1892,17 +1892,18 @@ Name the symmetries as follows:
  (define Sh  (P R2 Sv))
  (define Sd1 (P R Sh))
  (define Sd2 (P R2 Sd1))
- (define g-list (list E R R2 R3 Sv Sd1 Sh Sd2))
+ (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
- (for-each set-P-name! g-list names)
+ (for-each set-P-name! p-list names)
  (code:comment "Table of compositions:")
+ (P-print-by-name #t)
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
  (print-aligned
-   (for/list ((p (in-list g-list)))
-     (for/list ((q (in-list g-list))) (P-name (P p q)))))
+   (for/list ((p (in-list p-list)))
+     (for/list ((q (in-list p-list))) (P p q))))
  (code:comment "Subgroups:")
- (define g (list->G g-list))
+ (define g (list->G p-list))
  (eq? g (G R Sv))
  (define subgs
    (sort (G-subgroups g)
@@ -1913,13 +1914,22 @@ Name the symmetries as follows:
    ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
     <in>variant
     (for/list ((sg (in-list subgs)))
-      (sort (map P-name (G->list sg)) symbol<?))))
+      (sort (G->list sg)
+        (λ (x y) (symbol<? (P-name x) (P-name y)))))))
  (print-subgroups 'Invariant invariant)
  (print-subgroups 'Variant variant)
  (code:comment "For example, (E Sv), (E Sh), (E Sd1) and (E Sd2)")
  (code:comment "are not invariant under transformation R:")
  (for ((s (in-list (list Sv Sd1))))
-   (printf "~s ≠ ~s~n" (P-name s) (P-name (P R s (P-inverse R)))))]
+   (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))
+ (code:comment "(E R2) is an invariant subgroup. This implies")
+ (code:comment "that R2 commutes with all symmetries of the square:")
+ (for/and ((p (in-list p-list))) (P-commute? p R2))
+ (code:comment "None of the symmetries other than E and R2")
+ (code:comment "commute with all symmetries of the square:")
+ (for/or ((p (in-list (remove* (list E R2) p-list))))
+   (for/and ((q (in-list p-list)))
+     (P-commute? p q)))]
 
 @subsection{Symmetries of a cube}
 
