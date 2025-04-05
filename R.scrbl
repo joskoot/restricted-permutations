@@ -11,6 +11,20 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
+@(define-for-syntax local #f)
+
+@(define-syntax (nbhll stx)
+   (syntax-case stx ()
+     ((_ x y ...)
+      (if local
+        #'(nb (hyperlink x y ...))
+        #'(nb (hyperlink (string-append "../../" x) y ...))))))
+
+@(define-syntax (Defmodule stx)
+   (if local
+     #'(defmodule "R.rkt" #:packages ())
+     #'(defmodule restricted-permutations/R #:packages ())))
+
 @(define-syntax-rule
    (Interaction x ...)
    (interaction
@@ -149,18 +163,17 @@
 @title[#:version ""]{Restricted Permutations}
 @author{Jacob J. A. Koot}
 
-@(defmodule restricted-permutations/R #:packages ())
-@;@(defmodule "R.rkt" #:packages ())
+@(Defmodule)
 
-Module @nbhl["../../R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
+Module @nbhll["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
  (("Module" "Documentation in section") 
-  (@nbhl["../../N.rkt" "N.rkt"] @(nbsr "N"))
-  (@nbhl["../../C.rkt" "C.rkt"] @(nbsr "C"))
-  (@nbhl["../../P.rkt" "P.rkt"] @(nbsr "P"))
-  (@nbhl["../../H.rkt" "H.rkt"] @(nbsr "H"))
-  (@nbhl["../../G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
+  (@nbhll["N.rkt" "N.rkt"] @(nbsr "N"))
+  (@nbhll["C.rkt" "C.rkt"] @(nbsr "C"))
+  (@nbhll["P.rkt" "P.rkt"] @(nbsr "P"))
+  (@nbhll["H.rkt" "H.rkt"] @(nbsr "H"))
+  (@nbhll["G.rkt" "G.rkt"] @(nbsl "G" "Finite groups of restricted permutations")))
  #:sep (hspace 3)
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
@@ -232,7 +245,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  you'd better skip the intro@(-?)duction.
  Quantum mechanics play no role in chapter 1.
  @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @nbhl["../../finite-groups.pdf" "finite-groups.pdf"].}
+ @nb{As an} alter@(-?)native see @nbhll["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -376,7 +389,7 @@ and the corresponding abstract natural numbers.
  #:sep (hspace 3)
  #:row-properties (list '(top-border bottom-border) '() '() 'bottom-border)]}
 
-The synonyms are provided by module @nbhl["../../N.rkt" "N.rkt"].
+The synonyms are provided by module @nbhll["N.rkt" "N.rkt"].
 They are used as shorthands in the description of the procedures shown in this document,
 particularly in their specifications of data types.
 
@@ -385,7 +398,7 @@ particularly in their specifications of data types.
 
 @section[#:tag "C"]{Cycle notation}
 
-All objects described in this section are defined in module @nbhl["../../C.rkt" "C.rkt"].
+All objects described in this section are defined in module @nbhll["C.rkt" "C.rkt"].
 `C' is shorthand for `cycle notation'.
 A C represents an @nber["R" "R"] and is one of the following:
 
@@ -573,7 +586,7 @@ Examples:
 @section[#:tag "P"]{Function representation}
 
 All objects described in this section are defined in
-module @nbhl["../../P.rkt" "P.rkt"].
+module @nbhll["P.rkt" "P.rkt"].
 A P is a procedure @nbr[(-> N? N?)] representing an @nber["R" "R"].
 Given the same argument, a P returns the same
 @seclink["N"]{@nb{natural number}} as the represented @nber["R" "R"], of course.
@@ -1153,7 +1166,7 @@ Examples:
 @section[#:tag "G"]{Finite subgroups of @nber["R" (bold "R")]}
 
 All objects described in this section are defined in
-module @nbhl["../../G.rkt" "G.rkt"].
+module @nbhll["G.rkt" "G.rkt"].
 A G represents a finite subgroup of @nber["R" (bold "R")] and is
 written, displayed or printed in @constr-style as:
 
@@ -1737,7 +1750,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 @defproc*[
  (((R-hashes-count) N+?)
   ((R-clear-hashes) void?))]{
- Modules @nbhl["../../P.rkt" "P.rkt"] and @nbhl["../../G.rkt" "G.rkt"]
+ Modules @nbhll["P.rkt" "P.rkt"] and @nbhll["G.rkt" "G.rkt"]
  use hashes in order to avoid repeated identical computations
  and to guarantee that
  @nbsl["P" "P"]s and @nbsl["G" "G"]s that represent the same @nber["R" "R"]s and
@@ -1774,8 +1787,8 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  (code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "true")))
  (code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "true")))]
 
-@section[#:tag "Distinct-instances"]{Distinct instances of @nbhl["../../R.rkt" "R.rkt"]}
-Two distinct instances of module @nbhl["../../R.rkt" "R.rkt"]
+@section[#:tag "Distinct-instances"]{Distinct instances of @nbhll["R.rkt" "R.rkt"]}
+Two distinct instances of module @nbhll["R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
 
@@ -1807,7 +1820,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 
 @section[#:tag "H"]{Hash representation}
 
-All objects described in this section are defined in module @nbhl["../../H.rkt" "H.rkt"].
+All objects described in this section are defined in module @nbhll["H.rkt" "H.rkt"].
 The H-representation is used internally for operations like application,
 @nber["composition" "composition"] and @nbrl[P-inverse "inversion"].
 @red{Advice}: avoid explicit use of the H-representation.
@@ -2272,7 +2285,7 @@ In the quaternion group, make the following identifications:
 
  @nested[#:style 'inset (verbatim table)]})
 
-@note{This table has been @italic{computed} in module @nbhl["../../R.scrbl" "R.scrbl"].
+@note{This table has been @italic{computed} in module @nbhll["R.scrbl" "R.scrbl"].
  It has @italic{not} been typed @italic{manually}.}
 
 Because @element['tt "1"] is the identity, it commutes with all elements.
