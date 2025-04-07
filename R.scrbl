@@ -1882,9 +1882,6 @@ If there is such key=value pair, the hash is called a pseudo H.
 @subsection{Symmetries of a square}
 
 Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.@(lb)
-
-@nested[#:style 'inset (image "square.png")]
-
 Name the symmetries as follows:
 @inset[
  @Tabular[(("name" "description")
