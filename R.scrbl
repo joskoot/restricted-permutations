@@ -2235,59 +2235,34 @@ of which 30 contain rotations only.
 
 In the quaternion group, make the following identifications:
 
-@(let ()
-   (define | i| (P '((0 1 2 3) (4 5 6 7))))
-   (define | j| (P '((0 4 2 6) (1 7 3 5))))
-   (define | k| (P | i| | j|))
-   (define |-1| (P | i| | i|))
-   (define | 1| (P |-1| |-1|))
-   (define |-i| (P |-1| | i|))
-   (define |-j| (P |-1| | j|))
-   (define |-k| (P |-1| | k|))
-   (define Ps    (list | 1| |-1| | i| |-i| | j| |-j| | k| |-k|))
-   (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
-   (define P->name-table (make-hash (map cons Ps names)))
-   (define (P->name p) (hash-ref P->name-table p))
-   (define op (open-output-string))
-   (parameterize ((current-output-port op))
-     (for ((p (in-list Ps)))
-       (for ((q (in-list Ps)))
-         (printf "~a " (P->name (P p q))))
-       (unless (eq? p |-k|) (newline))))
-   (define table (get-output-string op))
+@Interaction*[
+ (define | i| (P '((0 1 2 3) (4 5 6 7))))
+ (define | j| (P '((0 4 2 6) (1 7 3 5))))
+ (define | k| (P | i| | j|))
+ (define |-1| (P | i| | i|))
+ (define | 1| (P |-1| |-1|))
+ (define |-i| (P |-1| | i|))
+ (define  -j  (P |-1| | j|))
+ (define  -k  (P |-1| | k|))
+ (define Ps    (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
+ (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
+ (for ((p (in-list Ps)) (name (in-list names))) (set-P-name! p name))]
 
-   (define-syntax-rule (ttt x) (element 'tt x))
+We have
+@tt["ii=jj=kk=-1"],
+@tt["ij=k"],
+@tt["jk=i"]
+and @tt["ki=j"].
+With these @nber["composition" "compositions"]
+all others are defined as shown in the following table:
 
-   @nested{@nested[#:style 'inset]{@tabular[
- #:sep (hspace 1)
- #:column-properties '(left right left left right left)
- #:row-properties '(bottom bottom bottom bottom bottom)
- #:cell-properties
- '((() () () () () ())
-   (() () () () () ())
-   (() () () () () ())
-   (() () () () () ())
-   (bottom bottom bottom bottom bottom bottom))
- (list
-   (list "Identify" @tt["i"]  "with" (hspace 1)               (hspace 1) (ttt (~s | i|)))
-   (list "Identify" @tt["j"]  "with" (hspace 1)               (hspace 1) (ttt (~s | j|)))
-   (list "Identify" @tt["k"]  "with" (tt "ij")                "="        (ttt (~s (P | i| | j|))))
-   (list "Identify" @tt["-1"] "with" (tt "i"@↑{@smaller{2}})  "="        (ttt (~s (P | i| | i|))))
-   (list "Identify" @tt["1"]  "with" @tt{(-1)@↑{@smaller{2}}} "="        (ttt (~s (P |-1| |-1|)))))]}
+@Interaction*[
+ (P-print-by-name #t)
+ (for ((p (in-list Ps)))
+   (for ((q (in-list Ps)))
+     (printf "~a " (P p q)))
+   (unless (eq? p -k) (newline)))]
          
- We have
- @tt["ii=jj=kk=-1"],
- @tt["ij=k"],
- @tt["jk=i"]
- and @tt["ki=j"].@(lb)
- With these @nber["composition" "compositions"]
- all others are defined as shown in the following table:
-
- @nested[#:style 'inset (verbatim table)]})
-
-@note{This table has been @italic{computed} in module @nbhll["R.scrbl" "R.scrbl"].
- It has @italic{not} been typed @italic{manually}.}
-
 Because @element['tt "1"] is the identity, it commutes with all elements.
 @element['tt "-1"] commutes with all elements too,
 which is verified by the fact that the second row of the table

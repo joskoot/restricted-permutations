@@ -25,7 +25,7 @@
 (define (P-write p port mode)
   (define name (P-name p))
   (if (and name (P-print-by-name))
-    (fprintf port "~s" name)
+    (fprintf port "~a" name)
     (fprintf port "(P '~s)" (P->C p))))
 
 (define (P-clear-hashes)
