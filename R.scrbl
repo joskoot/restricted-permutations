@@ -1912,7 +1912,7 @@ for example R and Sv:
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
  (code:comment "Check that base (R Sv) generates the same symmetries as in p-list:")
  (define g (G R Sv))
- (equal? (apply set p-list) (apply set (G->list g)))
+ (equal? (P-sort p-list) (G->list g))
  (code:comment "Table of compositions:")
  (for-each set-P-name! p-list names)
  (P-print-by-name #t)
