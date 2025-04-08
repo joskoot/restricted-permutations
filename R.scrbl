@@ -1881,7 +1881,8 @@ If there is such key=value pair, the hash is called a pseudo H.
 @section{Elaborated examples}
 @subsection{Symmetries of a square}
 
-Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.@(lb)
+Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.
+@nested[#:style 'inset (image "square.gif")]
 Name the symmetries as follows:
 @inset[
  @Tabular[(("name" "description")
@@ -1895,6 +1896,8 @@ Name the symmetries as follows:
            ("Sd2" "reflection in diagional 1-3"))
           #:sep (hspace 2)
           #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
+The whole group of symmetries can be generated with a base of two elements,
+for example R and Sv:
 @Interaction[
  (require format/fmt)
  (define E   P-identity)
@@ -1907,8 +1910,11 @@ Name the symmetries as follows:
  (define Sd2 (P R2 Sd1))
  (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
- (for-each set-P-name! p-list names)
+ (code:comment "Check that p-list contains all symmetries:")
+ (define g (apply G p-list))
+ (eq? g (G R Sv))
  (code:comment "Table of compositions:")
+ (for-each set-P-name! p-list names)
  (P-print-by-name #t)
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
@@ -1916,8 +1922,6 @@ Name the symmetries as follows:
    (for/list ((p (in-list p-list)))
      (for/list ((q (in-list p-list))) (P p q))))
  (code:comment "Subgroups:")
- (define g (list->G p-list))
- (eq? g (G R Sv))
  (define subgs
    (sort (G-subgroups g)
      (λ (x y) (< (G-order x) (G-order y)))))
