@@ -1898,7 +1898,7 @@ Name the symmetries as follows:
           #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
 The whole group of symmetries can be generated with a base of two elements,
 for example R and Sv:
-@Interaction[
+@Interaction*[
  (require format/fmt)
  (define E   P-identity)
  (define R   (P '(0 1 2 3)))
@@ -1909,19 +1909,22 @@ for example R and Sv:
  (define Sd1 (P R Sh))
  (define Sd2 (P R2 Sd1))
  (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
- (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
- (code:comment "Check that base (R Sv) generates the same symmetries as in p-list:")
+ (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))]
+Check that base (R Sv) generates the same symmetries as in p-list:
+@Interaction*[
  (define g (G R Sv))
- (equal? (P-sort p-list) (G->list g))
- (code:comment "Table of compositions:")
+ (equal? (P-sort p-list) (G->list g))]
+Table of compositions:
+@Interaction*[
  (for-each set-P-name! p-list names)
  (P-print-by-name #t)
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
  (print-aligned
    (for/list ((p (in-list p-list)))
-     (for/list ((q (in-list p-list))) (P p q))))
- (code:comment "Subgroups:")
+     (for/list ((q (in-list p-list))) (P p q))))]
+Subgroups:
+@Interaction*[
  (define subgs
    (sort (G-subgroups g)
      (λ (x y) (< (G-order x) (G-order y)))))
@@ -1947,6 +1950,7 @@ for example R and Sv:
  (for/or ((p (in-list (remove* (list E R2) p-list))))
    (for/and ((q (in-list p-list)))
      (P-commute? p q)))]
+@(reset-Interaction*)
 
 @subsection{Symmetries of a cube}
 
