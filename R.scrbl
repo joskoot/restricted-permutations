@@ -399,7 +399,7 @@ particularly in their specifications of data types.
 @section[#:tag "C"]{Cycle notation}
 
 All objects described in this section are defined in module @nbhll["C.rkt" "C.rkt"].
-`C' is shorthand for `cycle notation'.
+`C' is shorthand for @nb{`cycle notation'}.
 A C represents an @nber["R" "R"] and is one of the following:
 
 @itemlist[#:style 'ordered
