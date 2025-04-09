@@ -1910,7 +1910,7 @@ for example R and Sv:
  (define Sd2 (P R2 Sd1))
  (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))]
-Check that base (R Sv) generates the same symmetries as in p-list:
+Check that @tt{p-list} contains all symmetries as generated from base @tt{(R Sv)} and those only:
 @Interaction*[
  (define g (G R Sv))
  (equal? (P-sort p-list) (G->list g))]
@@ -1938,14 +1938,14 @@ Subgroups:
         (λ (x y) (symbol<? (P-name x) (P-name y)))))))
  (print-subgroups 'Invariant invariant)
  (print-subgroups 'Variant variant)
- (code:comment "For example, (E Sv), (E Sh), (E Sd1) and (E Sd2)")
+ (code:comment #,(list "For example, "@tt{(E Sv)}", "@tt{(E Sh)}", "@tt{(E Sd1)}" and "@tt{(E Sd2)}))
  (code:comment "are not invariant under transformation R:")
  (for ((s (in-list (list Sv Sd1))))
    (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))
- (code:comment "(E R2) is an invariant subgroup. This implies")
- (code:comment "that R2 commutes with all symmetries of the square:")
+ (code:comment #,(list @tt{(E R2)}" is an invariant subgroup. This implies"))
+ (code:comment #,(list "that "@tt{R2}" commutes with all symmetries of the square:"))
  (for/and ((p (in-list p-list))) (P-commute? p R2))
- (code:comment "None of the symmetries other than E and R2")
+ (code:comment #,(list "None of the symmetries other than "@tt{E}" and "@tt{R2}))
  (code:comment "commute with all symmetries of the square:")
  (for/or ((p (in-list (remove* (list E R2) p-list))))
    (for/and ((q (in-list p-list)))
