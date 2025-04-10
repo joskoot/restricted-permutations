@@ -2302,7 +2302,8 @@ We can verify this as follows:
       (eq? (P |-1| p) q))
      (else #f)))]
 
-Every subgroup of the quaternion group is @nbrl[G-invariant-subg? "invariant"]:
+Group @tt{Q} is not @nbrl[G-abelean?]{abelean},
+but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction*[
  (not (G-abelean? Q))
