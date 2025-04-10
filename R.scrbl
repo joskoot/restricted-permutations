@@ -2032,7 +2032,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
    (printf "Check: order of each element~n")
    (printf "divisor of the order of the group? ~s~n"
      (for/and ((p in-g)) (divisor? (P-order p) g-order)))
-   (printf "Check: size of each conjugation class ")
+   (printf "Check: size of each conjugation class~n")
    (printf "divisor of order of the group? ~s~n"
      (for/and ((conj-class (in-list conj-classes)))
        (divisor? (set-count conj-class) g-order)))
