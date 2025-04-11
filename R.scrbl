@@ -1909,15 +1909,15 @@ for example R and Sv:
  (define Sd1 (P R Sh))
  (define Sd2 (P R2 Sd1))
  (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
- (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))]
+ (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
+ (for-each set-P-name! p-list names)
+ (P-print-by-name #t)]
 Check that @tt{p-list} contains all symmetries as generated from base @tt{(R Sv)} and those only:
 @Interaction*[
  (define g (G R Sv))
  (equal? (P-sort p-list) (G->list g))]
 Table of compositions:
 @Interaction*[
- (for-each set-P-name! p-list names)
- (P-print-by-name #t)
  (define (print-aligned lst-of-lst)
    ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
  (print-aligned
@@ -2075,7 +2075,7 @@ id est, @nbr[(P '((0 7) (1 6)))].
    (apply set (G-classes cube-rotations))
    (apply set (G-classes cube-symmetries)))]
 
-The group of all cube-symmetries has ten conjugation classes,
+The group of all @tt{cube-symmetries} has ten conjugation classes,
 of which five coincide with the conjugation classes of subgroup @tt{cube-rotations}.
 Elements of the same class have the same normalized cycle structure,
 but distinct classes can have the same normalized cycle structure.
@@ -2167,7 +2167,7 @@ The following example shows the details:
  (print-G-info cube-rotations)
  ]
 
-In the group of all cube-symmetries, all collections of
+In the group of all @tt{cube-symmetries}, all collections of
 symmetrically equivalent minimal bases have the same size.
 This is not true for group @tt{cube-rotations}.
 It has 108 distinct minimal bases
