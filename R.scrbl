@@ -180,7 +180,8 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @note{Some examples use
  @hyperlink["https://github.com/joskoot/format"]{https://github.com/joskoot/format}.
  Install it before installing
- @hyperlink["https://github.com/joskoot/restricted-permutations"]{https://github.com/joskoot/format}}
+ @hyperlink["https://github.com/joskoot/restricted-permutations"]{
+  https://github.com/joskoot/restricted-permutations}}
 
  @section{Introduction}
  In this document the word `permutation' is used in mathematical sense, id est,@(lb)
