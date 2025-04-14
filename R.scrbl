@@ -177,8 +177,8 @@ with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
  #:sep (hspace 3)
  #:row-properties '(top-border top-border () () () bottom-border)]}
 
-@note{Some examples use
- @hyperlink["https://github.com/joskoot/format"]{https://github.com/joskoot/format}.
+@note{Some examples shown in the present document use
+ @hyperlink["https://github.com/joskoot/format"]{https://github.com/joskoot/format}.@(lb)
  Install it before installing
  @hyperlink["https://github.com/joskoot/restricted-permutations"]{
   https://github.com/joskoot/restricted-permutations}.}
