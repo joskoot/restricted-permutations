@@ -2214,8 +2214,15 @@ of which 30 contain rotations only.
 
  (begin
    (printf line) 
-   (printf "~s subgroups of which ~s with rotations only.~n"
-     (length all-subgs) (set-count rotation-subgs))
+   (printf
+     "~s subgroups~n~
+      of which ~s invariant~n~
+      and ~s with rotations only~n"
+     (length all-subgs)
+     (apply +
+       (map (curry hash-ref order-hash)
+         (filter caddr (hash-keys order-hash))))
+     (set-count rotation-subgs))
    (printf line)
    (printf header)
    (printf line)
