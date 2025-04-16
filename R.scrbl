@@ -2320,6 +2320,15 @@ Group @tt{Q} is not @nbrl[G-abelean?]{abelean},
 but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction*[
+ (require format/fmt)
+ (begin
+   (displayln "The subgroups are:")
+   (for
+     ((subg
+        (in-list
+          (sort (G-subgroups Q) < #:key G-order))))
+     ((fmt "u#(dx)/" 'cur)
+      (sort (G->list subg) string<? #:key P-name))))
  (not (G-abelean? Q))
  (for/and ((subg (in-list (G-subgroups Q))))
    (G-invariant-subg? subg Q))]
