@@ -743,7 +743,8 @@ but the result is not a P. Example:
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
- A P can be given a @nbr[name]. This does not alter the identity of the P.
+ A P can be given a @nbr[name]. This does not alter the identity of the P.@(lb)
+ @nbr[(set-P-name! p #f)] removes the name from @nbr[p] if it had a name.
  @Interaction[
  (define a (P '(1 2 3)))
  (define b (P '(1 2 3)))
