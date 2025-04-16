@@ -496,7 +496,8 @@ Therefore procedure @nbr[C-normalize] returns the same normalized C for them
  (C-normalize '((1 2) (0 2)))
  (C-normalize '(0 1 2))
  (C-normalize '(1 2 0))
- (C-normalize '(2 0 1))]
+ (C-normalize '(2 0 1))
+ (C-normalize '((0 1) (1 2) (0 1) (0 1)))]
 
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
  Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
