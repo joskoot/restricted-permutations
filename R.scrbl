@@ -2012,7 +2012,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (code:comment "Check that all entries refer to distinct conjugation")
  (code:comment "classes and that all conjugation classes are present.")
  (code:comment "")
- (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))
+ (let ((classes (hash-keys conj-name-table)))
+   (and (not (check-duplicates classes))
+     (set=? classes (G-classes cube-symmetries))))
  (code:comment "")
  (define (get-class-name conj-class)
    (hash-ref conj-name-table conj-class))
@@ -2158,10 +2160,10 @@ The following example shows the details:
        (if (= (string-length (~s x)) 21) (list x y) (list y x)))
      (for ((b (in-set (car base-collection))))
        (displayln (get-class-name (G-class b g))))))
+ (code:comment "")
  (print-G-info cube-symmetries)
  (code:comment "")
- (print-G-info cube-rotations)
- ]
+ (print-G-info cube-rotations)]
 
 In the group of all @tt{cube-symmetries}, all collections of
 symmetrically equivalent minimal bases have the same size.
