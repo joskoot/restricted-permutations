@@ -1979,50 +1979,40 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))
  (code:comment "")
- (code:comment "The following table associates one member of each")
- (code:comment #,(list
-                   (nbrl G-class "conjugation class")
-                   " with a name later to be associated"))
- (code:comment "with the whole conjugation class of this member.")
- (code:comment "")
- (define classocs
-   (list
-     (cons (P '((0 1 2 3) (4 5 6 7)))
-       "Rotation 90° or 270°, axis // to an edge.")
-     (cons (P '((0 2) (1 3) (4 6) (5 7)))
-       "Rotation 180°, axis // to an edge.")
-     (cons (P '((0 1) (2 3) (4 5) (6 7)))
-       "Reflection, plane // to a side.")
-     (cons (P '((0 7) (1 6)))
-       "Reflection in diagonal plane.")
-     (cons (P '((0 2 5) (3 6 4)))
-       "Rotation 120° or 240°, axis a diagonal.")
-     (cons (P '((0 7 2 5) (1 4 3 6)))
-       "Rotation 90° or 270°, axis // to an edge, * inversion-symmetry.")
-     (cons (P '((0 1) (2 4) (3 5) (6 7)))
-       (string-append
-         "Rotation 90° or 270° * rotation 180°,\n"
-         "axes // to an edge and perpendicular to each other."))
-     (cons (P '((1 7) (0 4 5 6 2 3)))
-       "Rotation 120° or 240°, axis a diagonal, * inversion-symmetry.")
-     (cons P-identity
-       "Identity")
-     (cons (P '((0 6) (1 7) (2 4) (3 5)))
-       "Inversion-symmetry.")))
- (code:comment "")
- (define class-names (map cdr classocs))
- (define (get-class classoc) (G-class (car classoc) cube-symmetries))
- (define conj-classes (map get-class classocs))
- (code:comment "")
- (code:comment "Check that all classocs refer to distinct conjugation")
- (code:comment "classes and that all conjugation classes are present.")
- (code:comment "")
- (code:line (set=? conj-classes (G-classes cube-symmetries)) (code:comment #,(green "true")))
- (code:comment "")
  (code:comment "The following table maps each conjugation class to its name.")
  (code:comment "")
  (define conj-name-table
-   (make-hash (map cons conj-classes class-names)))
+   (make-hash
+     (map
+       (λ (entry) (cons (G-class (car entry) cube-symmetries) (cdr entry)))
+       (list
+         (cons (P '((0 1 2 3) (4 5 6 7)))
+           "Rotation 90° or 270°, axis // to an edge.")
+         (cons (P '((0 2) (1 3) (4 6) (5 7)))
+           "Rotation 180°, axis // to an edge.")
+         (cons (P '((0 1) (2 3) (4 5) (6 7)))
+           "Reflection, plane // to a side.")
+         (cons (P '((0 7) (1 6)))
+           "Reflection in diagonal plane.")
+         (cons (P '((0 2 5) (3 6 4)))
+           "Rotation 120° or 240°, axis a diagonal.")
+         (cons (P '((0 7 2 5) (1 4 3 6)))
+           "Rotation 90° or 270°, axis // to an edge, * inversion-symmetry.")
+         (cons (P '((0 1) (2 4) (3 5) (6 7)))
+           (string-append
+             "Rotation 90° or 270° * rotation 180°,\n"
+             "axes // to an edge and perpendicular to each other."))
+         (cons (P '((1 7) (0 4 5 6 2 3)))
+           "Rotation 120° or 240°, axis a diagonal, * inversion-symmetry.")
+         (cons P-identity
+           "Identity")
+         (cons (P '((0 6) (1 7) (2 4) (3 5)))
+           "Inversion-symmetry.")))))
+ (code:comment "")
+ (code:comment "Check that all entries refer to distinct conjugation")
+ (code:comment "classes and that all conjugation classes are present.")
+ (code:comment "")
+ (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))
  (code:comment "")
  (define (get-class-name conj-class)
    (hash-ref conj-name-table conj-class))
@@ -2033,15 +2023,13 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define (print-group-info g name print-classes?)
    (define conj-classes (sort (G-classes g) conj-class<?))
    (define g-order (G-order g))
-   (define in-g (in-G g))
    (printf " ~nInfo about group: ~a~n ~n" name)
    (printf "Order of the group: ~s~n" g-order)
    (printf "Number of conjugation classes: ~s~n" (length conj-classes))
-   (printf "Check: order of each element~n")
-   (printf "divisor of the order of the group? ~s~n"
-     (for/and ((p in-g)) (divisor? (P-order p) g-order)))
-   (printf "Check: size of each conjugation class~n")
-   (printf "divisor of order of the group? ~s~n"
+   (printf
+     "Check: order of each element divisor of the order of the group? ~s~n"
+     (for/and ((p (in-G g))) (divisor? (P-order p) g-order)))
+   (printf "Check: size of each conjugation class divisor of order of the group? ~s~n"
      (for/and ((conj-class (in-list conj-classes)))
        (divisor? (set-count conj-class) g-order)))
    (printf " ~nThe conjugation classes are:~n")
