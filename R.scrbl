@@ -1907,7 +1907,6 @@ Name the symmetries as follows:
 The whole group of symmetries can be generated with a base of two elements,
 for example R and Sv:
 @Interaction*[
- (require format/fmt)
  (define E   P-identity)
  (define R   (P '(0 1 2 3)))
  (define R2  (P R R))
@@ -1920,15 +1919,14 @@ for example R and Sv:
  (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
  (for-each set-P-name! p-list names)
  (P-print-by-name #t)]
-Check that @tt{p-list} contains all symmetries as generated from base @tt{(R Sv)} and those only:
+Check that @tt{p-list} contains all symmetries as generated from base (R Sv) and those only:
 @Interaction*[
  (define g (G R Sv))
  (equal? (P-sort p-list) (G->list g))]
 Table of compositions:
 @Interaction*[
- (define (print-aligned lst-of-lst)
-   ((fmt "L5U#(U#W/)" 'cur) lst-of-lst))
- (print-aligned
+ (require format/fmt)
+ ((fmt "L5U#(U#W/)" 'cur)
    (for/list ((p (in-list p-list)))
      (for/list ((q (in-list p-list))) (P p q))))]
 Subgroups:
