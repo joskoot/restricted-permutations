@@ -1900,8 +1900,8 @@ Name the symmetries as follows:
            ("R3" "anti clockwise rotation about 270°")
            ("Sv" "reflection in vertical center line")
            ("Sh" "reflection in horizontal center line")
-           ("Sd1" "reflection in diagional 0-2")
-           ("Sd2" "reflection in diagional 1-3"))
+           ("Sd0" "reflection in diagional 0-2")
+           ("Sd1" "reflection in diagional 1-3"))
           #:sep (hspace 2)
           #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
 The whole group of symmetries can be generated with a base of two elements,
@@ -1913,10 +1913,10 @@ for example R and Sv:
  (define R3  (P R R2))
  (define Sv  (P '((0 1) (2 3))))
  (define Sh  (P R2 Sv))
- (define Sd1 (P R Sh))
- (define Sd2 (P R2 Sd1))
- (define p-list (list E R R2 R3 Sv Sd1 Sh Sd2))
- (define names      '(E R R2 R3 Sv Sd1 Sh Sd2))
+ (define Sd0 (P R Sh))
+ (define Sd1 (P R2 Sd0))
+ (define p-list (list E R R2 R3 Sv Sd0 Sh Sd1))
+ (define names      '(E R R2 R3 Sv Sd0 Sh Sd1))
  (for-each set-P-name! p-list names)
  (P-print-by-name #t)]
 Check that @tt{p-list} contains all symmetries as generated from base (R Sv) and those only:
@@ -1944,9 +1944,9 @@ Subgroups:
         (λ (x y) (symbol<? (P-name x) (P-name y)))))))
  (print-subgroups 'Invariant invariant)
  (print-subgroups 'Variant variant)
- (code:comment #,(list "For example, "@tt{(E Sv)}", "@tt{(E Sh)}", "@tt{(E Sd1)}" and "@tt{(E Sd2)}))
+ (code:comment #,(list "For example, "@tt{(E Sv)}", "@tt{(E Sh)}", "@tt{(E Sd0)}" and "@tt{(E Sd1)}))
  (code:comment "are not invariant under transformation R:")
- (for ((s (in-list (list Sv Sd1))))
+ (for ((s (in-list (list Sv Sd0))))
    (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))
  (code:comment #,(list @tt{(E R2)}" is an invariant subgroup. This implies"))
  (code:comment #,(list "that "@tt{R2}" commutes with all symmetries of the square:"))
@@ -2143,7 +2143,7 @@ The following example shows the details:
    (define base-collections (group-by values bases base-eqv?))
    (code:comment "")
    (printf " ~n")
-   (printf "nr of bases ~a~n" (length bases))
+   (printf "nr of minimal bases ~a~n" (length bases))
    (printf "nr of collections of symmetrically equivalent bases: ~a~n"
      (length base-collections))
    (code:comment "")
