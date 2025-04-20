@@ -1904,7 +1904,7 @@ Name the symmetries as follows:
            ("Sd1" "reflection in diagional 1-3"))
           #:sep (hspace 2)
           #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
-The whole group of symmetries can be generated with a base of two elements,
+The whole group of symmetries can be generated from a base of two elements,
 for example R and Sv:
 @Interaction*[
  (define E   P-identity)
