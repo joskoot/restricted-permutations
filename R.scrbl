@@ -1940,8 +1940,7 @@ Subgroups:
    ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
     <in>variant
     (for/list ((sg (in-list subgs)))
-      (sort (G->list sg)
-        (λ (x y) (symbol<? (P-name x) (P-name y)))))))
+      (sort (G->list sg) symbol<? #:key P-name))))
  (print-subgroups 'Invariant invariant)
  (print-subgroups 'Variant variant)
  (code:comment #,(list "For example, "@tt{(E Sv)}", "@tt{(E Sh)}", "@tt{(E Sd0)}" and "@tt{(E Sd1)}))
