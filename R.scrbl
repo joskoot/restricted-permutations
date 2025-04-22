@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -1934,14 +1934,18 @@ Subgroups:
  (define subgs
    (sort (G-subgroups g)
      (λ (x y) (< (G-order x) (G-order y)))))
+ (code:comment "")
  (define-values (invariant variant)
    (partition (λ (x) (G-invariant-subg? x g)) subgs))
+ (code:comment "")
  (define (print-subgroups <in>variant subgs)
    ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
     <in>variant
     (for/list ((sg (in-list subgs)))
       (sort (G->list sg) symbol<? #:key P-name))))
+ (code:comment "")
  (print-subgroups 'Invariant invariant)
+ (code:comment "")
  (print-subgroups 'Variant variant)]
 For example, (E Sv), (E Sh), (E Sd0) and (E Sd1)@(lb)
 are not invariant under transformation R:
@@ -2007,13 +2011,13 @@ The following table maps each conjugation class to its name.
            "Identity")
          (cons (P '((0 6) (1 7) (2 4) (3 5)))
            "Inversion-symmetry.")))))]
-Check that all conjugation classes are present in conj-name-table.")
+Check that all conjugation classes are present in @tt{conj-name-table}.
 @Interaction*[
  (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))
  (code:comment "")
  (define (get-class-name conj-class)
    (hash-ref conj-name-table conj-class))]
-Procedure print-group-info prints some information about group g.@(lb)
+Procedure @tt{print-group-info} prints some information about group @tt{g}.@(lb)
 It does some tests too.
 @Interaction*[
  (define (print-group-info g name print-classes?)
@@ -2022,14 +2026,18 @@ It does some tests too.
    (printf " ~nInfo about group: ~a~n ~n" name)
    (printf "Order of the group: ~s~n" g-order)
    (printf "Number of conjugation classes: ~s~n" (length conj-classes))
+   (code:comment "")
    (printf
      "Check: order of each element divisor of the order of the group? ~s~n"
      (for/and ((p (in-G g))) (divisor? (P-order p) g-order)))
+   (code:comment "")
    (printf
      "Check: size of each conjugation class divisor of order of the group? ~s~n"
      (for/and ((conj-class (in-list conj-classes)))
        (divisor? (set-count conj-class) g-order)))
+   (code:comment "")
    (printf " ~nThe conjugation classes are:~n")
+   (code:comment "")
    (for ((conj-class (in-list conj-classes)))
      (printf " ~n~a~n" (get-class-name conj-class))
      (printf "Order: ~s, class-size: ~s~n"
@@ -2061,11 +2069,11 @@ with intersecting axes perpendicular to each other.
  (define other-rotation '((0 1 5 4) (2 6 7 3)))
  (define cube-rotations (G rotation other-rotation))
  (print-group-info cube-rotations "cube-rotations" #f)]
-cube-rotations is an invariant subgroup of all cube-symmetries.
+@tt{cube-rotations} is an invariant subgroup of @tt{cube-symmetries}.
 @Interaction*[
  (G-invariant-subg? cube-rotations cube-symmetries)]
-Each conjugation class of the group of cube-rotations@(lb)
-also is a conjugation class of the group of all cube-symmetries:
+Each conjugation class of the group of @tt{cube-rotations}@(lb)
+also is a conjugation class of the group of all @tt{cube-symmetries}:
 @Interaction*[
  (proper-subset?
    (apply set (G-classes cube-rotations))
@@ -2176,7 +2184,7 @@ of which 30 contain rotations only.
 @Interaction*[
  (define all-subgs (G-subgroups cube-symmetries))
  (define rotation-subgs (apply set (G-subgroups cube-rotations)))
-
+ (code:comment "")
  (define order-hash
    (for/fold ((h (hash))) ((subg (in-list all-subgs)))
      (define rotations? (set-member? rotation-subgs subg))
@@ -2184,9 +2192,9 @@ of which 30 contain rotations only.
      (define invariant? (G-invariant-subg? subg cube-symmetries))
      (define key (list order rotations? invariant?))
      (hash-set h key (add1 (hash-ref h key 0)))))
-
+ (code:comment "")
  (define (sort-entries entries) (sort entries entry<?))
-
+ (code:comment "")
  (define (entry<? x y)
    (define-values (x-order x-rotations? x-invariant?)
      (apply values (car x)))
@@ -2197,11 +2205,11 @@ of which 30 contain rotations only.
        (or (and x-rotations? (not y-rotations?))
          (and (eq? x-rotations? y-rotations?)
            x-invariant? (not y-invariant?))))))
- 
+ (code:comment "")
  (define header "order rotations-only? invariant? nr-of-subgroups~n")
  (define line   "────────────────────────────────────────────────~n")
  (define (~b x) (if x "yes" "no"))
-
+ (code:comment "")
  (begin
    (printf line) 
    (printf "~s subgroups~n"
@@ -2215,6 +2223,7 @@ of which 30 contain rotations only.
    (printf line)
    (printf header)
    (printf line)
+   (code:comment "")
    (for ((entry (in-list (sort-entries (hash->list order-hash)))))
      (define-values (n order rotations-only? invariant?)
        (apply values (cdr entry) (car entry)))
@@ -2460,15 +2469,18 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
  (G-abelean? C3h)
  (G-bases C3h)
  (define period (P-period C3h-base))
+ (code:comment "")
  (define h
    (make-immutable-hasheq
      (for/list ((p (in-vector period)) (k (in-naturals)))
        (printf "~s : ~s~n" k p)
        (cons p k))))
+ (code:comment "")
  (for ((p (in-vector period)))
    (for ((q (in-vector period)))
      (printf "~s " (hash-ref h (P p q))))
    (newline)) 
+ (code:comment "")
  (define C6 (G (range 6)))
  (and (G-isomorphism C3h C6) #t)
  (define other-C3h (G '(0 1 2) '(3 4)))
