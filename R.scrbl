@@ -1927,8 +1927,8 @@ Table of compositions:
 @Interaction*[
  (require format/fmt)
  ((fmt "L5U#(U#W/)" 'cur)
-   (for/list ((p (in-list p-list)))
-     (for/list ((q (in-list p-list))) (P p q))))]
+  (for/list ((p (in-list p-list)))
+    (for/list ((q (in-list p-list))) (P p q))))]
 Subgroups:
 @Interaction*[
  (define subgs
@@ -1942,16 +1942,19 @@ Subgroups:
     (for/list ((sg (in-list subgs)))
       (sort (G->list sg) symbol<? #:key P-name))))
  (print-subgroups 'Invariant invariant)
- (print-subgroups 'Variant variant)
- (code:comment #,(list "For example, "@tt{(E Sv)}", "@tt{(E Sh)}", "@tt{(E Sd0)}" and "@tt{(E Sd1)}))
- (code:comment "are not invariant under transformation R:")
+ (print-subgroups 'Variant variant)]
+For example, (E Sv), (E Sh), (E Sd0) and (E Sd1)@(lb)
+are not invariant under transformation R:
+@Interaction*[
  (for ((s (in-list (list Sv Sd0))))
-   (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))
- (code:comment #,(list @tt{(E R2)}" is an invariant subgroup. This implies"))
- (code:comment #,(list "that "@tt{R2}" commutes with all symmetries of the square:"))
- (for/and ((p (in-list p-list))) (P-commute? p R2))
- (code:comment #,(list "None of the symmetries other than "@tt{E}" and "@tt{R2}))
- (code:comment "commute with all symmetries of the square:")
+   (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))]
+(E R2) is an invariant subgroup. This implies@(lb)
+that R2 commutes with all symmetries of the square:
+@Interaction*[
+ (for/and ((p (in-list p-list))) (P-commute? p R2))]
+None of the symmetries other than E and R2@(lb)
+commute with all symmetries of the square:
+@Interaction*[
  (for/or ((p (in-list (remove* (list E R2) p-list))))
    (for/and ((q (in-list p-list)))
      (P-commute? p q)))]
@@ -1974,10 +1977,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
 @Interaction*[
  (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
- (define cube-symmetries (G rotation reflection))
- (code:comment "")
- (code:comment "The following table maps each conjugation class to its name.")
- (code:comment "")
+ (define cube-symmetries (G rotation reflection))]
+The following table maps each conjugation class to its name.
+@Interaction*[
  (define conj-name-table
    (make-hash
      (map
@@ -2004,18 +2006,16 @@ id est, @nbr[(P '((0 7) (1 6)))].
          (cons P-identity
            "Identity")
          (cons (P '((0 6) (1 7) (2 4) (3 5)))
-           "Inversion-symmetry.")))))
- (code:comment "")
- (code:comment "Check that all conjugation classes are present in conj-name-table.")
- (code:comment "")
+           "Inversion-symmetry.")))))]
+Check that all conjugation classes are present in conj-name-table.")
+@Interaction*[
  (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))
  (code:comment "")
  (define (get-class-name conj-class)
-   (hash-ref conj-name-table conj-class))
- (code:comment "")
- (code:comment "Procedure print-group-info prints some information about group g.")
- (code:comment "It does some tests too.")
- (code:comment "")
+   (hash-ref conj-name-table conj-class))]
+Procedure print-group-info prints some information about group g.@(lb)
+It does some tests too.
+@Interaction*[
  (define (print-group-info g name print-classes?)
    (define conj-classes (sort (G-classes g) conj-class<?))
    (define g-order (G-order g))
@@ -2052,18 +2052,21 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define (divisor? divisor multiple)
    (zero? (modulo multiple divisor)))
  (code:comment "")
- (print-group-info cube-symmetries "cube-symmetries" #t)
- (code:comment "Subgroup consisting of rotations only.")
- (code:comment "Rotation and other-rotation are rotations about 90°")
- (code:comment "with intersecting axes perpendicular to each other.") 
- (code:comment "")
+ (print-group-info cube-symmetries "cube-symmetries" #t)]
+ 
+Subgroup consisting of rotations only.
+Rotation and other-rotation are rotations about 90°
+with intersecting axes perpendicular to each other. 
+@Interaction*[
  (define other-rotation '((0 1 5 4) (2 6 7 3)))
  (define cube-rotations (G rotation other-rotation))
- (print-group-info cube-rotations "cube-rotations" #f)
- (code:comment "cube-rotations is an invariant subgroup of all cube-symmetries.")
- (G-invariant-subg? cube-rotations cube-symmetries)
- (code:comment "Each conjugation class of the group of cube-rotations")
- (code:comment "also is a conjugation class of the group of all cube-symmetries")
+ (print-group-info cube-rotations "cube-rotations" #f)]
+cube-rotations is an invariant subgroup of all cube-symmetries.
+@Interaction*[
+ (G-invariant-subg? cube-rotations cube-symmetries)]
+Each conjugation class of the group of cube-rotations@(lb)
+also is a conjugation class of the group of all cube-symmetries:
+@Interaction*[
  (proper-subset?
    (apply set (G-classes cube-rotations))
    (apply set (G-classes cube-symmetries)))]
@@ -2328,10 +2331,11 @@ the axis of rotation and one of the vertices, in fact three such reflections
 and assuming the triangle to be located in a horizontal plane.
 Naming the vertices 0, 1 and 2 we can map the symmetries isomorphically onto @nber["R" "Rs"]:
 
-@Interaction[
+@Interaction*[
  (define C3v (G '(0 1) '(0 1 2)))
- (G-print-table C3v)
- (code:comment #,(list "C" (↓ "3v") " is isomorphic to S" (↓ "3") ". In this case we even have:"))
+ (G-print-table C3v)]
+C@↓{3v} is isomorphic to S@↓{3}. In this case we even have:
+@Interaction*[
  (eq? C3v (G-symmetric 3))]
 
 The represented symmetries are:
@@ -2376,38 +2380,21 @@ can be expressed as @nbsl["C" "Cs"].
 Both sets of @nbsl["C" "Cs"] form groups isomorphic to C@↓{3v}.
 Let's check this:
 
-@(define C3v-comment1 "procedure correspondence computes a list of Ps corresponding to the")
+Procedure correspondence computes the
+@nber["rearrangement" "rearrangements"]
+of C@↓{3v} in the rows/columns of its composition table.
+Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
 
-@(define C3v-comment2
-   (list
-     @nber["rearrangement" "rearrangements"]
-     " of g in the rows/columns of its composition table."))
-
-@(define C3v-comment3
-   @(elemtag "H->P-example" (list
-                              "Use of "
-                              @nbr[H->P]
-                              " is "
-                              (red "discouraged")
-                              ", "
-                              (green "but here it is useful")
-                              ".")))
-
-@Interaction[
+@Interaction*[
  (define (pad7-P->C p) (~s #:width 7 (P->C p)))
- (define C3v (G '(0 1) '(0 1 2)))
  (define in-C3v (in-G C3v))
- (code:comment "-------------------------------------------------------------------")
  (code:comment "(correspondence g) ->")
  (code:comment "(values (hasheq P? N? ... ...) (listof P?) (listof P?))")
  (code:comment "g : G?")
- (code:comment #,C3v-comment1)
- (code:comment #,C3v-comment2)
  (define (correspondence g)
    (define in-g (in-G g))
    (code:comment #,(list "h maps the Ps of g onto the " @nbsl["N"]{natural numbers}))
    (code:comment "0 up to but not including the order of g.")
-   (code:comment #,C3v-comment3)
    (define h (for/hasheq ((p in-g) (k (in-naturals))) (values p k)))
    (define (correspondence compose-for-row-or-column)
      (for/list ((p in-g))
@@ -2420,40 +2407,37 @@ Let's check this:
    (define columns (correspondence (lambda (p q) (P q p))))
    (values h rows columns))
  (code:comment "")
- (define-values (h rows columns) (correspondence C3v))
- (code:comment "-------------------------------------------------------------------")
- (code:comment "Let's print map h:")
- (code:comment "")
+ (define-values (h rows columns) (correspondence C3v))]
+Let's print map h:
+@Interaction*[
  (for ((p in-C3v))
-   (printf "~a is mapped onto ~s.~n" (pad7-P->C p) (hash-ref h p)))
- (code:comment "")
- (code:comment "Using this map, the composition table can be simplified by representing")
- (code:comment #,(list "the elements of C" (↓ "3v") " by the natural numbers they are mapped onto."))
- (code:comment "")
+   (printf "~a is mapped onto ~s.~n" (pad7-P->C p) (hash-ref h p)))]
+Using this map, the composition table can be simplified by representing
+the elements of C@↓{3v} by the natural numbers they are mapped onto.
+@Interaction*[
  (for ((p in-C3v))
    (for ((q in-C3v)) (printf " ~s" (hash-ref h (P p q))))
-   (newline))
- (code:comment "")
- (code:comment #,(list "Let's show the correspondence of the elements of C"(↓ "3v")))
- (code:comment #,(list "to permutations of the set of C"(↓ "3v")","))
- (code:comment #,(list "representing them by the " @nber["C3v-table" "labels shown above"] "."))
- (code:comment "")
+   (newline))]
+Let's show the correspondence of the elements of C@↓{3v}
+to permutations of the set of C@↓{3v}
+representing them by the @nber["C3v-table" "labels shown above"].
+@Interaction*[
  (for ((p in-C3v) (row (in-list rows)))
    (printf "   row of ~a corresponds to ~s~n"
      (pad7-P->C p) (P->C row)))
  (code:comment "")
  (for ((p in-C3v) (column (in-list columns)))
    (printf "column of ~a corresponds to ~s~n"
-     (pad7-P->C p) (P->C column)))
- (code:comment "")
- (code:comment "Let's check that we have isomorphic groups here.")
- (code:comment "")
+     (pad7-P->C p) (P->C column)))]
+Let's check that we have isomorphic groups here.
+@Interaction*[
  (define row-group    (list->G rows))
  (define column-group (list->G columns))
  (and
    (G-isomorphism C3v    row-group)
    (G-isomorphism C3v column-group)
    #t)]
+@(reset-Interaction*)
 
 @subsection[#:tag "C3h"]{Group C@↓{3h}}
 
