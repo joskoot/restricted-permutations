@@ -457,6 +457,8 @@ For every C there is exactly one (in the sense of @nbr[equal?])
 normalized C representing the same @nber["R" "R"].
 For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
 (in the sense of @nbr[equal?] and ignoring memory limits).
+For every C there is exacty one @nber["R" "R"] in the sense of @nbr[eq?]
+(as far as  @nbr[R-clear-hashes] does not pertub this equality).
 
 @deftogether[
  (@defproc[#:kind "predicate" (C?            (x any/c)) boolean?]
