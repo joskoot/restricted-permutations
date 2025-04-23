@@ -179,8 +179,12 @@
     (andmap P-equal? a b)))))
 
 (define (G-isomorphism g0 g1 (name0 'no-name) (name1 'no-name))
+ (define (compare-bases bases0 bases1)
+  (and (= (length bases0) (length bases1))
+   (= (set-count (car bases0)) (set-count (car bases1)))))
  (cond
   ((not (= (G-order g0) (G-order g1))) #f)
+  ((not (compare-bases (G-bases g0) (G-bases g1))) #f)
   (else
    (define (make-prop-hash g)
     (define hash (make-hash))
