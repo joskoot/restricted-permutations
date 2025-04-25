@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -397,7 +397,7 @@ and the corresponding abstract natural numbers.
 
 The synonyms are provided by module @nbhll["N.rkt" "N.rkt"].
 They are used as shorthands in the description of the procedures shown in this document,
-particularly in their specifications of data types.
+particularly in their specifications of contracts.
 
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
@@ -611,7 +611,7 @@ its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
 
-@defproc[(P (p (or/c P? C?)) ...) (and/c (-> N? N?) P?)]{
+@defproc[(P (p (or/c P? C?)) ...) P?]{
  Returns the P representing the @nber["R" "R"]
  formed by @nber["composition" "composition"] of the
  @nber["R" "Rs"] represented by the arguments.
@@ -740,7 +740,8 @@ but the result is not a P. Example:
 @note{Notice that (abc)@(expt-1) = c@(expt-1)b@(expt-1)a@(expt-1),
  writing x@(expt-1) for the inverse of x.}
 
-@defproc[#:kind "predicate" (P? (x any/c)) boolean?]
+@defproc[#:kind "predicate" (P? (x any/c)) boolean?]{
+Notice that @nbr[(P? x)] implies @nbr[((-> N? N?) x)]}
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
