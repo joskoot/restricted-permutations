@@ -1705,15 +1705,15 @@ The subset of all even elements of a G is an invariant subgroup. For example:
 @Interaction[
  (define g0 (G '(0 1) '(2 3)))
  (define g1 (G '((1 2) (7 8)) '((5 6) (3 4))))
- (define-values (p0->p1 p1->p0)
-   (apply values (G-isomorphism g0 g1 'p0->p1 'p1->p0)))
- (eq? (list->G (map p0->p1 (G->list g0))) g1)
- (eq? (list->G (map p1->p0 (G->list g1))) g0)
+ (define-values (g0->g1 g1->g0)
+   (apply values (G-isomorphism g0 g1 'g0->g1 'g1->g0)))
+ (eq? (list->G (map g0->g1 (G->list g0))) g1)
+ (eq? (list->G (map g1->g0 (G->list g1))) g0)
  (code:comment "If the two Gs are not isomorphic, G-isomorphism returns #f.")
  (code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))
  (code:comment "An error is reported if the argument")
  (code:comment "is not in the domain of the isomorphism.")
- (code:line (p1->p0 (P '(0 1))) (code:comment #,(red "error")))]
+ (code:line (g1->g0 (P '(0 1))) (code:comment #,(red "error")))]
 
 @red{Warning}: after @nbsl["Cleanup" "cleaning up"]
 isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
