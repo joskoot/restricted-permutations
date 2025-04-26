@@ -2319,16 +2319,17 @@ but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction*[
  (require format/fmt)
+ (define Q-subgs (G-subgroups Q))
  (begin
    (displayln "The subgroups are:")
    (for
      ((subg
         (in-list
-          (sort (G-subgroups Q) < #:key G-order))))
+          (sort Q-subgs < #:key G-order))))
      ((fmt "u#(dx)/" 'cur)
       (sort (G->list subg) string<? #:key P-name))))
  (not (G-abelean? Q))
- (for/and ((subg (in-list (G-subgroups Q))))
+ (for/and ((subg (in-list Q-subgs)))
    (G-invariant-subg? subg Q))]
 @(reset-Interaction*)
 
