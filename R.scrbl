@@ -2395,6 +2395,7 @@ Procedure correspondence computes the
 @nber["rearrangement" "rearrangements"]
 of C@↓{3v} in the rows/columns of its composition table.
 Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
+@elemtag{H->P-example}
 
 @Interaction*[
  (define (pad7-P->C p) (~s #:width 7 (P->C p)))
