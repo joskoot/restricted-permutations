@@ -306,7 +306,8 @@ For every other R the restriction and order are greater than 1,
 but always finite. They are not necessarily the same.
 Inverses of each other have the same order and the same restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
-These form a finite subgroup of @bold{R} isomorphic to the symmetric group S@↓{n}.
+These form a finite subgroup of @bold{R} isomorphic to the
+@nbhl["https://en.wikipedia.org/wiki/Symmetric_group"]{symmetric group} S@↓{n}.
 
 @note{In every group the identity is the only element of order 1 and
  inverses of each other have the same order.
