@@ -1911,7 +1911,7 @@ for example R and Sv:
 @Interaction*[
  (define R   (P '(0 1 2 3)))
  (define Sv  (P '((0 1) (2 3))))
- (define E  (P Sv Sv))
+ (define E   (P Sv Sv))
  (define R2  (P R R))
  (define R3  (P R R2))
  (define Sh  (P R2 Sv))
