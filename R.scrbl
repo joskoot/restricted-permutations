@@ -1909,11 +1909,11 @@ Name the symmetries as follows:
 The whole group of symmetries can be generated from a base of two elements,
 for example R and Sv:
 @Interaction*[
- (define E   P-identity)
  (define R   (P '(0 1 2 3)))
+ (define Sv  (P '((0 1) (2 3))))
+ (define E  (P Sv Sv))
  (define R2  (P R R))
  (define R3  (P R R2))
- (define Sv  (P '((0 1) (2 3))))
  (define Sh  (P R2 Sv))
  (define Sd0 (P R Sh))
  (define Sd1 (P R2 Sd0))
