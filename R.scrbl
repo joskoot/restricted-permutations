@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -1935,6 +1935,12 @@ Table of compositions:
  ((fmt "L5U#(U#W/)" 'cur)
   (for/list ((p (in-list C4v-list)))
     (for/list ((q (in-list C4v-list))) (P p q))))]
+
+Conjugation classes:
+@Interaction*[
+(for ((class (in-list (sort (G-classes C4v) < #:key set-count))))
+  (writeln (set->list class)))]
+
 Subgroups:
 @Interaction*[
  (define subgs
