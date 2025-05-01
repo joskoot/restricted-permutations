@@ -742,7 +742,7 @@ but the result is not a P. Example:
  writing x@(expt-1) for the inverse of x.}
 
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]{
-Notice that @nbr[(P? x)] implies @nbr[((-> N? N?) x)]}
+ Notice that @nbr[(P? x)] implies @nbr[((-> N? N?) x)]}
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
@@ -2060,8 +2060,8 @@ It does some tests too.
          (< (P-order (set-first x)) (P-order (set-first y)))))))
  (code:comment "")
  (define (divisor? divisor multiple)
-   (zero? (modulo multiple divisor)))
- (code:comment "")
+   (zero? (modulo multiple divisor)))]
+@Interaction*[
  (print-group-info cube-symmetries "cube-symmetries" #t)]
  
 Subgroup consisting of rotations only.
