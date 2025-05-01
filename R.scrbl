@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -1906,8 +1906,10 @@ Name the symmetries as follows:
            ("Sd1" "reflection in diagional 1-3"))
           #:sep (hspace 2)
           #:row-properties '((top-border bottom-border) ()()()()()()() bottom-border)]]
-The whole group of symmetries can be generated from a base of two elements,
-for example R and Sv:
+
+The whole group can be generated from a base of two elements, for example R and Sv.
+The group is called ‘C4v’ because it has a fourfold axis of rotation (R)
+with a vertical plane of reflection (Sv) (assuming the square to be in a hortizontal plane).
 @Interaction*[
  (define R   (P '(0 1 2 3)))
  (define Sv  (P '((0 1) (2 3))))
@@ -1917,28 +1919,30 @@ for example R and Sv:
  (define Sh  (P R2 Sv))
  (define Sd0 (P R Sh))
  (define Sd1 (P R2 Sd0))
- (define p-list (list E R R2 R3 Sv Sd0 Sh Sd1))
- (define names      '(E R R2 R3 Sv Sd0 Sh Sd1))
- (for-each set-P-name! p-list names)
+ (define C4v-list (list E R R2 R3 Sv Sd0 Sh Sd1))
+ (define names        '(E R R2 R3 Sv Sd0 Sh Sd1))
+ (for-each set-P-name! C4v-list names)
  (P-print-by-name #t)]
-Check that @tt{p-list} contains all symmetries as generated from base (R Sv) and those only:
+@tt{E} is the @nbr[P-identity]:
+@Interaction*[(eq? E P-identity)]
+Check that @tt{C4v-list} contains all symmetries as generated from base (R Sv) and those only:
 @Interaction*[
- (define g (G R Sv))
- (equal? (P-sort p-list) (G->list g))]
+ (define C4v (G R Sv))
+ (equal? (P-sort C4v-list) (G->list C4v))]
 Table of compositions:
 @Interaction*[
  (require format/fmt)
  ((fmt "L5U#(U#W/)" 'cur)
-  (for/list ((p (in-list p-list)))
-    (for/list ((q (in-list p-list))) (P p q))))]
+  (for/list ((p (in-list C4v-list)))
+    (for/list ((q (in-list C4v-list))) (P p q))))]
 Subgroups:
 @Interaction*[
  (define subgs
-   (sort (G-subgroups g)
+   (sort (G-subgroups C4v)
      (λ (x y) (< (G-order x) (G-order y)))))
  (code:comment "")
  (define-values (invariant variant)
-   (partition (λ (x) (G-invariant-subg? x g)) subgs))
+   (partition (λ (x) (G-invariant-subg? x C4v)) subgs))
  (code:comment "")
  (define (print-subgroups <in>variant subgs)
    ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
@@ -1957,12 +1961,12 @@ are not invariant under transformation R:
 (E R2) is an invariant subgroup. This implies@(lb)
 that R2 commutes with all symmetries of the square:
 @Interaction*[
- (for/and ((p (in-list p-list))) (P-commute? p R2))]
+ (for/and ((p (in-list C4v-list))) (P-commute? p R2))]
 None of the symmetries other than E and R2@(lb)
 commute with all symmetries of the square:
 @Interaction*[
- (for/or ((p (in-list (remove* (list E R2) p-list))))
-   (for/and ((q (in-list p-list)))
+ (for/or ((p (in-list (remove* (list E R2) C4v-list))))
+   (for/and ((q (in-list C4v-list)))
      (P-commute? p q)))]
 @(reset-Interaction*)
 
