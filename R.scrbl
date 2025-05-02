@@ -1909,7 +1909,7 @@ Name the symmetries as follows:
 
 The whole group can be generated from a base of two elements, for example R and Sv.
 The group is called ‘C4v’ because it has a fourfold axis of rotation (R)
-with a vertical plane of reflection (Sv) (assuming the square to be in a hortizontal plane).
+with a vertical line of reflection (Sv).
 @Interaction*[
  (define R   (P '(0 1 2 3)))
  (define Sv  (P '((0 1) (2 3))))
@@ -2022,13 +2022,13 @@ The following table maps each conjugation class to its name.
          (cons P-identity
            "Identity")
          (cons (P '((0 6) (1 7) (2 4) (3 5)))
-           "Inversion-symmetry.")))))]
-Check that all conjugation classes are present in @tt{conj-name-table}.
-@Interaction*[
- (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))
+           "Inversion-symmetry.")))))
  (code:comment "")
  (define (get-class-name conj-class)
    (hash-ref conj-name-table conj-class))]
+Check that all conjugation classes are present in @tt{conj-name-table}.
+@Interaction*[
+ (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))]
 Procedure @tt{print-group-info} prints some information about group @tt{g}.@(lb)
 It does some tests too.
 @Interaction*[
@@ -2171,13 +2171,16 @@ The following example shows the details:
    (for
      ((base-collection (in-list (sort base-collections < #:key length)))
       (i (in-naturals 1)))
+     (define base (set->list (car base-collection)))
      (define-values (x y)
-       (apply values (map P->C (set->list (car base-collection)))))
-     (apply printf " ~n~s: size: ~s: example: ~s and ~s~n"
-       i (length base-collection)
-       (if (= (string-length (~s x)) 21) (list x y) (list y x)))
-     (for ((b (in-set (car base-collection))))
-       (displayln (get-class-name (G-class b g))))))
+       (apply values (map P->C base)))
+     (printf " ~n~s: size: ~s: example: ~s and ~s~n"
+       i (length base-collection) x y)
+     (define a (get-class-name (G-class (car base) g)))
+     (define b (get-class-name (G-class (cadr base) g)))
+     (displayln a)
+     (displayln b)
+     (when (equal? a b) (displayln "Axes orthogonal to each other."))))
  (code:comment "")
  (print-G-info cube-symmetries)
  (code:comment "")
