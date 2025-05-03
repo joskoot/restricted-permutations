@@ -48,7 +48,7 @@
     (period-field  #:auto #:mutable)  ; Vector of powers of Ps in order of the exponent.
     (inverse-field #:auto #:mutable)  ; Inverse of P
     (even-field    #:auto #:mutable)) ; 'even or 'odd (avoiding confusion with the auto-value)
-  #:auto-value #f                    ; Nevertheless P-even? always returns a boolean.
+  #:auto-value #f                     ; Nevertheless P-even? always returns a boolean.
   #:property prop:custom-write P-write
   #:property prop:procedure P-apply
   #:constructor-name P-constr

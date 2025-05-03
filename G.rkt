@@ -5,8 +5,7 @@
 
 ;===================================================================================================
 
-(require "P.rkt")
-(require (only-in math/number-theory factorial))
+(require "P.rkt" (only-in "C.rkt" C?) (only-in math/number-theory factorial))
 
 (provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
@@ -230,7 +229,12 @@
          (loop (cdr samples1-list)))))))))))
 
 (define (in-G g) (in-list (G->list g)))
-(define (G-member? p g) (set-member? (G-set g) (P p)))
+
+(define (G-member? p g)
+  (cond
+    ((P? p) (set-member? (G-set g) p))
+    ((C? p) (set-member? (G-set g) (P p)))
+    (else (raise-argument-error 'G-member "(or/c P? C?)" p))))
 
 (define (G-print-table g (port (current-output-port)))
  (define in-g (in-G g))
