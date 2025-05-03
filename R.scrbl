@@ -1244,6 +1244,16 @@ In particular:@(lb)
 
 @defproc[#:kind "predicate"(G? (x any/c)) boolean?]
 
+@defproc[(G-order (g G?)) N+?]{
+ Returns the order of @nbr[g], id est, its number of elements.
+
+ @note{Do not confuse the order of a G with the order of a
+  @nbsl["P" "P"] (See @nbr[P-order]).
+  The order of every @nbsl["P" "P"] of a G is a divisor of the order of that G.
+  This is a consequence of the more general theorem of group theory that
+  the order of an element of a finite group always is a divisor of the order of that group.
+  This theorem holds for all finite groups, Gs included.}}
+
 @defproc[(in-G (g G?)) (Sequenceof P?)]{
  Returns an eagerly @nbrl[P-sort "sorted"] @sequenceref of the elements of @nbr[g].}
 
@@ -1499,16 +1509,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  (find-simple-base (G-symmetric 3))
  (find-simple-base (G-symmetric 4))
  (find-simple-base (G-symmetric 5))]
-
-@defproc[(G-order (g G?)) N+?]{
- Returns the order of @nbr[g], id est, its number of elements.
-
- @note{Do not confuse the order of a G with the order of a
-  @nbsl["P" "P"] (See @nbr[P-order]).
-  The order of every @nbsl["P" "P"] of a G is a divisor of the order of that G.
-  This is a consequence of the more general theorem of group theory that
-  the order of an element of a finite group always is a divisor of the order of that group.
-  This theorem holds for all finite groups, Gs included.}}
 
 @defproc[(G-subg? (g0 G?) (g1 G?)) boolean?]{
  @nbr[#t] if @nbr[g0] is a subgroup of @nbr[g1].@(lb)
@@ -1873,7 +1873,7 @@ If there is such key=value pair, the hash is called a pseudo H.
  Returns an H representing the @nber["R" "R"] formed by @nber["composition" "composition"]
  of the @nber["R" "R"]s represented by the arguments.
  When called without argument @nbr[H-compose] returns the @nbr[H-identity].
- When called with one argument, the normalized from of the argument is returned.}
+ When called with one argument, the normalized form of the argument is returned.}
 
 @defproc[(H-inverse (h pseudo-H?)) H?]{
  Returns the H representing the inverse of the @nber["R" "R"] represented by @nbr[h].
