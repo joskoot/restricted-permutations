@@ -1497,10 +1497,10 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  (define (find-simple-base g)
    (define bases (G-bases g))
    (for/fold
-    ((base (car bases))
-     (n (string-length (~s (car bases))))
-     #:result base)
-    ((b (in-list (cdr bases))))
+     ((base (car bases))
+      (n (string-length (~s (car bases))))
+      #:result base)
+     ((b (in-list (cdr bases))))
      (define m (string-length (~s b)))
      (if (< m n) (values b m) (values base n))))
  (code:comment "")
@@ -1951,8 +1951,16 @@ Table of compositions:
 Conjugation classes:
 
 @Interaction*[
-(for ((class (in-list (sort (G-classes C4v) < #:key set-count))))
-  (writeln (set->list class)))]
+ (printf "~nConjugation classes~n~n")
+ (for-each writeln
+   (sort 
+     (for/list
+       ((c (in-list (G-classes C4v))))
+       (map P-name (sort (set->list c) symbol<? #:key P-name)))
+     (λ (x y)
+       (or (< (length x) (length y))
+         (and (= (length x) (length y))
+           (symbol<? (car x) (car y)))))))]
 
 Subgroups:
 
@@ -2053,8 +2061,8 @@ Check that all conjugation classes are present in @tt{conj-name-table}.
 @Interaction*[
  (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))]
 
-Procedure @tt{print-group-info} prints some information about group @tt{g}.@(lb)
-It does some tests too.
+Procedure @tt{print-group-info} prints some information about group @tt{cube-symmetries}
+or @tt{cube-rotations}. It does some tests too.
 
 @Interaction*[
  (define (print-group-info g name print-classes?)
