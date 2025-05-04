@@ -1919,29 +1919,43 @@ with a vertical line of reflection (Sv).
  (define Sh  (P R2 Sv))
  (define Sd0 (P R Sh))
  (define Sd1 (P R2 Sd0))
- (define C4v-list (list E R R2 R3 Sv Sd0 Sh Sd1))
- (define names        '(E R R2 R3 Sv Sd0 Sh Sd1))
+ (define C4v-list (list E R R2 R3 Sv Sh Sd0 Sd1))
+ (define names        '(E R R2 R3 Sv Sh Sd0 Sd1))
  (for-each set-P-name! C4v-list names)
  (P-print-by-name #t)]
+
+The symmetries in  @nbsl["C" "C-representation"]:
+
+@Interaction*[
+ (require format/fmt)
+ (for ((p (in-list C4v-list)))
+   ((fmt "L3DNX':'XW/" 'cur) (P-name p) (P->C p)))]
+
 @tt{E} is the @nbr[P-identity]:
+
 @Interaction*[(eq? E P-identity)]
+
 Check that @tt{C4v-list} contains all symmetries as generated from base (R Sv) and those only:
+
 @Interaction*[
  (define C4v (G R Sv))
  (equal? (P-sort C4v-list) (G->list C4v))]
+
 Table of compositions:
+
 @Interaction*[
- (require format/fmt)
  ((fmt "L5U#(U#W/)" 'cur)
   (for/list ((p (in-list C4v-list)))
     (for/list ((q (in-list C4v-list))) (P p q))))]
 
 Conjugation classes:
+
 @Interaction*[
 (for ((class (in-list (sort (G-classes C4v) < #:key set-count))))
   (writeln (set->list class)))]
 
 Subgroups:
+
 @Interaction*[
  (define subgs
    (sort (G-subgroups C4v)
@@ -1959,17 +1973,22 @@ Subgroups:
  (print-subgroups 'Invariant invariant)
  (code:comment "")
  (print-subgroups 'Variant variant)]
+
 For example, (E Sv), (E Sh), (E Sd0) and (E Sd1)@(lb)
 are not invariant under transformation R:
+
 @Interaction*[
  (for ((s (in-list (list Sv Sd0))))
    (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))]
+
 (E R2) is an invariant subgroup. This implies@(lb)
 that R2 commutes with all symmetries of the square:
+
 @Interaction*[
  (for/and ((p (in-list C4v-list))) (P-commute? p R2))]
 None of the symmetries other than E and R2@(lb)
 commute with all symmetries of the square:
+
 @Interaction*[
  (for/or ((p (in-list (remove* (list E R2) C4v-list))))
    (for/and ((q (in-list C4v-list)))
@@ -1994,7 +2013,9 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define rotation (P '((0 1 2 3) (4 5 6 7))))
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))]
+
 The following table maps each conjugation class to its name.
+
 @Interaction*[
  (define conj-name-table
    (make-hash
@@ -2026,11 +2047,15 @@ The following table maps each conjugation class to its name.
  (code:comment "")
  (define (get-class-name conj-class)
    (hash-ref conj-name-table conj-class))]
+
 Check that all conjugation classes are present in @tt{conj-name-table}.
+
 @Interaction*[
  (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))]
+
 Procedure @tt{print-group-info} prints some information about group @tt{g}.@(lb)
 It does some tests too.
+
 @Interaction*[
  (define (print-group-info g name print-classes?)
    (define conj-classes (sort (G-classes g) conj-class<?))
@@ -2057,8 +2082,7 @@ It does some tests too.
        (set-count conj-class))
      (when print-classes?
        (for ((p (in-list (P-sort (set->list conj-class)))))
-         (printf "~s~n" (P->C p)))))
-   (printf " ~n"))
+         (printf "~s~n" (P->C p))))))
  (code:comment "")
  (define (conj-class<? x y)
    (and (not (eq? x y))
@@ -2076,16 +2100,21 @@ It does some tests too.
  
 Subgroup consisting of rotations only.
 Rotation and other-rotation are rotations about 90°
-with intersecting axes perpendicular to each other. 
+with intersecting axes perpendicular to each other.
+
 @Interaction*[
  (define other-rotation '((0 1 5 4) (2 6 7 3)))
  (define cube-rotations (G rotation other-rotation))
  (print-group-info cube-rotations "cube-rotations" #f)]
+
 @tt{cube-rotations} is an invariant subgroup of @tt{cube-symmetries}.
+
 @Interaction*[
  (G-invariant-subg? cube-rotations cube-symmetries)]
+
 Each conjugation class of the group of @tt{cube-rotations}@(lb)
 also is a conjugation class of the group of all @tt{cube-symmetries}:
+
 @Interaction*[
  (proper-subset?
    (apply set (G-classes cube-rotations))
@@ -2434,19 +2463,25 @@ Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
    (values h rows columns))
  (code:comment "")
  (define-values (h rows columns) (correspondence C3v))]
+
 Let's print map h:
+
 @Interaction*[
  (for ((p in-C3v))
    (printf "~a is mapped onto ~s.~n" (pad7-P->C p) (hash-ref h p)))]
+
 Using this map, the composition table can be simplified by representing
 the elements of C@↓{3v} by the natural numbers they are mapped onto.
+
 @Interaction*[
  (for ((p in-C3v))
    (for ((q in-C3v)) (printf " ~s" (hash-ref h (P p q))))
    (newline))]
+
 Let's show the correspondence of the elements of C@↓{3v}
 to permutations of the set of C@↓{3v}
 representing them by the @nber["C3v-table" "labels shown above"].
+
 @Interaction*[
  (for ((p in-C3v) (row (in-list rows)))
    (printf "   row of ~a corresponds to ~s~n"
@@ -2455,7 +2490,9 @@ representing them by the @nber["C3v-table" "labels shown above"].
  (for ((p in-C3v) (column (in-list columns)))
    (printf "column of ~a corresponds to ~s~n"
      (pad7-P->C p) (P->C column)))]
+
 Let's check that we have isomorphic groups here.
+
 @Interaction*[
  (define row-group    (list->G rows))
  (define column-group (list->G columns))
