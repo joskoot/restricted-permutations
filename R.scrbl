@@ -1951,7 +1951,6 @@ Table of compositions:
 Conjugation classes:
 
 @Interaction*[
- (printf "~nConjugation classes~n~n")
  (for-each writeln
    (sort 
      (for/list
