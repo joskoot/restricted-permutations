@@ -768,8 +768,8 @@ but the result is not a P. Example:
  @Interaction[
  (define p (P))
  (set-P-name! p 'E)
- (parameterize ((P-print-by-name #f)) (writeln p))
- (parameterize ((P-print-by-name #t)) (writeln p))]}
+ (code:line (P-print-by-name #f) p)
+ (code:line (P-print-by-name #t) p)]}
 
 @defidform[#:kind "constant" P-identity]{
  The P representing the @nber["id" "identity"] of @nber["R"]{@bold{R}.}
