@@ -1386,11 +1386,11 @@ Example:
  Examples:}
 
 @color-example[green (G-abelean? (G '(0 1 2) '(3 4)))]
-because: @color-example[ green (eq? (P '(0 1 2) '(3 4)) (P '(3 4) '(0 1 2)))]
+because: @color-example[ green (P-commute? (P '(0 1 2) '(3 4)) (P '(3 4) '(0 1 2)))]
 
 But: 
 @color-example[red (G-abelean? (G '(0 1 2) '(0 1)))]
-because: @color-example[red (eq? (P '(0 1 2) '(0 1)) (P '(0 1) '(0 1 2)))]
+because: @color-example[red (P-commute? (P '(0 1 2) '(0 1)) (P '(0 1) '(0 1 2)))]
 In particular:@(lb)
 @example[(P '(0 1 2) '(0 1))]
 @example[(P '(0 1) '(0 1 2))]
