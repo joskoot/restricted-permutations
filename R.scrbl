@@ -2328,11 +2328,12 @@ With these @nber["composition" "compositions"]
 all others are defined as shown in the following table:
 
 @Interaction*[
+ (require format/fmt)
  (P-print-by-name #t)
- (for ((p (in-list Ps)))
-   (for ((q (in-list Ps)))
-     (printf "~a " (P p q)))
-   (unless (eq? p -k) (newline)))]
+ ((fmt 'cur "U#(U#(WX)/)")
+  (for/list ((p (in-list Ps)))
+    (for/list ((q (in-list Ps)))
+      (P p q))))]
          
 Because @element['tt "1"] is the identity, it commutes with all elements.
 @element['tt "-1"] commutes with all elements too,
