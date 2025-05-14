@@ -819,10 +819,9 @@ Examples:
  (define b (P '(2 3 4)))
  (define c (P '(5 6 7 8 9)))
  (define e P-identity)
+ (require format/fmt)
  (define (show p)
-   (printf "~a has order ~a~n"
-     (~s #:min-width 27 #:align 'right (P->C p))
-     (~s #:min-width 2  #:align 'right (P-order p))))
+   ((fmt "R27WN' has order 'R2W/" 'cur) (P->C p) (P-order p)))
  (for-each show
    (list
      e
@@ -1151,16 +1150,16 @@ Examples:
  of some @nbsl["G"]{finite subgroup of @bold{R}}.
  This can be done as follows:}
 
-@Interaction[(define (fixed-points p n)
-               (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
-             (fixed-points (P '(0 1) '(5 6 7)) 10)
-             (define (pad x k) (~s #:width k x))
-             (for ((n (in-range 1 4)))
-               (printf "~n ~nS~s~n" n)
-               (for ((p (in-G (G-symmetric n))))
-                 (printf "~a has fixed points ~a and every k≥~s~n"
-                   (pad p 12) (pad (fixed-points p n) 7) n))
-               (newline))]
+@Interaction[
+ (require format/fmt)
+ (define (fixed-points p n)
+   (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
+ (fixed-points (P '(0 1) '(5 6 7)) 10)
+ (for ((n (in-range 1 4)))
+   (printf "~n ~nS~s~n" n)
+   (for ((p (in-G (G-symmetric n))))
+     ((fmt "L12WN' has fixed points 'L7WN' and every k≥'W/" 'cur)
+      p (fixed-points p n) n)))]
 
 @defproc[(P->H (p P?)) H?]{
  You probably never need this procedure. @red{Advice: avoid it}.}
@@ -1550,10 +1549,11 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  Returns a list of all subgroups of @nbr[g]. Example:
 
  @Interaction[
+ (require format/fmt)
  (define g (G '(0 1 2) '(0 1)))
  (code:comment #,(list "Print subgroups in " (nbsl "C" "C-notation.")))
- (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
- (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
+ (define (proper?    subg) (if (   G-proper-subg? subg g) "yes" "no "))
+ (define (invariant? subg) (if (G-invariant-subg? subg g) "yes" "no "))
  (define line
    "─────────────────────────────────────────────────────────────~n")
  (begin
@@ -1565,12 +1565,11 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
         (in-list
           (sort (G-subgroups g)
             (lambda (x y) (< (G-order x) (G-order y)))))))
-     (printf "~a ~a  ~a"
-       (~a #:min-width 7 #:align 'center (proper?    subg))
-       (~a #:min-width 9 #:align 'center (invariant? subg))
-       (~a #:min-width 5 #:align 'center (G-order    subg)))
-     (for ((p (in-G subg))) (printf " ~s" (P->C p)))
-     (newline))
+     ((fmt "2XD7XD4XC5WN*(XW)/" 'cur)
+      (proper?    subg)
+      (invariant? subg)
+      (G-order    subg)
+      (map P->C (G->list subg))))
    (printf line))]
 
  @note{The order of a subgroup of a finite group always is a divisor
@@ -2233,6 +2232,7 @@ The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
 @Interaction*[
+ (require format/fmt)
  (define all-subgs (G-subgroups cube-symmetries))
  (define rotation-subgs (apply set (G-subgroups cube-rotations)))
  (code:comment "")
@@ -2278,11 +2278,11 @@ of which 30 contain rotations only.
    (for ((entry (in-list (sort-entries (hash->list order-hash)))))
      (define-values (n order rotations-only? invariant?)
        (apply values (cdr entry) (car entry)))
-     (printf "~a ~a ~a ~a~n"
-       (~s #:min-width  5 #:align 'right order)
-       (~a #:min-width 15 #:align 'right (~b rotations-only?))
-       (~a #:min-width 10 #:align 'right (~b invariant?))
-       (~s #:min-width 15 #:align 'right n)))
+     ((fmt "R5WXR15DxR10DXR15D/" 'cur)
+      order
+      (~b rotations-only?)
+      (~b invariant?)
+      n))
    (printf line))]
 
 @(reset-Interaction*)
@@ -2448,7 +2448,7 @@ Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
 @elemtag{H->P-example}
 
 @Interaction*[
- (define (pad7-P->C p) (~s #:width 7 (P->C p)))
+ (require format/fmt)
  (define in-C3v (in-G C3v))
  (code:comment "(correspondence g) ->")
  (code:comment "(values (hasheq P? N? ... ...) (listof P?) (listof P?))")
@@ -2475,7 +2475,7 @@ Let's print map h:
 
 @Interaction*[
  (for ((p in-C3v))
-   (printf "~a is mapped onto ~s.~n" (pad7-P->C p) (hash-ref h p)))]
+   ((fmt 'cur "L7WNX'is mapped onto'XW'.'/") (P->C p) (hash-ref h p)))]
 
 Using this map, the composition table can be simplified by representing
 the elements of C@↓{3v} by the natural numbers they are mapped onto.
@@ -2491,12 +2491,12 @@ representing them by the @nber["C3v-table" "labels shown above"].
 
 @Interaction*[
  (for ((p in-C3v) (row (in-list rows)))
-   (printf "   row of ~a corresponds to ~s~n"
-     (pad7-P->C p) (P->C row)))
+   ((fmt 'cur "'   row of 'L7WN' corresponds to 'W/")
+    (P->C p) (P->C row)))
  (code:comment "")
  (for ((p in-C3v) (column (in-list columns)))
-   (printf "column of ~a corresponds to ~s~n"
-     (pad7-P->C p) (P->C column)))]
+   ((fmt 'cur "'column of 'L7WN' corresponds to 'W/")
+    (P->C p) (P->C column)))]
 
 Let's check that we have isomorphic groups here.
 
