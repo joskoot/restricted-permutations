@@ -222,7 +222,7 @@ Let's call the smallest m∈@bold{N} for which this holds,
 
 as usual for functions p and q with compatible domain of p and co-domain of q:
 
-@inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
+@inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}, id est, pq≡p@smaller{@smaller{o}}q.}
 
 In this document @bold{R} always will be associated with this composition,
 thus forming @nb{a @nber["group"]{group}},
