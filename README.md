@@ -1,6 +1,13 @@
 Restricted permutations
 
-Install the package as follows:
+How to install?\
+The scribble documentation uses format/fmt. Therefore install format before installing restricted-permutations.
+
+Go to file/package manager.\
+Choose Do what I mean,\
+Enter : https://github.com/joskoot/format \
+If needed choose defaults in all fields.\
+Click Install.
 
 Go to file/package manager.\
 Choose Do what I mean,\
