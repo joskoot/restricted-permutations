@@ -32,7 +32,7 @@
      (make-base-eval
        #:lang
        '(begin
-          (require racket "R.rkt")
+          (require racket "R.rkt" format/fmt)
           (print-reader-abbreviations #f)
           (print-as-expression #f))) x ...))
 
@@ -45,7 +45,7 @@
      #:pretty-print? #f
      #:lang
      '(begin
-        (require racket "R.rkt")
+        (require racket "R.rkt" format/fmt)
         (print-reader-abbreviations #f)
         (print-as-expression #f))))
 
@@ -66,9 +66,11 @@
    scribble/eval
    racket
    "R.rkt"
+   format/fmt
    (for-label
      "R.rkt"
      racket
+     format/fmt
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
@@ -819,7 +821,6 @@ Examples:
  (define b (P '(2 3 4)))
  (define c (P '(5 6 7 8 9)))
  (define e P-identity)
- (require format/fmt)
  (define (show p)
    ((fmt "R27WN' has order 'R2W/" 'cur) (P->C p) (P-order p)))
  (for-each show
@@ -1151,7 +1152,6 @@ Examples:
  This can be done as follows:}
 
 @Interaction[
- (require format/fmt)
  (define (fixed-points p n)
    (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
  (fixed-points (P '(0 1) '(5 6 7)) 10)
@@ -1436,10 +1436,8 @@ but shows how to prove that every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements.
 
 @Interaction[
- (code:comment "")
  (if
    (for/and ((n (in-range 2 8)))
-     (printf " ~nn = ~s~n ~n" n)
      (define n-1 (sub1 n))
      (code:comment "transposition and cycle form a minimal base.")
      (define transposition (P (list 0 n-1)))
@@ -1448,7 +1446,8 @@ has at least one minimal base of two elements.
      (define base-of-transpositions
        (for/list ((k (in-range n-1)))
          (P (P-expt cycle k) transposition (P-expt cycle (- k)))))
-     (for-each (curry printf "~s~n") base-of-transpositions)
+     ((fmt 'cur "x/'n = 'W/x/U#(W/)")
+      n base-of-transpositions)
      (eq? (apply G base-of-transpositions) (G-symmetric n)))
    (printf "~n ~netc.~n")
    (error 'example "failed! (This should never happen)"))]
@@ -1468,10 +1467,13 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 @Interaction[
  (define (G-order+bases g)
    (define bases (G-bases g))
-   (values
-     (format "order: ~s" (G-order g))
-     (format "nr of minimal bases ~s" (length bases))
-     bases))
+   ((fmt 'cur
+      "'order: 'W/"
+      "'nr of minimal bases 'W/"
+      "U#(W/)")
+    (G-order g)
+    (length bases)
+    bases))
  (code:comment " ")
  (G-order+bases (G))
  (code:comment " ")
@@ -1549,7 +1551,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  Returns a list of all subgroups of @nbr[g]. Example:
 
  @Interaction[
- (require format/fmt)
  (define g (G '(0 1 2) '(0 1)))
  (code:comment #,(list "Print subgroups in " (nbsl "C" "C-notation.")))
  (define (proper?    subg) (if (   G-proper-subg? subg g) "yes" "no "))
@@ -1926,7 +1927,6 @@ with a vertical line of reflection (Sv).
 The symmetries in  @nbsl["C" "C-representation"]:
 
 @Interaction*[
- (require format/fmt)
  (for ((p (in-list C4v-list)))
    ((fmt "L3DNX':'XW/" 'cur) (P-name p) (P->C p)))]
 
@@ -1970,15 +1970,15 @@ Subgroups:
  (define-values (invariant variant)
    (partition (λ (x) (G-invariant-subg? x C4v)) subgs))
  (code:comment "")
- (define (print-subgroups <in>variant subgs)
-   ((fmt (string-append "dx'subgroups'/u#(xd/)") 'cur)
-    <in>variant
+ (define-syntax-rule (print-subgroups subgs)
+   ((fmt "dx'subgroups'/u#(xd/)" 'cur)
+    (string-titlecase (symbol->string 'subgs))
     (for/list ((sg (in-list subgs)))
       (sort (G->list sg) symbol<? #:key P-name))))
  (code:comment "")
- (print-subgroups 'Invariant invariant)
+ (print-subgroups invariant)
  (code:comment "")
- (print-subgroups 'Variant variant)]
+ (print-subgroups variant)]
 
 For example, (E Sv), (E Sh), (E Sd0) and (E Sd1)@(lb)
 are not invariant under transformation R:
@@ -2232,7 +2232,6 @@ The group of symmetries of the cube has 91 subgroups
 of which 30 contain rotations only.
 
 @Interaction*[
- (require format/fmt)
  (define all-subgs (G-subgroups cube-symmetries))
  (define rotation-subgs (apply set (G-subgroups cube-rotations)))
  (code:comment "")
@@ -2328,7 +2327,6 @@ With these @nber["composition" "compositions"]
 all others are defined as shown in the following table:
 
 @Interaction*[
- (require format/fmt)
  (P-print-by-name #t)
  ((fmt 'cur "U#(U#(WX)/)")
   (for/list ((p (in-list Ps)))
@@ -2369,7 +2367,6 @@ Group @tt{Q} is not @nbrl[G-abelean?]{abelean},
 but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction*[
- (require format/fmt)
  (define Q-subgs (G-subgroups Q))
  (begin
    (displayln "The subgroups are:")
@@ -2449,7 +2446,6 @@ Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
 @elemtag{H->P-example}
 
 @Interaction*[
- (require format/fmt)
  (define in-C3v (in-G C3v))
  (code:comment "(correspondence g) ->")
  (code:comment "(values (hasheq P? N? ... ...) (listof P?) (listof P?))")
