@@ -996,7 +996,6 @@ Let's check that a @nbsl["G" "G"] with at least one odd element
 has as many odd elements as even ones.
 
 @Interaction[
- (require racket/set)
  (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
  (code:comment "\"as many odd elements as even ones\" if g has as many odd elements as even ones.")
  (code:comment "Else raises an error, which should never happen.")
