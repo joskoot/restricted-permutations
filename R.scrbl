@@ -576,8 +576,8 @@ Examples:
    (define c-inverse (P->C (P-inverse p)))
    (eq? (C-even? c) (C-even? c-inverse)))
  (for/and ((n (in-range 5)))
-   (define g (G-symmetric n))
-   (G-invariant-subg? (G-even-subg g) g))]
+   (define Sn (G-symmetric n))
+   (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
  Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -816,7 +816,7 @@ Examples:
  (define c (P '(5 6 7 8 9)))
  (define e P-identity)
  (define (show p)
-   ((fmt "R27WN' has order 'R2W/" 'cur) (P->C p) (P-order p)))
+   ((fmt "R27W N' has order ' R2W/" 'cur) (P->C p) (P-order p)))
  (for-each show
    (list
      e
@@ -1151,7 +1151,7 @@ Examples:
  (for ((n (in-range 1 4)))
    (printf "~n ~nS~s~n" n)
    (for ((p (in-G (G-symmetric n))))
-     ((fmt "L12WN' has fixed points 'L7WN' and every k≥'W/" 'cur)
+     ((fmt "L12W N' has fixed points ' L7W N' and every k≥' W/" 'cur)
       p (fixed-points p n) n)))]
 
 @defproc[(P->H (p P?)) H?]{
@@ -1439,7 +1439,7 @@ has at least one minimal base of two elements.
      (define base-of-transpositions
        (for/list ((k (in-range n-1)))
          (P (P-expt cycle k) transposition (P-expt cycle (- k)))))
-     ((fmt 'cur "x/'n = 'W/x/U#(W/)")
+     ((fmt 'cur "x/'n = 'W/x/ U#(W/)")
       n base-of-transpositions)
      (eq? (apply G base-of-transpositions) (G-symmetric n)))
    (printf "~n ~netc.~n")
@@ -1546,8 +1546,8 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  @Interaction[
  (define g (G '(0 1 2) '(0 1)))
  (code:comment #,(list "Print subgroups in " (nbsl "C" "C-notation.")))
- (define (proper?    subg) (if (   G-proper-subg? subg g) "yes" "no "))
- (define (invariant? subg) (if (G-invariant-subg? subg g) "yes" "no "))
+ (define (proper?    subg) (if (   G-proper-subg? subg g) 'yes 'no))
+ (define (invariant? subg) (if (G-invariant-subg? subg g) 'yes 'no))
  (define line
    "─────────────────────────────────────────────────────────────~n")
  (begin
@@ -1559,7 +1559,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
         (in-list
           (sort (G-subgroups g)
             (lambda (x y) (< (G-order x) (G-order y)))))))
-     ((fmt "2XD7XD4XC5WN*(XW)/" 'cur)
+     ((fmt "L8W L11W L5W NU#(XW)/" 'cur)
       (proper?    subg)
       (invariant? subg)
       (G-order    subg)
@@ -1654,11 +1654,11 @@ Examples:
 The subset of all even elements of a G is an invariant subgroup. For example:
 
 @Interaction[
- (define g (G-symmetric 4))
- (define h (G-even-subg g))
- (G-order g)
- (G-order h)
- (G-invariant-subg? h g)]
+ (define S4 (G-symmetric 4))
+ (define S4-even (G-even-subg S4))
+ (G-order S4)
+ (G-order S4-even)
+ (G-invariant-subg? S4-even S4)]
 
 @defproc[(G-isomorphism (g0 G?) (g1 G?) (name0 symbol? 'no-name) (name1 symbol? 'no-name))
          (or/c #f (list/c (-> P? P?) (-> P? P?)))]{
@@ -1921,7 +1921,7 @@ The symmetries in  @nbsl["C" "C-representation"]:
 
 @Interaction*[
  (for ((p (in-list C4v-list)))
-   ((fmt "L3DNX':'XW/" 'cur) (P-name p) (P->C p)))]
+   ((fmt "L3D N' : ' W/" 'cur) (P-name p) (P->C p)))]
 
 @tt{E} is the @nbr[P-identity]:
 
@@ -1936,7 +1936,7 @@ Check that @tt{C4v-list} contains all symmetries as generated from base (R Sv) a
 Table of compositions:
 
 @Interaction*[
- ((fmt "L5U#(U#W/)" 'cur)
+ ((fmt "L5 U#(U#W/)" 'cur)
   (for/list ((p (in-list C4v-list)))
     (for/list ((q (in-list C4v-list))) (P p q))))]
 
@@ -1964,7 +1964,7 @@ Subgroups:
    (partition (λ (x) (G-invariant-subg? x C4v)) subgs))
  (code:comment "")
  (define-syntax-rule (print-subgroups subgs)
-   ((fmt "dx'subgroups'/u#(xd/)" 'cur)
+   ((fmt "dx 'subgroups' / u#(xd/)" 'cur)
     (string-titlecase (symbol->string 'subgs))
     (for/list ((sg (in-list subgs)))
       (sort (G->list sg) symbol<? #:key P-name))))
@@ -2270,7 +2270,7 @@ of which 30 contain rotations only.
    (for ((entry (in-list (sort-entries (hash->list order-hash)))))
      (define-values (n order rotations-only? invariant?)
        (apply values (cdr entry) (car entry)))
-     ((fmt "R5WXR15DxR10DXR15D/" 'cur)
+     ((fmt "L6W L16D L11D L15D/" 'cur)
       order
       (~b rotations-only?)
       (~b invariant?)
@@ -2465,7 +2465,7 @@ Let's print map h:
 
 @Interaction*[
  (for ((p in-C3v))
-   ((fmt 'cur "L7WNX'is mapped onto'XW'.'/") (P->C p) (hash-ref h p)))]
+   ((fmt 'cur "L7W NX'is mapped onto'X W'.'/") (P->C p) (hash-ref h p)))]
 
 Using this map, the composition table can be simplified by representing
 the elements of C@↓{3v} by the natural numbers they are mapped onto.
