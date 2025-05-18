@@ -1921,7 +1921,7 @@ The symmetries in  @nbsl["C" "C-representation"]:
 
 @Interaction*[
  (for ((p (in-list C4v-list)))
-   ((fmt "L3D N' : ' W/" 'cur) (P-name p) (P->C p)))]
+   ((fmt "L3D N' : ' W/" 'cur) p (P->C p)))]
 
 @tt{E} is the @nbr[P-identity]:
 
