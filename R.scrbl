@@ -2270,7 +2270,7 @@ of which 30 contain rotations only.
    (for ((entry (in-list (sort-entries (hash->list order-hash)))))
      (define-values (n order rotations-only? invariant?)
        (apply values (cdr entry) (car entry)))
-     ((fmt "L6W L16D L11D L15D/" 'cur)
+     ((fmt "R2W4X L16D L11D R2D/" 'cur)
       order
       (~b rotations-only?)
       (~b invariant?)
