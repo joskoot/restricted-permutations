@@ -738,7 +738,7 @@ but the result is not a P. Example:
  writing x@(expt-1) for the inverse of x.}
 
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]{
- Notice that @nbr[(P? x)] implies @nbr[((-> N? N?) x)]}
+ Satisfying predicate @nbr[P?] implies satisfying contract @nbr[(-> N? N?)].}
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
@@ -2299,8 +2299,8 @@ of which 30 contain rotations only.
 In the quaternion group, make the following identifications:
 
 @Interaction*[
- (define | i| (P '((0 1 2 3) (4 5 6 7))))
- (define | j| (P '((0 4 2 6) (1 7 3 5))))
+ (define | i| i)
+ (define | j| j)
  (define | k| (P | i| | j|))
  (define |-1| (P | i| | i|))
  (define | 1| (P |-1| |-1|))
