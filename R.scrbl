@@ -2056,10 +2056,10 @@ Procedure @tt{print-group-info} prints some information about group @tt{cube-sym
 or @tt{cube-rotations}. It does some tests too.
 
 @Interaction*[
- (define (print-group-info g descr print-classes?)
+ (define (print-group-info g name print-classes?)
    (define conj-classes (sort (G-classes g) conj-class<?))
    (define g-order (G-order g))
-   (printf " ~nInfo about group: ~a~n ~n" descr)
+   (printf " ~nInfo about group: ~a~n ~n" name)
    (printf "Order of the group: ~s~n" g-order)
    (printf "Number of conjugation classes: ~s~n" (length conj-classes))
    (code:comment "")
@@ -2308,8 +2308,8 @@ In the quaternion group, make the following identifications:
  (define  -j  (P |-1| | j|))
  (define  -k  (P |-1| | k|))
  (define Ps     (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
- (define descrs (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
- (for ((p (in-list Ps)) (descr (in-list descrs))) (set-P-name! p descr))]
+ (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
+ (for ((p (in-list Ps)) (name (in-list names))) (set-P-name! p name))]
 
 We have
 @tt["ii=jj=kk=-1"],
