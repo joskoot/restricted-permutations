@@ -2013,10 +2013,10 @@ id est, @nbr[(P '((0 7) (1 6)))].
  (define reflection (P '((0 7) (1 6))))
  (define cube-symmetries (G rotation reflection))]
 
-The following table maps each conjugation class to its name.
+The following table maps each conjugation class to a description.
 
 @Interaction*[
- (define conj-name-table
+ (define conj-descr-table
    (make-hash
      (map
        (λ (entry) (cons (G-class (car entry) cube-symmetries) (cdr entry)))
@@ -2044,22 +2044,22 @@ The following table maps each conjugation class to its name.
          (cons (P '((0 6) (1 7) (2 4) (3 5)))
            "Inversion-symmetry.")))))
  (code:comment "")
- (define (get-class-name conj-class)
-   (hash-ref conj-name-table conj-class))]
+ (define (get-class-descr conj-class)
+   (hash-ref conj-descr-table conj-class))]
 
-Check that all conjugation classes are present in @tt{conj-name-table}.
+Check that all conjugation classes are present in @tt{conj-descr-table}.
 
 @Interaction*[
- (set=? (hash-keys conj-name-table) (G-classes cube-symmetries))]
+ (set=? (hash-keys conj-descr-table) (G-classes cube-symmetries))]
 
 Procedure @tt{print-group-info} prints some information about group @tt{cube-symmetries}
 or @tt{cube-rotations}. It does some tests too.
 
 @Interaction*[
- (define (print-group-info g name print-classes?)
+ (define (print-group-info g descr print-classes?)
    (define conj-classes (sort (G-classes g) conj-class<?))
    (define g-order (G-order g))
-   (printf " ~nInfo about group: ~a~n ~n" name)
+   (printf " ~nInfo about group: ~a~n ~n" descr)
    (printf "Order of the group: ~s~n" g-order)
    (printf "Number of conjugation classes: ~s~n" (length conj-classes))
    (code:comment "")
@@ -2075,7 +2075,7 @@ or @tt{cube-rotations}. It does some tests too.
    (printf " ~nThe conjugation classes are:~n")
    (code:comment "")
    (for ((conj-class (in-list conj-classes)))
-     (printf " ~n~a~n" (get-class-name conj-class))
+     (printf " ~n~a~n" (get-class-descr conj-class))
      (printf "Order: ~s, class-size: ~s~n"
        (P-order (set-first conj-class))
        (set-count conj-class))
@@ -2204,8 +2204,8 @@ The following example shows the details:
        (apply values (map P->C base)))
      (printf " ~n~s: size: ~s: example: ~s and ~s~n"
        i (length base-collection) x y)
-     (define a (get-class-name (G-class (car base) g)))
-     (define b (get-class-name (G-class (cadr base) g)))
+     (define a (get-class-descr (G-class (car base) g)))
+     (define b (get-class-descr (G-class (cadr base) g)))
      (displayln a)
      (displayln b)
      (when (equal? a b) (displayln "Axes orthogonal to each other."))))
@@ -2307,9 +2307,9 @@ In the quaternion group, make the following identifications:
  (define |-i| (P |-1| | i|))
  (define  -j  (P |-1| | j|))
  (define  -k  (P |-1| | k|))
- (define Ps    (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
- (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
- (for ((p (in-list Ps)) (name (in-list names))) (set-P-name! p name))]
+ (define Ps     (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
+ (define descrs (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
+ (for ((p (in-list Ps)) (descr (in-list descrs))) (set-P-name! p descr))]
 
 We have
 @tt["ii=jj=kk=-1"],
