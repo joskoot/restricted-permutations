@@ -198,8 +198,7 @@ such as to mean a bijection of a set onto the same set.
  @nbsl["numbers"
        #:doc '(lib "scribblings/guide/guide.scrbl")
        "exact integer numbers of Racket"]
- and the abstract integer numbers they represent.
- @nb{See section} @nbsl["N" "Natural/integer numbers"].}
+ and the abstract integer numbers they represent.}
 
 @elemtag["R" ""]
 Let @bold{N} be the set of all natural numbers, 0 included.@(lb)

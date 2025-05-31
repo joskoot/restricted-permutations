@@ -33,7 +33,7 @@
    ((key (in-list keys)))
    (cond
     ((set-member? done key) (values c done))
-    ((= (hash-ref h key key) key)
+    ((= (hash-ref h key) key)
      (values c (set-add done key)))
     (else
      (define first key)
