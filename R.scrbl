@@ -2306,7 +2306,7 @@ In the quaternion group, make the following identifications:
  (define |-i| (P |-1| | i|))
  (define  -j  (P |-1| | j|))
  (define  -k  (P |-1| | k|))
- (define Ps     (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
+ (define Ps    (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
  (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
  (for ((p (in-list Ps)) (name (in-list names))) (set-P-name! p name))]
 
