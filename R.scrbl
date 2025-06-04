@@ -755,9 +755,7 @@ but the result is not a P. Example:
  is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
  If this parameter is @nbr[#f] or the @italic{@tt{p}} has no name,
  it is written, printed or displayed in @constr-style as:
-
- @inset{@nbr[(P '#,(italic (tt "c")))]}
-
+ @nbr[(P '#,(italic (tt "c")))]
  where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
 
  @Interaction[
