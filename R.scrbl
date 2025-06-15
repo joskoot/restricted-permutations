@@ -167,7 +167,8 @@
 
 @(Defmodule)
 
-Module @nbhll["R.rkt" "R.rkt"] imports the following modules and exports all its imports@(lb)
+Module @nbhll["R.rkt" "R.rkt"] @nbrl[require]{imports} the following modules
+and @nbrl[provide]{exports} all its imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
  (("Module" "Documentation in section") 
@@ -759,10 +760,11 @@ but the result is not a P. Example:
  where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
 
  @Interaction[
- (define p (P))
- (set-P-name! p 'E)
- (code:line (P-print-by-name #f) p)
- (code:line (P-print-by-name #t) p)]}
+ (set-P-name! P-identity 'E)
+ (code:line (P-print-by-name #f) P-identity)
+ (code:line (P-print-by-name #t) P-identity)
+ (set-P-name! P-identity #f)
+ (code:line (P-print-by-name #t) P-identity)]}
 
 @defidform[#:kind "constant" P-identity]{
  The P representing the @nber["id" "identity"] of @nber["R"]{@bold{R}.}
