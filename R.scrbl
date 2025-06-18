@@ -1902,7 +1902,7 @@ Name the symmetries as follows:
 
 The whole group can be generated from a base of two elements, for example R and Sv.
 The group is called ‘C4v’ because it has a fourfold axis of rotation (R)
-with a vertical line of reflection (Sv).
+with a vertical plane of reflection (Sv) assuming the square to be in a horizontal plane.
 @Interaction*[
  (define R   (P '(0 1 2 3)))
  (define Sv  (P '((0 1) (2 3))))
