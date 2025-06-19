@@ -758,7 +758,8 @@ but the result is not a P. Example:
  If this parameter is @nbr[#f] or the @italic{@tt{p}} has no name,
  it is written, printed or displayed in @constr-style as:
  @nbr[(P '#,(italic (tt "c")))]
- where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].
+ where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].@(lb)
+ Some procedures ignore this parameter.
 
  @Interaction[
  (set-P-name! P-identity 'E)
