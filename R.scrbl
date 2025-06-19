@@ -1183,7 +1183,8 @@ representing the elements of the G (ignoring parameter @nbr[P-print-by-name]).
 @nb{For every} finite group there is an isomorphic G (ignoring memory limits).
 
 @defproc[(G (p (or/c P? C?)) ...) G?]{
- Returns the G representing the smallest group containing all @nber["R" "Rs"]
+ Returns the G representing the smallest (least @nbrl[G-order]{order})
+ group containing all @nber["R" "Rs"]
  represented by the arguments.
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
  If no argument is given, the @nbr[G-identity] is returned.}
