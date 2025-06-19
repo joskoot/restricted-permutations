@@ -673,22 +673,23 @@ Another example:
 Some checks on the properties of @nber["composition" "compositions"] of @nber["R" "Rs"]:
 
 @Interaction[
- (define S4 (G-symmetric 4))
- (define in-S4 (in-G S4))
- (for*/and ((p in-S4) (q in-S4)) (code:comment #,(green "true"))
-   (define pq (P p q))
-   (define qp (P q p))
-   (define max-restriction
-     (max
-       (P-restriction p)
-       (P-restriction q)))
-   (and
-     (G-member? pq S4)
-     (G-member? qp S4)
-     (=   (P-order pq) (P-order qp))
-     (eq? (P-even? pq) (P-even? qp))
-     (<= 0 (P-restriction pq) max-restriction)
-     (<= 0 (P-restriction qp) max-restriction)))]
+ (for/and ((n (in-range 5))) (code:comment #,(green "true"))
+   (define Sn (G-symmetric n))
+   (define in-Sn (in-G Sn))
+   (for*/and ((p in-Sn) (q in-Sn))
+     (define pq (P p q))
+     (define qp (P q p))
+     (define max-restriction
+       (max
+         (P-restriction p)
+         (P-restriction q)))
+     (and
+       (G-member? pq Sn)
+       (G-member? qp Sn)
+       (=   (P-order pq) (P-order qp))
+       (eq? (P-even? pq) (P-even? qp))
+       (<= 0 (P-restriction pq) max-restriction)
+       (<= 0 (P-restriction qp) max-restriction))))]
 
 @elemtag["P-example"]{
  The @nber["R" "restriction"] of pq not necessarily equals that of qp:}
