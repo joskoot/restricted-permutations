@@ -2443,8 +2443,7 @@ Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
 
 @Interaction*[
  (define in-C3v (in-G C3v))
- (code:comment "(correspondence g) ->")
- (code:comment "(values (hasheq P? N? ... ...) (listof P?) (listof P?))")
+ (code:comment "(correspondence g) -> (hasheq P? N? ... ...) (listof P?) (listof P?)")
  (code:comment "g : G?")
  (define (correspondence g)
    (define in-g (in-G g))
