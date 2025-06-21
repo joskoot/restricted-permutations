@@ -754,7 +754,7 @@ but the result is not a P. Example:
 
 @defparam*[P-print-by-name yes/no any/c boolean? #:value #f]{
  If this parameter is true, a @italic{@tt{p}} that has a name
- is written by its name @nbr[(P-name #,(italic (tt "p")))].@(lb)
+ is written, printed or displayed by its name @nbr[(P-name #,(italic (tt "p")))].
  If this parameter is @nbr[#f] or the @italic{@tt{p}} has no name,
  it is written, printed or displayed in @constr-style as:
  @nbr[(P '#,(italic (tt "c")))]
