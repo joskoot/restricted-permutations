@@ -761,7 +761,7 @@ but the result is not a P. Example:
  it is written, printed or displayed in @constr-style as:
  @nbr[(P '#,(italic (tt "c")))]
  where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].@(lb)
- Some procedures ignore this parameter.
+ Some procedures ignore this parameter and act if it were false.
 
  @Interaction[
  (set-P-name! P-identity 'E)
