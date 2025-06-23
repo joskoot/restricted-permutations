@@ -973,16 +973,17 @@ This applies to @nber["R" @bold{R}] too:
  See procedure @nbr[C-even?].}
 Examples:
 
-@example-table[
- (P-even? P-identity)
- (not (P-even? (P '(0 1))))
- (P-even? (P '(0 1) '(2 3)))
- (P-even? (P '(0 1) '(1 2)))
- (not (P-even? (P '(0 1) '(1 2) '(1 0))))
- (P-even? (P '(0 1 2)))
- (eq? (P '(0 1 2)) (P '(0 2) '(0 1)))
- (not (P-even? (P '(0 2 4 6))))
- (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2)))]
+@Interaction[
+ (and
+   (P-even? P-identity)
+   (not (P-even? (P '(0 1))))
+   (P-even? (P '(0 1) '(2 3)))
+   (P-even? (P '(0 1) '(1 2)))
+   (not (P-even? (P '(0 1) '(1 2) '(1 0))))
+   (P-even? (P '(0 1 2)))
+   (eq? (P '(0 1 2)) (P '(0 2) '(0 1)))
+   (not (P-even? (P '(0 2 4 6))))
+   (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2))))]
 
 @Interaction[
  (define S3-list (G->list (G-symmetric 3)))
