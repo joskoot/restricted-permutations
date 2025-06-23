@@ -607,6 +607,8 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
+A P can be given a @nbrl[set-P-name!]{name}.
+See parameter @nbr[P-print-by-name] for the way a P is written, printed or displayed.
 
 @defproc[(P (p (or/c P? C?)) ...) P?]{
  Returns the P representing the @nber["R" "R"]
