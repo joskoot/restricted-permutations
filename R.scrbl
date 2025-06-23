@@ -167,8 +167,8 @@
 
 @(Defmodule)
 
-Module @nbhll["R.rkt" "R.rkt"] @nbrl[require]{imports} the following modules
-and @nbrl[provide]{exports} all its imports@(lb)
+Module @nbhll["R.rkt" "R.rkt"] @nbr[require]s the following modules
+and @nbr[provide]s all imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
  (("Module" "Documentation in section") 
