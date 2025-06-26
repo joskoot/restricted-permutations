@@ -1983,14 +1983,14 @@ Subgroups:
  (code:comment "")
  (print-subgroups variant)]
 
-For example, (E Sv), (E Sh), (E Sd0) and (E Sd1)@(lb)
+For example, @tt["{E Sv}"], @tt["{E Sh}"], @tt["{E Sd0}"] and @tt["{E Sd1}"]@(lb)
 are not invariant under transformation R:
 
 @Interaction*[
  (for ((s (in-list (list Sv Sd0))))
    (printf "~s ≠ ~s~n" s (P R s (P-inverse R))))]
 
-(E R2) is an invariant subgroup. This implies@(lb)
+@tt["{E R2}"] is an invariant subgroup. This implies@(lb)
 that R2 commutes with all symmetries of the square:
 
 @Interaction*[
@@ -2126,8 +2126,8 @@ also is a conjugation class of the group of all @tt{cube-symmetries}:
 
 @Interaction*[
  (proper-subset?
-   (apply set (G-classes cube-rotations))
-   (apply set (G-classes cube-symmetries)))]
+   (G-classes cube-rotations)
+   (G-classes cube-symmetries))]
 
 The group of all @tt{cube-symmetries} has ten conjugation classes,
 of which five coincide with the conjugation classes of subgroup @tt{cube-rotations}.
