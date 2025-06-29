@@ -632,9 +632,12 @@ See parameter @nbr[P-print-by-name] for the way a P is written, printed or displ
  (P '(0 1))
  (P '(1 0))
  (P '(0 1) '(2 3 4))
- (P '(3 0 1 2))
- (P '(0 1) '(1 2) '(2 3))
- (P '(2 3) '(1 2) '(0 1))]
+ (P '(3 0 1 2))]
+
+@Interaction[
+ (define-values (a b c) (values '(0 1) '(1 2) '(2 3)))
+ (define-values (pa pb pc) (values (P a) (P b) (P c)))
+ (eq? (P a b c) (P pa pb pc))]
 
 Let's do a check that two Ps representing the same @nber["R" "R"]
 are the same in the sense of @nbr[eq?]
