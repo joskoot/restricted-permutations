@@ -235,6 +235,9 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  if the order @nb{(= cardinality)} of the group is 1 and
  an infinite number of them if the order is greater than 1.}
 
+@note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
+ and has nothing to do with the set of real numbers.}
+
 @elemtag["group"]
 @note{The present document is not an introduction to group theory.
  It frequently refers to mathematical concepts without their definitions
