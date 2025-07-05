@@ -20,6 +20,11 @@
         #'(nb (hyperlink x y ...))
         #'(nb (hyperlink (string-append "../../" x) y ...))))))
 
+@(require (only-in scribble/racket make-element-id-transformer))
+@(define-syntax CLASS
+  (make-element-id-transformer
+   (lambda _ #'(tt "class"))))
+
 @(define-syntax (Defmodule stx)
    (if local
      #'(defmodule "R.rkt" #:packages ())
@@ -1630,9 +1635,9 @@ Examples:
 
  @Interaction*[
  (define (print-G-classes g)
-   (for ((class (in-list (G-classes g))) (n (in-naturals 1)))
+   (for ((CLASS (in-list (G-classes g))) (n (in-naturals 1)))
      (printf "Class ~s: " n)
-     (for ((p (in-set class))) (printf "~s " (P->C p)))
+     (for ((p (in-set CLASS))) (printf "~s " (P->C p)))
      (newline)))
  (code:comment "All elements of a conjugation class")
  (code:comment "have the same normalized cycle structure:")
@@ -2313,7 +2318,7 @@ of which 30 contain rotations only.
  (G-order Q)
  (for ((p (in-G Q))) (printf "order = ~s, p = ~s~n" (P-order p) p))
  (define Q-classes (G-classes Q))
- (for ((class (in-list Q-classes))) (printf "~s~n"class))]
+ (for ((CLASS (in-list Q-classes))) (printf "~s~n"CLASS))]
 
 In the quaternion group, make the following identifications:
 
@@ -2365,13 +2370,13 @@ We can verify this as follows:
 
 @Interaction*[
  (define |-1| (P i i))
- (for/and ((class (in-list Q-classes)))
-   (case (set-count class)
+ (for/and ((CLASS (in-list Q-classes)))
+   (case (set-count CLASS)
      ((1)
-      (define x (set-first class))
+      (define x (set-first CLASS))
       (or (P-identity? x) (eq? x |-1|)))
      ((2)
-      (define-values (p q) (apply values (set->list class)))
+      (define-values (p q) (apply values (set->list CLASS)))
       (eq? (P |-1| p) q))
      (else #f)))]
 
