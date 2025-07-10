@@ -201,9 +201,7 @@ such as to mean a bijection of a set onto the same set.
  as though it were the object it represents,
  @nb{but this} is avoided in this document.
  However, no formal distinction will be made between
- @nbsl["numbers"
-       #:doc '(lib "scribblings/guide/guide.scrbl")
-       "exact integer numbers of Racket"]
+ @nbsl["N" "exact integer numbers of Racket"]
  and the abstract integer numbers they represent.}
 
 @elemtag["R" ""]
