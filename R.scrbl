@@ -1274,8 +1274,7 @@ Examples:
 
 @Interaction[(define g (G '(0 1) '(0 2)))
              (define in-g (in-G g))
-             (code:comment "By definition, for every pair of elements of g")
-             (code:comment "the composition is an element of g too.")
+             (code:comment "By definition, ∀p,q∈g: pq∈g")
              (for*/and ((p in-g) (q in-g)) (G-member? (P p q) g))]
 
 @color-example[green (G-member? P-identity G-identity)]
