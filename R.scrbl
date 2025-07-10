@@ -1647,7 +1647,7 @@ Examples:
  (print-G-classes (G '(1 3) '(0 1 2 3)))
  (print-G-classes (G '((0 1 2 3) (4 5 6 7)) '((0 4 2 6) (1 7 3 5))))]
  In a symmetric group two elements belong to the same conjugation
- black if and only if they have the same normalized cycle structure:
+ class if and only if they have the same normalized cycle structure:
 
  @Interaction*[
  (print-G-classes (G-symmetric 4))]}
