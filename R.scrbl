@@ -381,7 +381,7 @@ the exact integer numbers of Racket by which they are represented nor between
 and the corresponding abstract natural numbers.
 
 @inset{@Tabular[
- ((@bold{N}      "is the set of all natural numbers.")
+ ((@bold{N}      "is the set of all natural numbers, 0 included.")
   (@bold{N@↑{+}} "is the set of all positive natural numbers.")
   (@bold{Z}      "is the set of all integer numbers."))
  #:sep (hspace 1)]}
