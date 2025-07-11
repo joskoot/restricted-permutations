@@ -2366,7 +2366,6 @@ The @nbrl[G-classes "conjugation classes"] are:
 We can verify this as follows:
 
 @Interaction*[
- (define |-1| (P i i))
  (for/and ((CLASS (in-list Q-classes)))
    (case (set-count CLASS)
      ((1)
