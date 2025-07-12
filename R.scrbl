@@ -1929,8 +1929,8 @@ with a vertical plane of reflection (Sv) assuming the square to be in a horizont
  (define Sh  (P R2 Sv))
  (define Sd0 (P R Sh))
  (define Sd1 (P R2 Sd0))
- (define C4v-list (list E R R2 R3 Sv Sh Sd0 Sd1))
- (define names        '(E R R2 R3 Sv Sh Sd0 Sd1))
+ (define C4v-list (list E R R2 R3 Sv Sd0 Sh Sd1))
+ (define names        '(E R R2 R3 Sv Sd0 Sh Sd1))
  (for-each set-P-name! C4v-list names)
  (P-print-by-name #t)]
 
