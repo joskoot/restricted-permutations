@@ -1462,7 +1462,7 @@ has at least one minimal base of two elements.
    (error 'example "failed! (This should never happen)"))]
 
 For n>2 the set of @nbrl[C-transpositions]{transpositions}
-@nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
+@nb{{(k n@(minus)1): 0 ≤ k ≤ n@(minus)1}}
 forms a (non-minimal) base @nb{for S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
 every relevant transposition @nb{(i j)} not in the list of transpositions can be
@@ -2434,8 +2434,8 @@ There@(-?)fore every element of a group @bold{X}
 can be associated with one or two permutations of set @bold{X}:
 
 @inset{
- ∀x∈@bold{X}: (y∈@bold{X}: → xy) is a permutation of set @bold{X} (column of x)@(lb)
- ∀x∈@bold{X}: (y∈@bold{X}: → yx) is a permutation of set @bold{X} (row of x)}
+ ∀p∈@bold{X}: (q∈@bold{X}: → pq) is a permutation of set @bold{X} (column of p)@(lb)
+ ∀p∈@bold{X}: (q∈@bold{X}: → qp) is a permutation of set @bold{X} (row of p)}
 
 If the group is abelean, the @nber["rearrangement" "rearrangements"]
 in the rows are the same as those in the columns.
