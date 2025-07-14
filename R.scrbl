@@ -1462,7 +1462,7 @@ has at least one minimal base of two elements.
    (error 'example "failed! (This should never happen)"))]
 
 For n>2 the set of @nbrl[C-transpositions]{transpositions}
-@nb{{(k n@(minus)1): 0 ≤ k ≤ n@(minus)1}}
+@nb{{(k n@(minus)1): 0 ≤ k < n@(minus)1}}
 forms a (non-minimal) base @nb{for S@↓{n}},
 because every element of S@↓{n} can be written as a composition of transpositions and
 every relevant transposition @nb{(i j)} not in the list of transpositions can be
