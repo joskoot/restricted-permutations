@@ -1047,9 +1047,9 @@ has as many odd elements as even ones.
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
  Defines a sorting order among @nber["R" "Rs"].
- The first sorting key is the order of the @nber["R" "Rs"].
- The second sorting key is the @nbrl[P-even? #:style #f "parity"],
+ The firdt sorting key is the @nbrl[P-even? #:style #f "parity"],
  even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].
+ The second sorting key is the order of the @nber["R" "Rs"].
  The third sorting key is @nbr[(p k)] for the smallest argument @nbr[k]
  for which the two @nber["R" "Rs"] represented by the two arguments yield different values.
  @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].@(lb)
