@@ -2416,11 +2416,11 @@ The represented symmetries are:
 @inset{@Tabular[
  (("label" (nbsl "C" "C") "symmetry")
   ("0"     @nbr[()]       "the identity")
-  ("1"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
-  ("2"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
-  ("3"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1")
-  ("4"     @nbr[(0 1 2)]  "rotation about 120°")
-  ("5"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction"))
+  ("1"     @nbr[(0 1 2)]  "rotation about 120°")
+  ("2"     @nbr[(0 2 1)]  "rotation about 120° in reversed direction")
+  ("3"     @nbr[(1 2)]    "reflection in perpendicular from vertex 0")
+  ("4"     @nbr[(0 1)]    "reflection in perpendicular from vertex 2")
+  ("5"     @nbr[(0 2)]    "reflection in perpendicular from vertex 1"))
  #:row-properties '((bottom-border top-border) () () () () () bottom-border)
  #:sep (hspace 2)]}
 
