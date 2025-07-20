@@ -173,7 +173,7 @@
 @(Defmodule)
 
 Module @nbhll["R.rkt" "R.rkt"] @nbrl[require]{requires} the following modules
-and @nbrl[provide]{provides} all required imports@(lb)
+and @nbrl[provide]{provides} all imports@(lb)
 with exception of a minor modification related to @nbsl["Cleanup" "cleanup"].
 @inset{@Tabular[
  (("Module" "Documentation in section") 
@@ -1047,7 +1047,7 @@ has as many odd elements as even ones.
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
  Defines a sorting order among @nber["R" "Rs"].
- The first sorting key is the @nbrl[P-even? #:style #f "parity"],
+ The firdt sorting key is the @nbrl[P-even? #:style #f "parity"],
  even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].
  The second sorting key is the order of the @nber["R" "Rs"].
  The third sorting key is @nbr[(p k)] for the smallest argument @nbr[k]
