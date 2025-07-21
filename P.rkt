@@ -99,10 +99,10 @@
               (set-P-inverse-field! p inverse)
               inverse))
           (let*
-              ((h (P-H-field p))
-               (order (or order (P-order p)))
-               (inverted-h (H-inverse h))
-               (inverted-p (hash-ref! P-hash inverted-h (λ () (P-constr inverted-h)))))
+            ((h (P-H-field p))
+             (order (or order (P-order p)))
+             (inverted-h (H-inverse h))
+             (inverted-p (hash-ref! P-hash inverted-h (λ () (P-constr inverted-h)))))
             (set-P-inverse-field! p inverted-p)
             (set-P-inverse-field! inverted-p p)
             (set-P-order-field! inverted-p order)
@@ -112,12 +112,12 @@
   (let ((p (P/C->P p/c)))
     (or (P-order-field p)
       (let*
-          ((c (P->C p))
-           (order
-             (cond
-               ((null? c) 1)
-               ((N? (car c)) (length c))
-               (else (apply lcm (map length c))))))
+        ((c (P->C p))
+         (order
+           (cond
+             ((null? c) 1)
+             ((N? (car c)) (length c))
+             (else (apply lcm (map length c))))))
         (set-P-order-field! p order)
         order))))
 
@@ -142,12 +142,12 @@
       ((odd) #f)
       (else         
         (let*
-            ((c (H->C (P-H-field p)))
-             (parity
-               (cond
-                 ((null? c))
-                 ((N? (car c)) (odd? (length c)))
-                 (else (even? (apply + (length c) (map length c)))))))
+          ((c (H->C (P-H-field p)))
+           (parity
+             (cond
+               ((null? c))
+               ((N? (car c)) (odd? (length c)))
+               (else (even? (apply + (length c) (map length c)))))))
           (set-P-even-field! p (if parity 'even 'odd))
           parity)))))
 
@@ -157,17 +157,30 @@
   (let ((p0 (P/C->P p/c0)) (p1 (P/C->P p/c1)))
     (hash-ref! P<?-hash (cons p0 p1)
       (λ () ; use P-equal? in stead of eq?, because after cleanup
-        (and (not (P-equal? p0 p1)) ; using eq? may cause an infite loop.
-          (let ((even0 (P-even? p0)) (even1 (P-even? p1)))
-            (or (and even0 (not even1))
-              (and (eqv? even0 even1)
-                (let ((order0 (P-order p0)) (order1 (P-order p1)))
-                  (or (< order0 order1)
-                    (and (= order0 order1)
-                      (let loop ((k 0))
-                        ; This loop always terminates because p0 and p1 are not P-equal.
-                        (let ((e0 (p0 k)) (e1 (p1 k)))
-                          (or (< e0 e1) (and (= e0 e1) (loop (add1 k)))))))))))))))))
+        (and (not (P-equal? p0 p1)) ; using eq? may cause an infite loop
+          (or (P-identity? p0)
+            (and (not (P-identity? p1))
+              (let ((even0 (P-even? p0)) (even1 (P-even? p1)))
+                (or (and even0 (not even1))
+                  (and (eqv? even0 even1)
+                    (let ((order0 (P-order p0)) (order1 (P-order p1)))
+                      (or (< order0 order1)
+                        (and (= order0 order1)
+                          (let
+                            ((nfps0 (P-non-fixed-points p0))
+                             (nfps1 (P-non-fixed-points p1)))
+                            (let ((n0 (length nfps0)) (n1 (length nfps1)))
+                              (or (< n0 n1)
+                                (and (= n0 n1)
+                                  (let ((n0 (apply min nfps0)) (n1 (apply min nfps1)))
+                                    (or (< n0 n1)
+                                      (and (= n0 n1)
+                                        (let loop ((k 0))
+                                          ; This loop always terminates
+                                          ; because p0 and p1 are not P-equal.
+                                          (let ((e0 (p0 k)) (e1 (p1 k)))
+                                            (or (< e0 e1)
+                                              (and (= e0 e1) (loop (add1 k))))))))))))))))))))))))))
 
 (define (P-equal? p0 p1)
   (or (eq? p0 p1)
