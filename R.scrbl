@@ -32,7 +32,7 @@
 
 @(define-syntax-rule
    (Interaction x ...)
-   (interaction
+   (interaction/no-prompt
      #:eval
      (make-base-eval
        #:lang
@@ -1699,34 +1699,54 @@ The subset of all even elements of a G is an invariant subgroup. For example:
    Isomorphism is an
    @nbhl["https://en.wikipedia.org/wiki/Equivalence_relation" "equivalence relation."]}}} Examples:
 
-@Interaction[
- (code:comment "Abelean group of 4 elements, called the `four group' or `V'.")
- (code:comment "Every element of V is its own inverse.")
+Abelean group of 4 elements, called the `four group' or `V'.@(lb)
+Every element of V is its own inverse.
+
+@Interaction*[
  (define V (G '(0 1) '(2 3)))
  (G-order V)
  (G-abelean? V)
- (for/and ((p (in-G V))) (eq? (P-inverse p) p))
- (code:comment "There are two isomorphically distinct groups of order 4.")
- (code:comment "An example of the other one is:")
+ (for/and ((p (in-G V))) (eq? (P-inverse p) p))]
+
+There are two isomorphically distinct groups of order 4.@(lb)
+An example of the other one is:
+
+@Interaction*[
  (define C4 (G '(0 1 2 3)))
  (G-order C4)
- (G-abelean? C4)
- (code:comment "C4 is not isomorphic to V")
- (code:line (G-isomorphism V C4) (code:comment #,(red "false")))
- (code:comment "In particular (P '(0 1 2 3)) not equals its own inverse:")
+ (G-abelean? C4)]
+
+C4 is not isomorphic to V.
+
+@Interaction*[
+ (code:line (G-isomorphism V C4) (code:comment #,(red "false")))]
+
+In particular @nbr[(P '(0 1 2 3))] not equals its own inverse:
+
+@Interaction*[
  (code:line (let ((p (P '(0 1 2 3)))) (eq? (P-inverse p) p)) (code:comment #,(red "false")))]
 
-@Interaction[
+@(reset-Interaction*)
+
+Check that two isomorphisms returned by @nbr[G-isomorphism] are inverses of each other:
+
+@Interaction*[
  (define g0 (G '(0 1) '(2 3)))
  (define g1 (G '((1 2) (7 8)) '((5 6) (3 4))))
  (define-values (g0->g1 g1->g0)
    (apply values (G-isomorphism g0 g1 'g0->g1 'g1->g0)))
  (eq? (list->G (map g0->g1 (G->list g0))) g1)
- (eq? (list->G (map g1->g0 (G->list g1))) g0)
- (code:comment "If the two Gs are not isomorphic, G-isomorphism returns #f.")
- (code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))
- (code:comment "An error is reported if the argument")
- (code:comment "is not in the domain of the isomorphism.")
+ (eq? (list->G (map g1->g0 (G->list g1))) g0)]
+
+If the two Gs are not isomorphic, G-isomorphism returns @nbr[#f].
+
+@Interaction[
+ (code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))]
+
+An error is reported if the argument
+is not in the domain of the isomorphism.
+
+@Interaction[
  (code:line (g1->g0 (P '(0 1))) (code:comment #,(red "error")))]
 
 @red{Warning}: after @nbsl["Cleanup" "cleaning up"]
