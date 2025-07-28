@@ -1064,8 +1064,14 @@ has as many odd elements as even ones.
   4: the least non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
   for which the two @nber["R" "Rs"] yield different values.}
- @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].@(lb)
- (@nb{See @nbr[P-sort]} for an example.)}
+ @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
+ @Interaction[
+ (define S4 (G-symmetric '(3 5 7 9)))
+ (define S4-list (G->list S4))
+ (define shuffled-S4-list S4-list)
+ (define sorted-S4-list (sort shuffled-S4-list P<?))
+ (equal? S4-list sorted-S4-list)
+ sorted-S4-list]}
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
  Like @nbr[(sort (map P ps) P<?)], id est,
