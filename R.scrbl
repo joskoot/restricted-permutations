@@ -1761,8 +1761,9 @@ If the two Gs are not isomorphic, G-isomorphism returns @nbr[#f].
 An error is reported if the argument
 is not in the domain of the isomorphism.
 
-@Interaction[
+@Interaction*[
  (code:line (g1->g0 (P '(0 1))) (code:comment #,(red "error")))]
+@(reset-Interaction*)
 
 @red{Warning}: after @nbsl["Cleanup" "cleaning up"]
 isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
