@@ -1061,7 +1061,7 @@ has as many odd elements as even ones.
   even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].@(lb)
   2: the order of the @nber["R" "Rs"].@(lb)
   3: the number of non-fixed points.@(lb)
-  4: the least fixed point.@(lb)
+  4: the least non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
   for which the two @nber["R" "Rs"] yield different values.}
  @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].@(lb)
