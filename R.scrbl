@@ -111,7 +111,7 @@
 
 @(parameterize ((current-namespace example-ns))
    (namespace-require 'racket)
-   (namespace-require '"R.rkt"))
+   (namespace-require 'restricted-permutations/R))
 
 @(define-syntax-rule (eval-example expr)
    (begin
@@ -1856,7 +1856,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
    (let ((namespace (make-base-namespace)))
      (parameterize ((current-namespace namespace))
        (namespace-require 'racket)
-       (namespace-require '"R.rkt"))
+       (namespace-require 'restricted-permutations/R))
      (lambda (expr) (eval expr namespace))))
  (define other-P-identity  (other-eval 'P-identity))
  (define other-G-identity  (other-eval 'G-identity))
