@@ -1015,42 +1015,49 @@ Let's check that a @nbsl["G" "G"] with at least one odd element
 has as many odd elements as even ones.
 
 @Interaction[
- (code:comment "Procedure check returns \"all even\" if g has no odd elements or")
- (code:comment "\"as many odd elements as even ones\" if g has as many odd elements as even ones.")
- (code:comment "Else raises an error, which should never happen.")
  (define (check g)
    (define in-g (in-G g))
    (define  odd-set (for/seteq ((p in-g) #:unless (P-even? p)) p))
    (define even-set (for/seteq ((p in-g) #:when   (P-even? p)) p))
    (cond
-     ((zero? (set-count odd-set)) "all even")
+     ((and (zero? (set-count odd-set)) (equal? (expected) "all even")))
      ((and
-        (= (set-count  odd-set)
+        (=
+          (set-count  odd-set)
           (set-count even-set)
           (/ (G-order g) 2))
         (for/and ((odd-p (in-set odd-set)))
           (equal?
             (for/seteq ((even-p (in-set even-set))) (P odd-p even-p))
-            odd-set)))
-      "as many odd elements as even ones")
+            odd-set))
+        (equal? (expected) "as many odd elements as even ones")))
      (else (error 'check "this should never happen: ~s" g))))
- (code:comment "tests on symmetric groups of order greater than 1")
- (for/and ((n (in-range 2 6)))
-   (equal? (check (G-symmetric n)) "as many odd elements as even ones"))
- (code:comment "Two checks on non-symmetric groups:")
- (define g (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
- (G-order g)
- (check g)
- (code:comment "")
- (define h (G '((0 1) (2 3)) '((4 5) (6 7)) '(0 1)))
- (G-order h)
- (check h)
- (code:comment "")
- (code:comment "Checks on groups without odd elements.")
- (check G-identity)
- (check (G '(0 1 2)))
- (check (G '((0 1 2 3) (2 3 4 5))))
- (check (G '(0 1 2) '(1 2 3)))]
+ (code:comment " ")
+ (define expected (make-parameter #f))
+ (code:comment " ")
+ (and
+   (code:comment " ")
+   (code:comment "Tests on symmetric groups of order greater than 1")
+   (code:comment " ")
+   (parameterize ((expected "as many odd elements as even ones"))
+     (for/and ((n (in-range 2 6)))
+       (check (G-symmetric n))))
+   (code:comment " ")
+   (code:comment "Two checks on non-symmetric groups:")
+   (code:comment " ")
+   (parameterize ((expected "as many odd elements as even ones"))
+     (and
+       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
+       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(0 1)))))
+   (code:comment "")
+   (code:comment "Checks on groups without odd elements.")
+   (code:comment " ")
+   (parameterize ((expected "all even"))
+     (and
+       (check G-identity)
+       (check (G '(0 1 2)))
+       (check (G '((0 1 2 3) (2 3 4 5))))
+       (check (G '(0 1 2) '(1 2 3))))))]
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
  Defines a sorting order among @nber["R" "Rs"]. The sorting keys are:@(lb)
