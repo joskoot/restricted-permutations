@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -1838,7 +1838,8 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 
 @deftogether[
  (@defproc[#:kind "equivalence relation" (P-equal? (p0 P?) (p1 P?)) boolean?]
-   @defproc[#:kind "equivalence relation" (G-equal? (g0 G?) (g1 G?)) boolean?])]{Example:}
+   @defproc[#:kind "equivalence relation" (G-equal? (g0 G?) (g1 G?)) boolean?])]{
+ Not disturbed by @nbsl["Cleanup"]{cleanup}. Examples:}
 
 @Interaction[
  (define p (P '(0 1 2)))
