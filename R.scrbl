@@ -1417,11 +1417,11 @@ Example:
  Examples:}
 
 @color-example[green (G-abelean? (G '(0 1 2) '(3 4)))]
-because: @color-example[ green (P-commute? (P '(0 1 2) '(3 4)) (P '(3 4) '(0 1 2)))]
+because: @color-example[ green (P-commute? (P '(0 1 2)) (P '(3 4)))]
 
 But: 
 @color-example[red (G-abelean? (G '(0 1 2) '(0 1)))]
-because: @color-example[red (P-commute? (P '(0 1 2) '(0 1)) (P '(0 1) '(0 1 2)))]
+because: @color-example[red (P-commute? (P '(0 1 2)) '(0 1))]
 In particular:@(lb)
 @example[(P '(0 1 2) '(0 1))]
 @example[(P '(0 1) '(0 1 2))]
@@ -2603,4 +2603,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
