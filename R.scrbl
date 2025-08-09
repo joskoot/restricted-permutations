@@ -2040,7 +2040,7 @@ Subgroups:
  (print-subgroups variant)]
 
 For example, @tt["{E Sv}"], @tt["{E Sh}"], @tt["{E Sd0}"] and @tt["{E Sd1}"]@(lb)
-are not invariant under transformation R:
+are not invariant under transformation @tt{R}:
 
 @Interaction*[
  (for ((s (in-list (list Sv Sd0))))
@@ -2051,7 +2051,7 @@ that R2 commutes with all symmetries of the square:
 
 @Interaction*[
  (for/and ((p (in-list C4v-list))) (P-commute? p R2))]
-None of the symmetries other than E and R2@(lb)
+None of the symmetries other than @tt{E} and @tt{R2}@(lb)
 commute with all symmetries of the square:
 
 @Interaction*[
