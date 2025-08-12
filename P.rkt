@@ -67,12 +67,10 @@
 
 (define (P-identity? x) (eq? x P-identity))
 
-(define (C->P . cs)
-  (for ((c (in-list cs)))
-    (unless (C? c)
-      (error 'C->P "all arguments must be Cs, but given: ~s" c)))
-  (let ((h (C->H cs)))
-    (hash-ref! P-hash h (λ () (P-constr h)))))
+(define (C->P c)
+  (unless (C? c) (raise-argument-error 'C->P "C?" c))
+  (define h (C->H c))
+  (hash-ref! P-hash h (λ () (P-constr h))))
 
 (define (P . p/cs)
   (let ((ps (map P/C->P p/cs)))
@@ -180,7 +178,8 @@
                                           ; because p0 and p1 are not P-equal.
                                           (let ((e0 (p0 k)) (e1 (p1 k)))
                                             (or (< e0 e1)
-                                              (and (= e0 e1) (loop (add1 k))))))))))))))))))))))))))
+                                              (and (= e0 e1)
+                                                (loop (add1 k))))))))))))))))))))))))))
 
 (define (P-equal? p0 p1)
   (or (eq? p0 p1)
