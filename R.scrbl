@@ -766,12 +766,15 @@ but the result is not a P. Example:
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
- A P can be given a @nbr[name]. This does not alter the identity of the P.@(lb)
+ @nbr[P-name] returning @nbr[#f] indicates that @nbr[p] has no name. A P can be given a name.
+ @nbr[(set-P-name! p name)] assigns a name or mutates it without creating a new P.
  @nbr[(set-P-name! p #f)] removes the name from @nbr[p] if it had a name.
  @Interaction[
  (define a (P '(1 2 3)))
  (define b (P '(1 2 3)))
- (set-P-name! a 'a-name)
+ (P-name b)
+ (code:line (set-P-name! a 'a-name) (code:comment #,(black
+      (list "Also affects " @nbr[b]" because "@nbr[(eq? a b)]" → "@nbr[#t]"."))))
  (P-name b)
  (eq? a b)]}
 
