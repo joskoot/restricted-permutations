@@ -822,6 +822,14 @@ Examples:
  (P->C (P '(0 1) '(1 2) '(2 3)))
  (P->C (P '(2 3) '(1 2) '(0 1)))]
 
+Because a P memorizes its normalized C-repesentation,
+we have (if no @nbsl["Cleanup" "cleanup"] interferes):
+
+@Interaction[
+ (eq?
+   (P->C (P '(2 3 0 1)))
+   (P->C (P '(0 1) '(1 2) '(2 3))))]
+
 @defproc[(P-order (p (or/c P? C?))) N+?]{
  For every argument @nbr[p] there is a smallest
  @nbsl["N"]{positive natural number} @nbr[k]
