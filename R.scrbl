@@ -616,7 +616,7 @@ with @racketlink[prop:procedure "procedure property"].
 Nevertheless, Ps representing the same @nber["R" "R"] are the same in the sense of @nbr[eq?].
 @red{Warning}: this may not remain true after @nbsl["Cleanup" "cleanup"].
 A P contains its @nbsl["H" "H-representation"].
-It memorizes its normalized @nbsl["C" "C-representation"],
+It memorizes its  @nber["normalized-C" "normalized C-representation"],
 its @nbrl[P-even? #:style #f]{parity},
 its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
