@@ -732,31 +732,36 @@ When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
 but the result is not a P. Example:
 
-@Interaction[
+@Interaction*[
  (define a (P '(0 1 2)))
  (define b (P '(1 2 3)))
  (define c (P '(2 3 4)))
  (define  abc (compose a b c))
  (define Pabc (P       a b c))
- (for/and ((k (in-range 10))) (= (abc k) (Pabc k)))
- (code:comment "But:")
- (code:line (P? abc) (code:comment #,(red "alas:")))
- (code:comment "whereas:")
- (code:line (P? Pabc) (code:comment #,(green "true:")))
- (code:comment #,(list
-                   "Racket's procedure " (nbr compose) " does not return " (nbr equal?) " results"))
- (code:comment #,(list "when called with two or more " (nbr eq?) " arguments."))
- (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))
- (code:comment #,(list "Procedure " (nbr P) " does, even " (nbr eq?) ","))
- (code:comment #,(list "when the result represents the same " (elemref "R" "R")))
- (code:comment #,(list "(and no disturbing " (nbsl "Cleanup" "cleanup") " interferes)"))
+ (for/and ((k (in-range 10))) (= (abc k) (Pabc k)))]
+But
+@Interaction*[
+ (code:line (P? abc) (code:comment #,(red "alas:")))]
+whereas:
+@Interaction*[
+ (code:line (P? Pabc) (code:comment #,(green "true:")))]
+Racket's procedure @(nbr compose) does not return @(nbr equal?) results@(lb)
+when called with two or more @(nbr eq?) arguments.
+@Interaction*[
+ (code:line (equal? (compose a b c) (compose a b c)) (code:comment #,(red "alas:")))]
+Procedure @(nbr P) does, even @(nbr eq?),
+when the result represents the same @(elemref "R" "R")@(lb)
+(and no disturbing @(nbsl "Cleanup" "cleanup") interferes)
+@Interaction*[
  (eq? (code:comment #,(green "true"))
    (P (P a b) c)
-   (P a (P b c)))
- (code:comment "also:")
+   (P a (P b c)))]
+Also:
+@Interaction*[
  (eq? (code:comment #,(green "true"))
    (P-inverse (P a b c))
    (P (P-inverse c) (P-inverse b) (P-inverse a)))]
+@(reset-Interaction*)
 
 @note{Notice that (abc)@(expt-1) = c@(expt-1)b@(expt-1)a@(expt-1),
  writing x@(expt-1) for the inverse of x.}
