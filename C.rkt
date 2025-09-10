@@ -20,6 +20,7 @@
 (define (C-identity? c) (and (C? c) (null? (C-normalize c))))
 
 (define (H->C h)
+ (unless (pseudo-H? h) (raise-argument-error 'H->C "pseudo-H?" h))
  (define keys (sort (hash-keys h) <))
  (if (null? keys) '()
   (for/fold
