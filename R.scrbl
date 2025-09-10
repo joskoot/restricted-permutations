@@ -1658,7 +1658,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 
 Examples:
 
-@Interaction[
+@Interaction*[
  (define g (G '(0 1) '(0 2)))
  (G-class P-identity g)
  (G-class (P '(0 1)) g)
@@ -1667,24 +1667,32 @@ Examples:
  (G-class (P '(0 3)) g)]
 
 @defproc[(G-classes (g G?)) (listof (Setof P?))]{
- Returns a list of all conjugation classes of @nbr[g]. Example:
-
+ Returns a list of all conjugation classes of @nbr[g].
+ All elements of a conjugation class
+ have the same normalized cycle structure:
+ 
  @Interaction*[
  (define (print-G-classes g)
    (for ((CLASS (in-list (G-classes g))) (n (in-naturals 1)))
      (printf "Class ~s: " n)
      (for ((p (in-set CLASS))) (printf "~s " (P->C p)))
      (newline)))
- (code:comment "All elements of a conjugation class")
- (code:comment "have the same normalized cycle structure:")
- (print-G-classes (G '(0 1) '(0 2)))
- (code:comment "There may be more than one class with.")
- (code:comment "the same normalized cycle structure.")
- (code:comment "Below the two classes:")
- (code:comment "#<seteq: (P '((0 1) (2 3))) (P '((0 3) (1 2)))> and")
- (code:comment "#<seteq: (P '((0 2) (1 3)))>")
- (print-G-classes (G '(1 3) '(0 1 2 3)))
+ (print-G-classes (G '(0 1) '(0 2)))]
+ 
+ There may be more than one class with
+ the same normalized cycle structure.
+ For example:
+
+ @Interaction*[
+ (code:comment "Classes 3 and 4 have elements of the same cycle structure:")
+ (print-G-classes (G '(1 3) '(0 1 2 3)))]
+
+ and
+ 
+ @Interaction*[
+ (code:comment "Classes 1, 2 and 3 have the same structure:")
  (print-G-classes (G '((0 1 2 3) (4 5 6 7)) '((0 4 2 6) (1 7 3 5))))]
+ 
  In a symmetric group two elements belong to the same conjugation
  class if and only if they have the same normalized cycle structure:
 
