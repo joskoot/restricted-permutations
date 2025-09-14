@@ -766,8 +766,7 @@ Also:
 @note{Notice that (abc)@(expt-1) = c@(expt-1)b@(expt-1)a@(expt-1),
  writing x@(expt-1) for the inverse of x.}
 
-@defproc[#:kind "predicate" (P? (x any/c)) boolean?]{
- Satisfying predicate @nbr[P?] implies satisfying contract @nbr[(-> N? N?)].}
+@defproc[#:kind "predicate" (P? (x any/c)) boolean?]
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
