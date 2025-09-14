@@ -769,7 +769,8 @@ Also:
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
-               @defproc[(set-P-name! (p P?) (name any/c)) void?])]{
+               @defproc[(set-P-name! (p P?) (name (not/c #f))) void?]
+               @defproc[#:link-target? #f (set-P-name! (p P?) (remove-name #f)) void?])]{
  @nbr[P-name] returning @nbr[#f] indicates that @nbr[p] has no name. A P can be given a name.
  @nbr[(set-P-name! p name)] assigns a name or mutates it without creating a new P.
  @nbr[(set-P-name! p #f)] removes the name from @nbr[p] if it had a name.
