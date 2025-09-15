@@ -217,9 +217,10 @@ Let's call the smallest m∈@bold{N} for which this holds,
 @nb{Let @bold{R} be the set of all Rs.}
 @nb{@elemtag["composition"]Define the composition:}
 
-@inset{@nb{p,q∈@bold{R} → pq∈@bold{R}}}
+@inset{@nb{p,q∈@bold{R} → p∘q∈@bold{R}}}
 
-as usual for functions p and q with compatible domain of p and co-domain of q:
+as usual for functions p and q with compatible domain of p and co-domain of q;@(lb)
+we write p∘q as pq, omitting the composition operator:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
 
