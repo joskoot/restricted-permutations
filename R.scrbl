@@ -1096,7 +1096,7 @@ has as many odd elements as even ones.
  @Interaction[
  (define S4 (G-symmetric '(3 5 7 9)))
  (define S4-list (G->list S4))
- (define shuffled-S4-list S4-list)
+ (define shuffled-S4-list (shuffle S4-list))
  (define sorted-S4-list (sort shuffled-S4-list P<?))
  (equal? S4-list sorted-S4-list)
  sorted-S4-list]}
