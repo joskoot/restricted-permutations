@@ -596,10 +596,10 @@ Examples:
    (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @Interaction[
- (define in-g (in-G (G-symmetric 4)))
+ (define in-g (in-list (map P->C (G->list (G-symmetric 4)))))
  (define (conjugates? x y) (for/or ((z in-g)) (eq? (P x z) (P z y))))
  (for*/and ((x in-g) (y in-g) #:when (conjugates? x y))
-   (eq? (P-even? x) (P-even? y)))]
+   (eq? (C-even? x) (C-even? y)))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
  Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -1354,7 +1354,7 @@ Examples:
  (G-print-table C3v)]
 
 See section @nbsl["C3v"]{Group C@↓{3v}}
-for a more elaborated discussion of this group.
+for a more elaborate discussion of this group.
 
 @defproc[(G-table (g G?)) (vector-immutableof (vector-immutableof P?))]{
  Returns the @nber["composition" "composition"]
