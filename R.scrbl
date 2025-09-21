@@ -656,17 +656,16 @@ See parameter @nbr[P-print-by-name] for the way a P is written, printed or displ
  (P '(0 1) '(2 3 4))
  (P '(3 0 1 2))]
 
+Let's check that two Ps representing the same @nber["R" "R"]
+are the same in the sense of @nbr[eq?]
+(provided no disturbing @nbsl["Cleanup" "cleanup"] is made)
+
 @Interaction[
  (define-values ( a  b  c) (values '(0 1) '(1 2) '(2 3)))
  (define-values (pa pb pc) (values  (P a)  (P b)  (P c)))
  (define x (P  a  b  c))
  (define y (P pa pb pc))
- y
  (eq? x y)]
-
-Let's do a check that two Ps representing the same @nber["R" "R"]
-are the same in the sense of @nbr[eq?]
-(provided no disturbing @nbsl["Cleanup" "cleanup"] is made)
 
 @Interaction[
  (define a (P '(3 4) '(4 5)))
