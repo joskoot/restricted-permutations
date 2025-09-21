@@ -220,7 +220,7 @@ Let's call the smallest m∈@bold{N} for which this holds,
 @inset{@nb{p,q∈@bold{R} → p∘q∈@bold{R}}}
 
 as usual for functions p and q with compatible domain of p and co-domain of q;@(lb)
-we write ‘p∘q’ as ‘pq’, omitting the composition operator ‘∘’:
+we omit the composition operator ∘, writing p∘q as pq:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
 
