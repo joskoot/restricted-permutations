@@ -16,7 +16,10 @@
       (set-P-C-field! p c)           ; (P->C: undefined; cannot reference before def ...)
       c)))
 
-(define (P-apply p k) (H-apply (P-H-field p) k))
+(define (P-apply p k)
+  (unless (N? k) (raise-argument-error 'P "N?" k))
+  (H-apply (P-H-field p) k))
+
 (define P-hash (make-hash))
 (define P-compose-hash (make-hash))
 (define P<?-hash (make-hash))
@@ -73,11 +76,10 @@
   (hash-ref! P-hash h (λ () (P-constr h))))
 
 (define (P . p/cs)
-  (let ((ps (map P/C->P p/cs)))
-    (hash-ref! P-compose-hash ps
-      (λ ()
-        (let ((h (apply H-compose (map P-H-field ps))))
-          (hash-ref! P-hash h (λ () (P-constr h))))))))
+  (define ps (map P/C->P p/cs))
+  (define h (apply H-compose (map P-H-field ps)))
+  (hash-ref! P-compose-hash ps
+    (λ () (hash-ref! P-hash h (λ () (P-constr h))))))
 
 (define (P-commute? p q) (eq? (P p q) (P q p)))
 
