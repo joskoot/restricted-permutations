@@ -318,7 +318,7 @@ These form a finite subgroup of @bold{R} isomorphic to the
  The latter is the cardinality of a group, but usually it is called its @italic{order}.
  The word `order' also is used for the consecution of elements in a list or vector.
  In most cases it is clear with which meaning the word is used.
- Where appropriate, the present document uses a phrase that avoids confusion.}
+ Where appropriate, a phrase is used that avoids confusion.}
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of pq.@(lb)
@@ -1088,7 +1088,7 @@ has as many odd elements as even ones.
   even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].@(lb)
   2: the order of the @nber["R" "Rs"].@(lb)
   3: the number of non-fixed points.@(lb)
-  4: the least non-fixed point.@(lb)
+  4: the smallest non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
   for which the two @nber["R" "Rs"] yield different values.}
  @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
