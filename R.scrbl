@@ -726,13 +726,13 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
 @Interaction[
  (define p (P '((1 2) (3 4))))
  (define q (P '( 1 2   3 4)))
- (define pq (P p q))
- (define qp (P q p))
- (define-syntax-rule (print-restrictions x ...)
+ (define-syntax-rule (print-restrictions (p q) ...)
    (begin
-     (printf "~s = ~s with restriction ~s~n" 'x x (P-restriction x))
+     (let ((pq (P p q)))
+       (printf "(~s ~s) = ~s with restriction ~s~n"
+         p q pq (P-restriction pq)))
      ...))
- (print-restrictions pq qp)]
+ (print-restrictions (p q) (q p))]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
