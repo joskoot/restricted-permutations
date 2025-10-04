@@ -729,7 +729,7 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
  (define-syntax-rule (print-restrictions (p q) ...)
    (begin
      (let ((pq (P p q)))
-       (printf "(~s ~s) = ~s with restriction ~s~n"
+       (printf "(P ~s ~s) = ~s with restriction ~s~n"
          p q pq (P-restriction pq)))
      ...))
  (print-restrictions (p q) (q p))]
