@@ -1431,12 +1431,10 @@ Example:
 
 @deftogether[(@defproc[#:kind "predicate" (G-abelean? (g G?)) boolean?]
                @defproc[#:kind "predicate" (G-commutative? (g G?)) boolean?])]{
- @nbr[G-commutative?] is a synonym of @nbr[G-abelean?] in the sense of @nbr[free-identifier=?].
+ @nbr[G-commutative?] is a synonym of @nbr[G-abelean?] in the sense of @nbr[free-identifier=?].}
 
- @note{By definition, a group is abelean if and only if all its elements commute with each other.
-  @(lb)Sufficient is that all elements of a @nbrl[G-base]{base} commute with each other.}
-
- Examples:}
+By definition, a group is abelean if and only if all its elements commute with each other.  @(lb)
+Sufficient is that all elements of a @nbrl[G-base]{base} commute with each other. Examples:
 
 @color-example[green (G-abelean? (G '(0 1 2) '(3 4)))]
 because: @color-example[ green (P-commute? (P '(0 1 2)) (P '(3 4)))]
