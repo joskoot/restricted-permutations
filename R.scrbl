@@ -214,13 +214,10 @@ with finite number of non-fixed points, id est, with a restriction as follows:
 Let's call the smallest m∈@bold{N} for which this holds,
 @nb{@italic{the} restriction} @nb{of p.}
 @nb{`R' is shorthand for `restricted permutation'.}
-@nb{Let @bold{R} be the set of all Rs.}
-@nb{@elemtag["composition"]Define the composition:}
-
-@inset{@nb{p,q∈@bold{R} → p∘q∈@bold{R}}}
-
-as usual for functions p and q with compatible domain of p and co-domain of q;@(lb)
-we omit the composition operator ∘, writing p∘q as pq:
+@nb{Let @bold{R} be the set of all Rs.}@(lb)
+@elemtag["composition"]
+Define the composition pq of two Rs p and q as usual for functions@(lb)
+with compatible domain and co-domain:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
 
