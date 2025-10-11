@@ -2388,8 +2388,8 @@ of which 30 contain rotations only.
  (code:comment #,Q-comment)
  (define Q (G i j))
  (G-order Q)
- (define Q-classes (G-classes Q))
  (for ((p (in-G Q))) (printf "order = ~s, p = ~s~n" (P-order p) p))
+ (define Q-classes (G-classes Q))
  ((fmt 'cur "u#(w/)") Q-classes)]
 
 In the quaternion group, make the following identifications:
