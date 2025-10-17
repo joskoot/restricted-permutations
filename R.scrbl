@@ -779,7 +779,7 @@ Also:
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
                @defproc[(P-set-name! (p P?) (name (not/c #f))) void?]
-               @defproc[#:link-target? #f (P-remove-name! (p P?)) void?])]{
+               @defproc[(P-remove-name! (p P?)) void?])]{
  @nbr[P-name] returning @nbr[#f] indicates that @nbr[p] has no name. A P can be given a name.
  @nbr[(P-set-name! p name)] assigns a name or mutates it without creating a new P.
  @nbr[(P-remove-name! p)] removes the name from @nbr[p] if it had a name.
@@ -790,7 +790,9 @@ Also:
  (code:line (P-set-name! a 'a-name) (code:comment #,(black
       (list "Also affects " @nbr[b]" because "@nbr[(eq? a b)]" → "@nbr[#t]"."))))
  (P-name b)
- (eq? a b)]}
+ (eq? a b)
+ (P-remove-name! b)
+ (P-name a)]}
 
 @defparam*[P-print-by-name yes/no any/c boolean? #:value #f]{
  If this parameter is true, a @italic{@tt{p}} that has a name

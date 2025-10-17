@@ -8,7 +8,7 @@
 (require "H.rkt" "C.rkt" "N.rkt")
 (provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
-(provide P-fixed-point? P->H H->P P-commute? P-name set-P-name! P-print-by-name)
+(provide P-fixed-point? P->H H->P P-commute? P-name P-set-name! P-remove-name! P-print-by-name)
 
 (define (P->C p)                  ; This definition comes before that of P-write because
   (or (P-C-field p)                ; the debugger can be caught in an infinite sequence of
@@ -56,6 +56,15 @@
   #:property prop:procedure P-apply
   #:constructor-name P-constr
   #:omit-define-syntaxes)
+
+(define (P-set-name! p name)
+  (unless (P? p) (raise-argument-error 'P-set-name "P?" p))
+  (unless name (raise-argument-error 'P-set-name "(not/c #f)" name))
+  (set-P-name! p name))
+
+(define (P-remove-name! p)
+  (unless (P? p) (raise-argument-error 'P-remove-name "P?" p))
+  (set-P-name! p #f))
 
 (define P->H (procedure-rename P-H-field 'P->H))
 
