@@ -626,7 +626,7 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
-A P can be given a @nbrl[set-P-name!]{name}.
+A P can be given a @nbrl[P-set-name!]{name}.
 See parameter @nbr[P-print-by-name] for the way a P is written, printed or displayed.
 
 @defproc[(P (p (or/c P? C?)) ...) P?]{
@@ -723,8 +723,8 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
 @Interaction[
  (define p (P '((1 2) (3 4))))
  (define q (P '( 1 2   3 4)))
- (set-P-name! p 'p)
- (set-P-name! q 'q)
+ (P-set-name! p 'p)
+ (P-set-name! q 'q)
  (P-print-by-name #t)
  (code:comment " ")
  (define (restriction-of-compositions-of p q)
@@ -778,16 +778,16 @@ Also:
 @defproc[#:kind "predicate" (P? (x any/c)) boolean?]
 
 @deftogether[(@defproc[(P-name (p P?)) any/c]
-               @defproc[(set-P-name! (p P?) (name (not/c #f))) void?]
-               @defproc[#:link-target? #f (set-P-name! (p P?) (remove-name #f)) void?])]{
+               @defproc[(P-set-name! (p P?) (name (not/c #f))) void?]
+               @defproc[#:link-target? #f (P-remove-name! (p P?)) void?])]{
  @nbr[P-name] returning @nbr[#f] indicates that @nbr[p] has no name. A P can be given a name.
- @nbr[(set-P-name! p name)] assigns a name or mutates it without creating a new P.
- @nbr[(set-P-name! p #f)] removes the name from @nbr[p] if it had a name.
+ @nbr[(P-set-name! p name)] assigns a name or mutates it without creating a new P.
+ @nbr[(P-remove-name! p)] removes the name from @nbr[p] if it had a name.
  @Interaction[
  (define a (P '(1 2 3)))
  (define b (P '(1 2 3)))
  (P-name b)
- (code:line (set-P-name! a 'a-name) (code:comment #,(black
+ (code:line (P-set-name! a 'a-name) (code:comment #,(black
       (list "Also affects " @nbr[b]" because "@nbr[(eq? a b)]" → "@nbr[#t]"."))))
  (P-name b)
  (eq? a b)]}
@@ -802,10 +802,10 @@ Also:
  Some procedures ignore this parameter and act if it were false.
 
  @Interaction[
- (set-P-name! P-identity 'E)
+ (P-set-name! P-identity 'E)
  (code:line (P-print-by-name #f) P-identity)
  (code:line (P-print-by-name #t) P-identity)
- (set-P-name! P-identity #f)
+ (P-remove-name! P-identity)
  (code:line (P-print-by-name #t) P-identity)]}
 
 @defidform[#:kind "constant" P-identity]{
@@ -2006,7 +2006,7 @@ with a vertical plane of reflection (Sv) assuming the square to be in a horizont
  (define Sd1 (P R2 Sd0))
  (define C4v-list (list E R R2 R3 Sv Sd0 Sh Sd1))
  (define names        '(E R R2 R3 Sv Sd0 Sh Sd1))
- (for-each set-P-name! C4v-list names)
+ (for-each P-set-name! C4v-list names)
  (P-print-by-name #t)]
 
 The symmetries in  @nbsl["C" "C-representation"]:
@@ -2404,7 +2404,7 @@ In the quaternion group, make the following identifications:
  (define  -k  (P |-1| | k|))
  (define Ps    (list | 1| |-1| | i| |-i| | j|  -j  | k|  -k ))
  (define names (list " 1" "-1" " i" "-i" " j" "-j" " k" "-k"))
- (for ((p (in-list Ps)) (name (in-list names))) (set-P-name! p name))]
+ (for ((p (in-list Ps)) (name (in-list names))) (P-set-name! p name))]
 
 We have
 @tt["ii=jj=kk=-1"],
