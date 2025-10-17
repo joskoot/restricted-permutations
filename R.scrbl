@@ -727,7 +727,7 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
  (set-P-name! q 'q)
  (P-print-by-name #t)
  (code:comment " ")
- (define (restriction-of-compositions p q)
+ (define (restriction-of-compositions-of p q)
    (define (restriction-of-composition p q)
      (define pq (P p q))
      (printf "~s~s = ~s with restriction ~s~n"
@@ -735,7 +735,7 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
    (restriction-of-composition p q)
    (restriction-of-composition q p))
  (code:comment " ")
- (restriction-of-compositions p q)]
+ (restriction-of-compositions-of p q)]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
@@ -845,8 +845,7 @@ we have (if no @nbsl["Cleanup" "cleanup"] interferes):
    (P->C (P '(0 1) '(1 2) '(2 3))))]
 
 @defproc[(P-order (p (or/c P? C?))) N+?]{
- For every argument @nbr[p] there is a smallest
- @nbsl["N"]{positive natural number} @nbr[k]
+ For every argument @nbr[p] there is a smallest positive natural number @nbr[k]
  such that @nb{@nbr[(P-expt p k)] → @nbr[P-identity].}
  @nbr[k] is called the order of the @nber["R" "R"] represented by @nbr[p].@(lb)
  The @nber["id" "identity"] of @nber["R"]{@bold{R}}
