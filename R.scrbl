@@ -485,7 +485,8 @@ For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
  (C-normalize '((() () ())))
  (C-normalize '(((99999999))))
  (C-normalize '((1) (2) (3)))
- (C-normalize '((0 1) (0 1)))]
+ (C-normalize '((0 1) (0 1)))
+ (C-normalize '((4 5 6) (1 2 3) (7 8)))]
 
 The Cs shown below represent the same @nber["R" "R"].
 Therefore procedure @nbr[C-normalize] returns the same normalized C for them
