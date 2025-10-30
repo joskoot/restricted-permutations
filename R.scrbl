@@ -1087,7 +1087,9 @@ has as many odd elements as even ones.
        (check (G '(0 1 2) '(1 2 3))))))]
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
- Defines a sorting order among @nber["R" "Rs"]. The sorting keys are:@(lb)
+ Defines a sorting order among @nber["R" "Rs"].
+ @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].@(lb)
+ The sorting keys are:
  @inset{
   1: the @nbrl[P-even? #:style #f "parity"],
   even @nber["R" "Rs"] preceding odd @nber["R" "Rs"].@(lb)
@@ -1095,21 +1097,13 @@ has as many odd elements as even ones.
   3: the number of non-fixed points.@(lb)
   4: the smallest non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
-  for which the two @nber["R" "Rs"] yield different values.}
- @nbr[P<?] remains comparing correctly after @nbsl["Cleanup" "cleanup"].
- @Interaction[
- (define S4 (G-symmetric '(3 5 7 9)))
- (define S4-list (G->list S4))
- (define shuffled-S4-list (shuffle S4-list))
- (define sorted-S4-list (sort shuffled-S4-list P<?))
- (equal? S4-list sorted-S4-list)
- sorted-S4-list]}
+  for which the two @nber["R" "Rs"] yield different values.}}
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
  Like @nbr[(sort (map P ps) P<?)], id est,
  @(nbsl "C" "Cs") are converted to Ps before sorting.
  Procedure @nbr[P-sort] returns a sorted list of Ps using @nbr[P<?].
- It continues sorting correctly after @nbsl["Cleanup" "cleanup"].} Example:
+ It continues sorting correctly after @nbsl["Cleanup" "cleanup"]. Example:}
 
 @(define comment1
    (list
