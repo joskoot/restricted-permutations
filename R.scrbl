@@ -2570,15 +2570,14 @@ to permutations of the set of C@↓{3v}
 representing them by the @nber["C3v-table" "labels shown above"].
 
 @Interaction*[
- (for ((p in-C3v) (row (in-list rows)))
-   ((fmt 'cur "'   row of 'L7WN' corresponds to 'W/")
-    (P->C p) (P->C row)))
- (code:comment "")
- (for ((p in-C3v) (column (in-list columns)))
-   ((fmt 'cur "'column of 'L7WN' corresponds to 'W/")
-    (P->C p) (P->C column)))]
+ (define (print-correspondence name rows/columns)
+   (for ((p in-C3v) (row/column (in-list rows/columns)))
+     ((fmt 'cur "R6DN' of 'L7WN' corresponds to 'W/")
+      name (P->C p) (P->C row/column))))
+ (print-correspondence "row" rows)
+ (print-correspondence "column" columns)]
 
-Let's check that we have isomorphic groups here.
+Let's check that we have isomorphic groups here:
 
 @Interaction*[
  (define row-group    (list->G rows))
