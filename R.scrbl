@@ -366,17 +366,12 @@ because it does not satisfy the above @nber["R" "restriction"].
 
 @section[#:tag "N"]{Natural/integer numbers}
 
-The
-@nbsl[
- "numbers"
- #:doc '(lib "scribblings/guide/guide.scrbl")
- "exact integer numbers of Racket"]
+The exact integer numbers of Racket
 represent their abstract mathematical counter@(-?)parts exactly.
 Although the representation is not complete because of memory limits,
 no distinction will be made between abstract integer numbers and
 the exact integer numbers of Racket by which they are represented nor between
-@racketlink[exact-nonnegative-integer? "exact non-negative integers of Racket"]
-and the corresponding abstract natural numbers.
+exact non-negative integers of Racket and the corresponding abstract natural numbers.
 
 @inset{@Tabular[
  ((@bold{N}      "is the set of all natural numbers, 0 included.")
