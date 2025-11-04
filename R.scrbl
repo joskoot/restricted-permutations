@@ -2051,7 +2051,7 @@ Subgroups:
  (define-values (invariant variant)
    (partition (λ (x) (G-invariant-subg? x C4v)) subgs))
  (code:comment "")
- (define-syntax-rule (print-subgroups subgs)
+ (define (print-subgroups subgs)
    ((fmt "u#(xd/)" 'cur)
     (for/list ((sg (in-list subgs)))
       (sort (G->list sg) symbol<? #:key P-name))))
