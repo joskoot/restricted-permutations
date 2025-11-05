@@ -2456,8 +2456,7 @@ but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
      ((fmt "u#(dx)/" 'cur)
       (sort (G->list subg) string<? #:key P-name))))
  (not (G-abelean? Q))
- (for/and ((subg (in-list Q-subgs)))
-   (G-invariant-subg? subg Q))]
+ (andmap (curryr G-invariant-subg? Q) Q-subgs)]
 @(reset-Interaction*)
 
 @subsection[#:tag "C3v"]{Group C@↓{3v}}
