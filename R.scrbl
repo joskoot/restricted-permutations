@@ -639,30 +639,13 @@ See parameter @nbr[P-print-by-name] for the way a P is written, printed or displ
  (define p (P '(2 3) '(4 5 6)))
  (for ((k (in-range 10))) (printf "p(~s) = ~s~n" k (p k)))]
 
-@example-table[
- (P)
- (P '())
- (P '(0 1) '(0 1))
- (P '(((0 2) (0 1))))
- (P '(0 1))
- (P '(1 0))
- (P '(0 1) '(2 3 4))
- (P '(3 0 1 2))]
-
 Let's check that two Ps representing the same @nber["R" "R"]
 are the same in the sense of @nbr[eq?]
 (provided no disturbing @nbsl["Cleanup" "cleanup"] is made)
 
 @Interaction[
- (define-values ( a  b  c) (values '(0 1) '(1 2) '(2 3)))
- (define-values (pa pb pc) (values  (P a)  (P b)  (P c)))
- (define x (P  a  b  c))
- (define y (P pa pb pc))
- (eq? x y)]
-
-@Interaction[
- (define a (P '(3 4) '(4 5)))
- (define b (P '(4 5 3)))
+ (define a (P '(0 1 2 3)))
+ (define b (P '(0 1) '(1 2) '(2 3)))
  (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
  (define m (max (P-restriction a) (P-restriction b)))
  (code:line (for/and ((k (in-range m))) (= (a k) (b k))) (code:comment #,(green "true")))
