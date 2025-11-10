@@ -1998,7 +1998,7 @@ Check that @tt{C4v-list} contains all symmetries as generated from base (R Sv) a
 
 @Interaction*[
  (define C4v (G R Sv))
- (equal? (P-sort C4v-list) (G->list C4v))]
+ (andmap eq? (P-sort C4v-list) (G->list C4v))]
 
 Table of compositions:
 
