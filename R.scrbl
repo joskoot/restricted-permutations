@@ -201,7 +201,7 @@ such as to mean a bijection of a set onto the same set.
  as though it were the object it represents,
  @nb{but this} is avoided in this document.
  However, no formal distinction will be made between
- @nbsl["N" "exact integer numbers of Racket"]
+ exact integer numbers of Racket
  and the abstract integer numbers they represent.}
 
 @elemtag["R" ""]
@@ -780,7 +780,7 @@ Also:
  it is written, printed or displayed in @constr-style as:
  @nbr[(P '#,(italic (tt "c")))]
  where @italic{@tt{c}} is the normalized @nbsl["C" "C-representation"].@(lb)
- Some procedures ignore this parameter and act if it were false.
+ Some procedures ignore this parameter and act as if it were false.
 
  @Interaction[
  (P-set-name! P-identity 'E)
