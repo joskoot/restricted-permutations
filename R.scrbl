@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -507,7 +507,7 @@ The same holds for the following examples:
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
  Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
 
-@defproc[(C-transpositions (c C?)) C?]{
+@defproc[(C-transpositions (c C?)) (and/c C? (listof (list/c N? N?)))]{
  Returns a list of normalized transpositions
  representing the same @nber["R" "R"] as the argument.@(lb)
  A transposition is a single C of two elements.
@@ -1176,21 +1176,7 @@ Examples:
  The @nber["R" "restriction"] implies that
  every P has an infinite number of fixed points
  including every @nbsl["N"]{natural number} equal to or greater than the
- @nber["R" "restriction"].
- One may want the fixed points less than some positive natural number n,
- especially where n is the maximal @nber["R" "restriction"] of the @nber["R" "Rs"]
- of some @nbsl["G"]{finite subgroup of @bold{R}}.
- This can be done as follows:}
-
-@Interaction[
- (define (fixed-points p n)
-   (for/list ((k (in-range n)) #:when (P-fixed-point? p k)) k))
- (fixed-points (P '(0 1) '(5 6 7)) 10)
- (for ((n (in-range 1 4)))
-   (printf "~n ~nS~s~n" n)
-   (for ((p (in-G (G-symmetric n))))
-     ((fmt "L12W N' has fixed points ' L7W N' and every k≥' W/" 'cur)
-      p (fixed-points p n) n)))]
+ @nber["R" "restriction"].}
 
 @defproc[(P->H (p P?)) H?]{
  You probably never need this procedure. @red{Advice: avoid it}.}
