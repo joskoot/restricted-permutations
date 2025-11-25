@@ -583,16 +583,17 @@ Examples:
    (define c (P->C p))
    (define c-inverse (P->C (P-inverse p)))
    (eq? (C-even? c) (C-even? c-inverse)))]
+
 @Interaction[
  (for/and ((n (in-range 5)))
    (define Sn (G-symmetric n))
    (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @Interaction[
- (define in-g (in-list (map P->C (G->list (G-symmetric 4)))))
- (define (conjugates? x y) (for/or ((z in-g)) (eq? (P x z) (P z y))))
- (for*/and ((x in-g) (y in-g) #:when (conjugates? x y))
-   (eq? (C-even? x) (C-even? y)))]
+ (define in-S4 (in-G (G-symmetric 4)))
+ (define (conjugates? x y) (for/or ((z in-S4)) (eq? (P x z) (P z y))))
+ (for*/and ((x in-S4) (y in-S4) #:when (conjugates? x y))
+   (eq? (C-even? (P->C x)) (C-even? (P->C y))))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
  Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
@@ -1012,9 +1013,7 @@ Examples:
    (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2))))]
 
 @Interaction[
- (define S3-list (G->list (G-symmetric 3)))
- (filter P-even? S3-list)
- (filter (compose not P-even?) S3-list)]
+ (partition P-even? (G->list (G-symmetric 3)))]
 
 Let's check that a @nbsl["G" "G"] with at least one odd element
 has as many odd elements as even ones.
@@ -2591,4 +2590,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
