@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local  #f)
+@(define-for-syntax local #f)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -449,9 +449,9 @@ A C represents an @nber["R" "R"] and is one of the following:
   is the least common multiple of the lengths of the single Cs.})]
 
 Every @nber["R" "R"] can be represented by a C (in fact by many of them and ignoring memory limits).
-For every C there is exactly one (in the sense of @nbr[equal?])
-normalized C representing the same @nber["R" "R"].
-For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
+For every C there is exactly one normalized C representing the same @nber["R" "R"]
+(in the sense of @nbr[equal?]).
+Hence for every @nber["R" "R"] there is exactly one representing @nb{normalized C}
 (in the sense of @nbr[equal?] and ignoring memory limits).
 
 @deftogether[
@@ -2590,4 +2590,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
