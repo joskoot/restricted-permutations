@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -398,6 +398,12 @@ particularly in their specifications of contracts.
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
 
+@note{Always test equality of integer numbers with equivalence relation @nbr[=].
+ For two equal integer numbers @tt{a} and @tt{b} expression @nbr[(= a b)] is guaranteed
+ to yield @nbr[#t], but if the absolute value of @tt{a} and @tt{b} is very large,
+ expression @nbr[(eq? a b)] may nevertheless yield @nbr[#f], id est,
+ @nbr[(implies (= a b) (eq? a b))] is not quaranteed always to produce @nbr[#t].}
+
 @section[#:tag "C"]{Cycle notation}
 
 All objects described in this section are defined in module @nbhll["C.rkt" "C.rkt"].
@@ -507,10 +513,12 @@ The same holds for the following examples:
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
  Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
 
-@defproc[(C-transpositions (c C?)) (and/c C? (listof (list/c N? N?)))]{
- Returns a list of normalized transpositions
- representing the same @nber["R" "R"] as the argument.@(lb)
+@deftogether[
+ (@defproc[(C-transpositions (c C?)) (listof C-transposition?)]
+   @defproc[(C-transposition? (x any/c)) boolean?])]{
  A transposition is a single C of two elements.
+ Procedure @nbr[C-transpositions] returns a list of normalized transpositions
+ representing the same @nber["R" "R"] as the argument.
  For every C there is a list of transpositions
  representing the same @nber["R" "R"].
  In many cases not all of the @nber["R" "R"]s represented

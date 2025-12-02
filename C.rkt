@@ -7,13 +7,25 @@
 
 (require "H.rkt" "N.rkt")
 
-(provide H->C C->H C? C-normalized? C-normalize C-transpositions C-identity? C-even?)
+(provide
+  H->C
+  C->H
+  C?
+  C-normalized?
+  C-normalize
+  C-transpositions
+  C-identity?
+  C-even?
+  C-transposition?)
 
 (define (C? x)
  (and (list? x)
   (or (null? x)
    (and (andmap N? x) (not (check-duplicates x)))
    (andmap C? x))))
+
+(define (C-transposition? x)
+  (and (list? x) (= (length x) 2) (andmap N? x) (not (apply = x))))
 
 (define (C-normalized? x) (and (C? x) (equal? (C-normalize x) x)))
 
