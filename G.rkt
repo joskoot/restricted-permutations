@@ -34,7 +34,8 @@
 
 (define (G . base)
  (define ps (remove-duplicates (map P base) P-equal?))
- (define max-order (for/fold ((m 0)) ((p (in-list ps))) (max m (P-order p))))
+ ; (define max-order (for/fold ((m 0)) ((p (in-list ps))) (max m (P-order p))))
+ (define max-order (factorial (length (remove-duplicates (flatten (map P->C ps)) =))))
  (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
  (define new
   (apply *set-union
@@ -253,3 +254,4 @@
  (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;===================================================================================================
+
