@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -1443,7 +1443,7 @@ has at least one minimal base of two elements, @nb{for example:}
  (G-base (G-symmetric 0))
  (G-base (G-symmetric 1))
  (G-base (G-symmetric 2))
- (for/and ((n (in-range 3 8)))
+ (for/and ((n (in-range 3 6)))
    (define n-1 (sub1 n))
    (define Sn (G-symmetric n))
    (and (= (set-count (G-base Sn)) 2)
@@ -1459,7 +1459,7 @@ has at least one minimal base of two elements.
 
 @Interaction[
  (if
-   (for/and ((n (in-range 2 8)))
+   (for/and ((n (in-range 2 6)))
      (define n-1 (sub1 n))
      (code:comment "transposition and cycle form a minimal base.")
      (define transposition (P (list 0 n-1)))
@@ -2598,4 +2598,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-

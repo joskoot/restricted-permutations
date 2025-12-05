@@ -33,37 +33,16 @@
 (define (G-hashes-count) (hash-count G-hash))
 
 (define (G . base)
- (define ps (remove-duplicates (map P base) P-equal?))
- ; (define max-order (for/fold ((m 0)) ((p (in-list ps))) (max m (P-order p))))
- (define max-order (factorial (length (remove-duplicates (flatten (map P->C ps)) =))))
- (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
- (define new
-  (apply *set-union
-   (for/list ((p (in-list ps))) (apply seteq (cdr (vector->list (P-period p)))))))
- (let loop ((old (seteq)) (new new))
-  (if (set-empty? new) (G-constr (set-add old P-identity))
-   (let ((old+new (set-union new old)))
-    (if (= (set-count old+new) (sub1 max-order))
-     (G-constr (set-add old+new P-identity))
-     (loop old+new
-      (let loop1 ((p old+new) (r (seteq)))
-       (cond
-        ((set-empty? p) r)
-        ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-        (else
-         (let loop2 ((q new) (r r))
-          (cond
-           ((set-empty? q) (loop1 (set-rest p) r))
-           ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-           (else
-            (let loop3
-             ((pq (cdr (vector->list (P-period (P (set-first p) (set-first q)))))) (r r))
-             (cond
-              ((null? pq) (loop2 (set-rest q) r))
-              ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-              ((or (set-member? old+new (car pq)) (set-member? r (car pq))) (loop3 (cdr pq) r))
-              (else (loop3 (cdr pq) (set-add r (car pq))))))))))))))))))
-
+  (define ps (remove-duplicates (map P base) P-equal?))
+  (let loop ((g (apply seteq P-identity ps)))
+    (define g-list (set->list g))
+    (define new
+      (for*/seteq ((p (in-list g-list)) (q (in-list g-list)))
+        (P p q)))
+    (define new-g (set-union g new))
+    (if (= (set-count new-g) (set-count g)) (G-constr g)
+      (loop new-g))))
+                          
 (define (G->list g) (P-sort (set->list (G-set g))))
 
 (define (list->G lst)
@@ -254,4 +233,3 @@
  (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;===================================================================================================
-
