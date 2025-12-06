@@ -33,8 +33,10 @@
 (define (G-hashes-count) (hash-count G-hash))
 
 (define (G . base)
-  (define ps (remove-duplicates (map P base) P-equal?))
-  (let loop ((g (apply seteq P-identity ps)))
+  (let loop
+    ((g
+       (apply seteq P-identity
+         (remove-duplicates (flatten (map cdr+vector->list+P-period base)) P-equal?))))
     (define g-list (set->list g))
     (define new
       (for*/seteq ((p (in-list g-list)) (q (in-list g-list)))
@@ -42,7 +44,8 @@
     (define new-g (set-union g new))
     (if (= (set-count new-g) (set-count g)) (G-constr g)
       (loop new-g))))
-                          
+
+(define cdr+vector->list+P-period (compose cdr vector->list P-period))
 (define (G->list g) (P-sort (set->list (G-set g))))
 
 (define (list->G lst)

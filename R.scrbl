@@ -1459,7 +1459,7 @@ has at least one minimal base of two elements.
 
 @Interaction[
  (if
-   (for/and ((n (in-range 2 6)))
+   (for/and ((n (in-range 2 7)))
      (define n-1 (sub1 n))
      (code:comment "transposition and cycle form a minimal base.")
      (define transposition (P (list 0 n-1)))
@@ -2598,4 +2598,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
