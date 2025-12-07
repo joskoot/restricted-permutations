@@ -39,8 +39,14 @@
          (remove-duplicates (flatten (map cdr+vector->list+P-period base)) P-equal?))))
     (define g-list (set->list g))
     (define new
-      (for*/seteq ((p (in-list g-list)) (q (in-list g-list)))
-        (P p q)))
+      (apply seteq
+        (let loop ((pq (combinations g-list 2)) (new '()))
+          (cond
+            ((null? pq) new)
+            (else
+              (define p (caar pq))
+              (define q (cadar pq))
+              (loop (cdr pq) (cons (P p q) (cons (P q p) new))))))))
     (define new-g (set-union g new))
     (if (= (set-count new-g) (set-count g)) (G-constr g)
       (loop new-g))))
@@ -236,3 +242,5 @@
  (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;===================================================================================================
+
+
