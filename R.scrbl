@@ -398,12 +398,6 @@ particularly in their specifications of contracts.
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
 
-@note{Always test equality of integer numbers with equivalence relation @nbr[=].
- For two equal integer numbers @tt{a} and @tt{b} expression @nbr[(= a b)] is guaranteed
- to yield @nbr[#t], but if the absolute value of @tt{a} and @tt{b} is very large,
- expression @nbr[(eq? a b)] may nevertheless yield @nbr[#f], id est,
- @nbr[(implies (= a b) (eq? a b))] is not quaranteed always to produce @nbr[#t].}
-
 @section[#:tag "C"]{Cycle notation}
 
 All objects described in this section are defined in module @nbhll["C.rkt" "C.rkt"].
@@ -2598,4 +2592,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
