@@ -239,10 +239,6 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
 
-@note{The elements of an abstract group not necessarily are functions.
- Therefore the composition of two group elements p and q is written as pq,
- not as p◦q, even when p and q are functions. }
-
 @elemtag["group"]
 @note{The present document is not an introduction to group theory.
  It frequently refers to mathematical concepts without their definitions
@@ -2602,3 +2598,4 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
+
