@@ -657,11 +657,11 @@ are the same in the sense of @nbr[eq?]
  (code:comment "Hence:")
  (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))
  (code:comment "Also:")
- (define Cs (map P->C abc))
- (car Cs)
+ (define-values (Ca Cb Cc) (apply values (map P->C abc)))
+ Ca
  (and
-   (eq? (car Cs) (cadr Cs))
-   (eq? (car Cs) (caddr Cs)))]
+   (eq? Ca Cb)
+   (eq? Ca Cc))]
 
 Another example:
 
