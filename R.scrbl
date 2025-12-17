@@ -650,11 +650,18 @@ are the same in the sense of @nbr[eq?]
  (define a (P '(0 1 2 3)))
  (define b (P '(0 1) '(1 2) '(2 3)))
  (define c (P '(0 3) '(0 2) '(0 1)))
+ (define abc (list a b c))
  (code:comment #,(list "a, b and c represent the same " (elemref "R" "R") ":"))
- (define m (max (P-restriction a) (P-restriction b) (P-restriction c)))
+ (define m (apply max (map P-restriction abc)))
  (code:line (for/and ((k (in-range m))) (= (a k) (b k) (c k))) (code:comment #,(green "true")))
  (code:comment "Hence:")
- (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))]
+ (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))
+ (code:comment "Also:")
+ (define Cs (map P->C abc))
+ (car Cs)
+ (and
+   (eq? (car Cs) (cadr Cs))
+   (eq? (car Cs) (caddr Cs)))]
 
 Another example:
 
