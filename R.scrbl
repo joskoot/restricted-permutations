@@ -517,7 +517,7 @@ The same holds for the following examples:
  representing the same @nber["R" "R"].
  In many cases not all of the @nber["R" "R"]s represented
  by the transpositions commute with each other.
- Hence, the order in which the transpositions appear in the list, usually is relevant.
+ Hence, the order in which the transpositions appear in the list usually is relevant.
  The list of transpositions is not uniquely defined.
  Procedure @nbr[C-transpositions] returns one only,
  but always the same one (in the sense of @nbr[equal?])
@@ -649,11 +649,12 @@ are the same in the sense of @nbr[eq?]
 @Interaction[
  (define a (P '(0 1 2 3)))
  (define b (P '(0 1) '(1 2) '(2 3)))
- (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
- (define m (max (P-restriction a) (P-restriction b)))
- (code:line (for/and ((k (in-range m))) (= (a k) (b k))) (code:comment #,(green "true")))
+ (define c (P '(0 3) '(0 2) '(0 1)))
+ (code:comment #,(list "a, b and c represent the same " (elemref "R" "R") ":"))
+ (define m (max (P-restriction a) (P-restriction b) (P-restriction c)))
+ (code:line (for/and ((k (in-range m))) (= (a k) (b k) (c k))) (code:comment #,(green "true")))
  (code:comment "Hence:")
- (code:line (eq? a b) (code:comment #,(green "true")))]
+ (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))]
 
 Another example:
 
