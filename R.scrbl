@@ -1944,7 +1944,7 @@ If there is such key=value pair, the hash is called a pseudo H.
  Returns the @nber["R" "restriction"] of the @nber["R" "R"] represented by @nbr[h].}
 
 @section{Elaborated examples}
-@subsection{Symmetries of a square}
+@subsection[#:tag "square"]{Symmetries of a square}
 
 Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.
 @nested[#:style 'inset (image "square.gif")]
@@ -2057,7 +2057,7 @@ commute with all symmetries of the square:
  (for/or ((p (in-list (remove* (list E R2) C4v-list))))
    (for/and ((q (in-list C4v-list)))
      (P-commute? p q)))]
-@(reset-Interaction*)
+@; @(reset-Interaction*)
 
 @subsection{Symmetries of a cube}
 
@@ -2342,6 +2342,14 @@ of which 30 contain rotations only.
       n))
    (printf line))]
 
+The subgroup spanned by rotation @nbr[((0 1 2 3) (4 5 6 7))]
+and vertical plane of reflection @nbr[((0 1) (2 3) (4 5) (6 7))]
+is isomorph with group @tt{C4v} of the @seclink["square"]{previous subsection}:
+
+@Interaction*[
+(define other-C4v (G '((0 1 2 3) (4 5 6 7)) '((0 1) (2 3) (4 5) (6 7))))
+(G-subg? other-C4v cube-symmetries)
+(and (G-isomorphism other-C4v C4v) #t)]
 @(reset-Interaction*)
 
 @subsection{The quaternion group}
