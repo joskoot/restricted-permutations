@@ -331,8 +331,8 @@ which means that p is the identity with @nb{restriction 0.}
 Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
 This implies: @nb{a(1) = 0.}
-Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
-where m runs from 0 up to and including n.
+Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(i=0@bold{..}n)}a(i) = n!},@(lb)
+where i runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
 The following @nber["representations" "representations"]
