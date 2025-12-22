@@ -656,7 +656,7 @@ are the same in the sense of @nbr[eq?]
  (code:line (for/and ((k (in-range m))) (= (a k) (b k) (c k))) (code:comment #,(green "true")))
  (code:comment "Hence:")
  (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))
- (code:comment "Also:")
+ (code:comment "Because a P memorizes its normalized C-representation, also:")
  (define-values (Ca Cb Cc) (apply values (map P->C abc)))
  Ca
  (and
@@ -1017,6 +1017,7 @@ Examples:
    (P-even? (P '(0 1) '(2 3)))
    (P-even? (P '(0 1) '(1 2)))
    (not (P-even? (P '(0 1) '(1 2) '(1 0))))
+   (eq? (P '(0 1) '(1 2) '(1 0)) (P '(0 2)))
    (P-even? (P '(0 1 2)))
    (eq? (P '(0 1 2)) (P '(0 2) '(0 1)))
    (not (P-even? (P '(0 2 4 6))))
