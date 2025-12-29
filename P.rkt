@@ -200,6 +200,15 @@
 (define (P-non-fixed-points p) (sort (hash-keys (P-H-field p)) <))
 (define (P-fixed-point? p k) (= (p k) k))
 
+(define (P-fixed-points p (m #t))
+  (define r (P-restriction p))
+  (define nfp (filter (λ (k) (= (p k) k)) (range r)))
+  (case m
+    ((#f) nfp)
+    ((#t) (list nfp (list '>= r)))
+    (else (append (filter (λ (k) (< k m)) nfp) (build-list (max 0 (- m r)) (λ (k) (+ k r)) )))))
+
+
 (define  (single-C<? c0 c1)
   (let ((a (length c0)) (b (length c1)))
     (or (< a b)

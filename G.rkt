@@ -55,11 +55,21 @@
 (define (G->list g) (P-sort (set->list (G-set g))))
 
 (define (list->G lst)
- (let ((s (list->seteq lst)))
+  (define p-list (map P lst))
+  (define s (list->seteq p-list))
   (hash-ref! G-hash s
-   (λ ()
-    (if (G-set? s) (G-constr s)
-     (error 'list->G "the argument does not correspond to a group:~n~s" lst))))))
+    (λ ()
+      (define g (apply G lst))
+      (cond
+        ((set=? (G-set g) s) g)
+        (else
+          (define missing (remove* p-list (G->list g) P-equal?))
+          (apply error 'list->G
+            (apply string-append
+              "the argument does not correspond to a group:~n"
+              "  missing elements:~n"
+              (make-list (length missing) "  ~s~n"))
+            missing))))))
 
 (define (G-set? x)
  (or (hash-has-key? G-hash x)
@@ -115,7 +125,7 @@
   (let loop ((k 1))
    (for/list ((base (in-combinations Ps k)))
     (when (eq? (apply G base) g) (ec (apply seteq base))))
-  (loop (add1 k)))))
+   (loop (add1 k)))))
 
 (define (G-order g) (set-count (G-set g)))
 (define (G-subg? g0 g1) (subset? (G-set g0) (G-set g1)))
@@ -242,5 +252,4 @@
  (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;===================================================================================================
-
 

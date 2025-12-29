@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -206,7 +206,7 @@ such as to mean a bijection of a set onto the same set.
 
 @elemtag["R" ""]
 Let @bold{N} be the set of all natural numbers, 0 included.@(lb)
-Define a restricted permutation, @nb{say p}, as a permutation of @bold{N} with@(lb)
+Define a restricted permutation, @nb{say p}, as a permutation of @bold{N} with a@(lb)
 finite number of non-fixed points, id est, with a restriction as follows:
 
 @inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
@@ -1085,7 +1085,11 @@ has as many odd elements as even ones.
   3: the number of non-fixed points.@(lb)
   4: the smallest non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
-  for which the two @nber["R" "Rs"] yield different values.}}
+  for which the two @nber["R" "Rs"] yield different values.}
+ @note{In order to avoid an infinite loop on key 5
+  when the other keys are the same for @nbr[p0] and @nbr[p1],
+  procedure @nbr[P<?] immediately returns @nbr[#f] if
+  @nb{@nbr[(P-equal? p0 p1)] → @nbr[#t].}}}
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
  Like @nbr[(sort (map P ps) P<?)], id est,
@@ -1220,12 +1224,17 @@ representing the elements of the G (ignoring parameter @nbr[P-print-by-name]).
  group containing all @nber["R" "Rs"]
  represented by the arguments.
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
- If no argument is given, the @nbr[G-identity] is returned.}
+ If no argument is given, the @nbr[G-identity] is returned.
 
-@note{By definition a group, say @bold{X}, recursively includes
- the composition of every pair of its elements,@(lb)
- the composition of every element with itself included, id est,
- @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.}
+ @note{By definition a group, say @bold{X}, recursively includes
+  the composition of every pair of its elements,@(lb)
+  the composition of every element with itself included, id est,
+  @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.
+  @ignore{Hence, to find all elements of a group spanned by a given non-empty base (@nbr[p] ...+),
+   first remove duplicates to obtain a set b and
+   add the compositions of all pairs of the elements of b not yet in b to b,
+   pairs consisting of the same two elements included,
+   and repeat until no more new elements are found.}}}
 
 Examples:
 
@@ -1796,7 +1805,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 @defproc[(G->list (g G?)) (listof P?)]{
  Returns a sorted list of all elements of @nbr[g] using @nbr[P-sort].}
 
-@defproc[(list->G (p-list (listof P?))) G?]{
+@defproc[(list->G (p-list (listof (or/c P? C?)))) G?]{
  If the @nbsl["P" "Ps"] of the argument form a group
  the corresponding G is returned, else an exception is raised.
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
