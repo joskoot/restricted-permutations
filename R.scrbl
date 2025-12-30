@@ -716,16 +716,15 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
  (P-set-name! p 'p)
  (P-set-name! q 'q)
  (P-print-by-name #t)
- (code:comment " ")
- (define (restriction-of-compositions-of p q)
-   (define (restriction-of-composition p q)
-     (define pq (P p q))
-     (printf "~s~s = ~s with restriction ~s~n"
-       p q pq (P-restriction pq)))
+ (code:comment " ")  
+ (define (restriction-of-composition p q)
+   (define pq (P p q))
+   (printf "~s~s = ~s with restriction ~s~n"
+     p q pq (P-restriction pq)))
+ (code:comment " ")  
+ (begin
    (restriction-of-composition p q)
-   (restriction-of-composition q p))
- (code:comment " ")
- (restriction-of-compositions-of p q)]
+   (restriction-of-composition q p))]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
@@ -2618,4 +2617,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
