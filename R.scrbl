@@ -319,7 +319,7 @@ These form a finite subgroup of @bold{R} isomorphic to the
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of pq.@(lb)
-We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,} r@↓{q}).}
+We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p} @bold{,} r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.@(lb)
 See the @nber["P-example"]{example} in the description of procedure @nbr[P].
 
