@@ -591,10 +591,10 @@ Examples:
    (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @Interaction[
- (define in-S4 (in-G (G-symmetric 4)))
+ (define in-S4 (in-list (map P->C (G->list (G-symmetric 4)))))
  (define (conjugates? x y) (for/or ((z in-S4)) (eq? (P x z) (P z y))))
  (for*/and ((x in-S4) (y in-S4) #:when (conjugates? x y))
-   (eq? (C-even? (P->C x)) (C-even? (P->C y))))]
+   (eq? (C-even? x) (C-even? y)))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
  Returns a normalized C representing the same @nber["R" "R"] as @nbr[h].@(lb)
