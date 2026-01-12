@@ -335,8 +335,7 @@ Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(i=0@bold{..}n)}a(i) = n!},@(l
 where i runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
-The following @nber["representations" "representations"]
-in terms of Racket objects are used:
+The following representations in terms of Racket objects are used:
 
 @inset{@tabular[#:sep (list (hspace 1) ":" (hspace 1))
                 (list
@@ -345,14 +344,14 @@ in terms of Racket objects are used:
                   (list "H" @seclink["H"]{Hash-representation of Rs})
                   (list "G" @seclink["G"]{Representation of finite subgroups of @bold{R}}))]}
 
-H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
-
 @note{@elemtag["representations"]{
   In this document the word `representation' refers to the way abstract mathematical concepts
   are expressed in terms of Racket objects.
   In group theory the word has quite another meaning
   (homorphic group of coordinate transformations in a linear space).
   In this document the word is not used with the group theoretical meaning.}}
+
+H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
 
 Notice that:
 
