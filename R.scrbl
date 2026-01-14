@@ -1607,7 +1607,8 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
   of the order of the latter.}}
 
 @defproc[#:kind "predicate" (G-simple? (g G?)) boolean?]{
- A group is simple if none of its non-trivial subgroups is invariant.} Examples:
+ A group is simple if none of its non-trivial subgroups is @nbrl[G-invariant-subg?]{invariant}.}
+Examples:
 
 @example-table[
  (G-simple? G-identity)
@@ -1617,6 +1618,11 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  (G-simple? (G '(0 1) '(1 2)))
  (G-simple? (G '((0 1) (1 2))))
  (G-simple? (G '(0 1) '(2 3)))]
+
+For example @nbr[(G '(0 1 2 3))] has invariant subgroup @nbr[(G (P '((0 2) (1 3))))]:
+
+@Interaction[
+ (G-invariant-subg? (G (P '((0 2) (1 3)))) (G '(0 1 2 3)))] 
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
  Returns the conjugation class of @nbr[g] containing element @nbr[p].@(lb)
