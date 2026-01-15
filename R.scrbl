@@ -830,9 +830,10 @@ Because a P memorizes its normalized C-repesentation,
 we have (if no @nbsl["Cleanup" "cleanup"] interferes):
 
 @Interaction[
- (eq?
-   (P->C (P '(2 3 0 1)))
-   (P->C (P '(0 1) '(1 2) '(2 3))))]
+ (define a (P '(2 3 0 1)))
+ (define b (P '(0 1) '(1 2) '(2 3)))
+ (eq? a b)
+ (eq? (P->C a) (P->C b))]
 
 @defproc[(P-order (p (or/c P? C?))) N+?]{
  For every argument @nbr[p] there is a smallest positive natural number @nbr[k]
