@@ -1081,7 +1081,9 @@ Examples:
  (code:comment "")
  (map P->C S3-list0)
  (code:comment "")
- (code:line (define in-rearrangements in-permutations) (code:comment #,permutations-note))
+ (define in-rearrangements
+   (procedure-rename in-permutations 'in-rearrangements))
+ (code:comment #,permutations-note)
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
