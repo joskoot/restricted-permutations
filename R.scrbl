@@ -1207,13 +1207,13 @@ Examples:
 
 @(example/n (G '(0 1) '(0 1 2)))
 
+@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
+Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
+
 @Interaction[(define X (G '(0 3) '(0 1 2)))
              (G-order X)
              (define in-X (in-G X))
              (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
-
-@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
-Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
 @(color-example green (eq? (P '((0 1) (1 2))) (P '(0 1) '(1 2))))
@@ -1539,9 +1539,13 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
      (if (< m n) (values b m) (values base n))))
  (code:comment "")
  (find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))
+ (code:comment "")
  (find-simple-base (G '(0 1) '(0 1 2)))
+ (code:comment "")
  (find-simple-base (G-symmetric 3))
+ (code:comment "")
  (find-simple-base (G-symmetric 4))
+ (code:comment "")
  (find-simple-base (G-symmetric 5))]
 
 @defproc[(G-subg? (g0 G?) (g1 G?)) boolean?]{
