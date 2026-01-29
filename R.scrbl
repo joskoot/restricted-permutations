@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -206,8 +206,8 @@ such as to mean a bijection of a set onto the same set.
 
 @elemtag["R" ""]
 Let @bold{N} be the set of all natural numbers, 0 included.@(lb)
-Define a restricted permutation, @nb{say p}, as a permutation of @bold{N} with a@(lb)
-finite number of non-fixed points, id est, with a restriction as follows:
+Define a restricted permutation, @nb{say p}, as a permutation of @bold{N}@(lb)
+with finite number of non-fixed points, id est, with a restriction as follows:
 
 @inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
 
@@ -319,7 +319,7 @@ These form a finite subgroup of @bold{R} isomorphic to the
 
 Let p and q be two Rs with restrictions r@↓{p} and r@↓{q} and
 let r@↓{pq} be the restriction of pq.@(lb)
-We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p} @bold{,} r@↓{q}).}
+We have: @nb{0 ≤ r@↓{pq} ≤ max(r@↓{p}@bold{,} r@↓{q}).}
 The restriction of pq not necessarily equals that of qp.@(lb)
 See the @nber["P-example"]{example} in the description of procedure @nbr[P].
 
@@ -331,11 +331,12 @@ which means that p is the identity with @nb{restriction 0.}
 Let @nb{a(m)} be the number of Rs with restriction m.@(lb)
 We have: @nb{a(0)=1} and @nb{∀m∈@bold{N}: a(m+1) = (m+1)!@(minus)m! = mm!}.@(lb)
 This implies: @nb{a(1) = 0.}
-Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(i=0@bold{..}n)}a(i) = n!},@(lb)
-where i runs from 0 up to and including n.
+Furthermore: @nb{∀n∈@bold{N}: @larger{Σ}@↓{(m=0@bold{..}n)}a(m) = n!},@(lb)
+where m runs from 0 up to and including n.
 
 An R is an abstract mathematical concept.@(lb)
-The following representations in terms of Racket objects are used:
+The following @nber["representations" "representations"]
+in terms of Racket objects are used:
 
 @inset{@tabular[#:sep (list (hspace 1) ":" (hspace 1))
                 (list
@@ -344,14 +345,14 @@ The following representations in terms of Racket objects are used:
                   (list "H" @seclink["H"]{Hash-representation of Rs})
                   (list "G" @seclink["G"]{Representation of finite subgroups of @bold{R}}))]}
 
+H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
+
 @note{@elemtag["representations"]{
   In this document the word `representation' refers to the way abstract mathematical concepts
   are expressed in terms of Racket objects.
   In group theory the word has quite another meaning
   (homorphic group of coordinate transformations in a linear space).
   In this document the word is not used with the group theoretical meaning.}}
-
-H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
 
 Notice that:
 
@@ -448,9 +449,9 @@ A C represents an @nber["R" "R"] and is one of the following:
   is the least common multiple of the lengths of the single Cs.})]
 
 Every @nber["R" "R"] can be represented by a C (in fact by many of them and ignoring memory limits).
-For every C there is exactly one normalized C representing the same @nber["R" "R"]
-(in the sense of @nbr[equal?]).
-Hence for every @nber["R" "R"] there is exactly one representing @nb{normalized C}
+For every C there is exactly one (in the sense of @nbr[equal?])
+normalized C representing the same @nber["R" "R"].
+For every @nber["R" "R"] there is exactly one representing @nb{normalized C}
 (in the sense of @nbr[equal?] and ignoring memory limits).
 
 @deftogether[
@@ -506,17 +507,15 @@ The same holds for the following examples:
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
  Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
 
-@deftogether[
- (@defproc[(C-transpositions (c C?)) (listof C-transposition?)]
-   @defproc[(C-transposition? (x any/c)) boolean?])]{
+@defproc[(C-transpositions (c C?)) (and/c C? (listof (list/c N? N?)))]{
+ Returns a list of normalized transpositions
+ representing the same @nber["R" "R"] as the argument.@(lb)
  A transposition is a single C of two elements.
- Procedure @nbr[C-transpositions] returns a list of normalized transpositions
- representing the same @nber["R" "R"] as the argument.
  For every C there is a list of transpositions
  representing the same @nber["R" "R"].
  In many cases not all of the @nber["R" "R"]s represented
  by the transpositions commute with each other.
- Hence, the order in which the transpositions appear in the list usually is relevant.
+ Hence, the order in which the transpositions appear in the list, usually is relevant.
  The list of transpositions is not uniquely defined.
  Procedure @nbr[C-transpositions] returns one only,
  but always the same one (in the sense of @nbr[equal?])
@@ -584,16 +583,15 @@ Examples:
    (define c (P->C p))
    (define c-inverse (P->C (P-inverse p)))
    (eq? (C-even? c) (C-even? c-inverse)))]
-
 @Interaction[
  (for/and ((n (in-range 5)))
    (define Sn (G-symmetric n))
    (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @Interaction[
- (define in-S4 (in-list (map P->C (G->list (G-symmetric 4)))))
- (define (conjugates? x y) (for/or ((z in-S4)) (eq? (P x z) (P z y))))
- (for*/and ((x in-S4) (y in-S4) #:when (conjugates? x y))
+ (define in-g (in-list (map P->C (G->list (G-symmetric 4)))))
+ (define (conjugates? x y) (for/or ((z in-g)) (eq? (P x z) (P z y))))
+ (for*/and ((x in-g) (y in-g) #:when (conjugates? x y))
    (eq? (C-even? x) (C-even? y)))]
 
 @defproc[(H->C (h pseudo-H?)) C-normalized?]{
@@ -624,7 +622,7 @@ its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
 its @nbrl[P-inverse #:style #f]{inverse},
 but only after they have been needed for the first time.
-A P can be given a @nbrl[P-name]{name}.
+A P can be given a @nbrl[P-set-name!]{name}.
 See parameter @nbr[P-print-by-name] for the way a P is written, printed or displayed.
 
 @defproc[(P (p (or/c P? C?)) ...) P?]{
@@ -648,19 +646,11 @@ are the same in the sense of @nbr[eq?]
 @Interaction[
  (define a (P '(0 1 2 3)))
  (define b (P '(0 1) '(1 2) '(2 3)))
- (define c (P '(0 3) '(0 2) '(0 1)))
- (define abc (list a b c))
- (code:comment #,(list "a, b and c represent the same " (elemref "R" "R") ":"))
- (define m (apply max (map P-restriction abc)))
- (code:line (for/and ((k (in-range m))) (= (a k) (b k) (c k))) (code:comment #,(green "true")))
+ (code:comment #,(list "a and b represent the same " (elemref "R" "R") ":"))
+ (define m (max (P-restriction a) (P-restriction b)))
+ (code:line (for/and ((k (in-range m))) (= (a k) (b k))) (code:comment #,(green "true")))
  (code:comment "Hence:")
- (code:line (and (eq? a b) (eq? a c)) (code:comment #,(green "true")))
- (code:comment "Because a P memorizes its normalized C-representation, also:")
- (define-values (Ca Cb Cc) (apply values (map P->C abc)))
- Ca
- (and
-   (eq? Ca Cb)
-   (eq? Ca Cc))]
+ (code:line (eq? a b) (code:comment #,(green "true")))]
 
 Another example:
 
@@ -715,15 +705,16 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
  (P-set-name! p 'p)
  (P-set-name! q 'q)
  (P-print-by-name #t)
- (code:comment " ")  
- (define (restriction-of-composition p q)
-   (define pq (P p q))
-   (printf "~s~s = ~s with restriction ~s~n"
-     p q pq (P-restriction pq)))
- (code:comment " ")  
- (begin
+ (code:comment " ")
+ (define (restriction-of-compositions-of p q)
+   (define (restriction-of-composition p q)
+     (define pq (P p q))
+     (printf "~s~s = ~s with restriction ~s~n"
+       p q pq (P-restriction pq)))
    (restriction-of-composition p q)
-   (restriction-of-composition q p))]
+   (restriction-of-composition q p))
+ (code:comment " ")
+ (restriction-of-compositions-of p q)]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
 the result is a procedure that yields the same answers as when made with procedure @nbr[P],
@@ -830,10 +821,9 @@ Because a P memorizes its normalized C-repesentation,
 we have (if no @nbsl["Cleanup" "cleanup"] interferes):
 
 @Interaction[
- (define a (P '(2 3 0 1)))
- (define b (P '(0 1) '(1 2) '(2 3)))
- (eq? a b)
- (eq? (P->C a) (P->C b))]
+ (eq?
+   (P->C (P '(2 3 0 1)))
+   (P->C (P '(0 1) '(1 2) '(2 3))))]
 
 @defproc[(P-order (p (or/c P? C?))) N+?]{
  For every argument @nbr[p] there is a smallest positive natural number @nbr[k]
@@ -1016,14 +1006,63 @@ Examples:
    (P-even? (P '(0 1) '(2 3)))
    (P-even? (P '(0 1) '(1 2)))
    (not (P-even? (P '(0 1) '(1 2) '(1 0))))
-   (eq? (P '(0 1) '(1 2) '(1 0)) (P '(0 2)))
    (P-even? (P '(0 1 2)))
    (eq? (P '(0 1 2)) (P '(0 2) '(0 1)))
    (not (P-even? (P '(0 2 4 6))))
    (eq? (P '(0 2 4 6)) (P '(0 6) '(0 4) '(0 2))))]
 
 @Interaction[
- (partition P-even? (G->list (G-symmetric 3)))]
+ (define S3-list (G->list (G-symmetric 3)))
+ (filter P-even? S3-list)
+ (filter (compose not P-even?) S3-list)]
+
+Let's check that a @nbsl["G" "G"] with at least one odd element
+has as many odd elements as even ones.
+
+@Interaction[
+ (define (check g)
+   (define in-g (in-G g))
+   (define  odd-set (for/seteq ((p in-g) #:unless (P-even? p)) p))
+   (define even-set (for/seteq ((p in-g) #:when   (P-even? p)) p))
+   (cond
+     ((and (zero? (set-count odd-set)) (equal? (expected) "all even")))
+     ((and
+        (=
+          (set-count  odd-set)
+          (set-count even-set)
+          (/ (G-order g) 2))
+        (for/and ((odd-p (in-set odd-set)))
+          (equal?
+            (for/seteq ((even-p (in-set even-set))) (P odd-p even-p))
+            odd-set))
+        (equal? (expected) "as many odd elements as even ones")))
+     (else (error 'check "this should never happen: ~s" g))))
+ (code:comment " ")
+ (define expected (make-parameter #f))
+ (code:comment " ")
+ (and
+   (code:comment " ")
+   (code:comment "Tests on symmetric groups of order greater than 1")
+   (code:comment " ")
+   (parameterize ((expected "as many odd elements as even ones"))
+     (for/and ((n (in-range 2 6)))
+       (check (G-symmetric n))))
+   (code:comment " ")
+   (code:comment "Two checks on non-symmetric groups:")
+   (code:comment " ")
+   (parameterize ((expected "as many odd elements as even ones"))
+     (and
+       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
+       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(0 1)))))
+   (code:comment "")
+   (code:comment "Checks on groups without odd elements.")
+   (code:comment " ")
+   (parameterize ((expected "all even"))
+     (and
+       (check G-identity)
+       (check (G '(0 1 2)))
+       (check (G '((0 1 2 3) (2 3 4 5))))
+       (check (G '(0 1 2) '(1 2 3))))))]
 
 @defproc[(P<? (p0 (or/c P? C?)) (p1 (or/c P? C?))) boolean?]{
  Defines a sorting order among @nber["R" "Rs"].
@@ -1036,11 +1075,7 @@ Examples:
   3: the number of non-fixed points.@(lb)
   4: the smallest non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
-  for which the two @nber["R" "Rs"] yield different values.}
- @note{In order to avoid an infinite loop on key 5
-  when the other keys are the same for @nbr[p0] and @nbr[p1],
-  procedure @nbr[P<?] immediately returns @nbr[#f] if
-  @nb{@nbr[(P-equal? p0 p1)] → @nbr[#t].}}}
+  for which the two @nber["R" "Rs"] yield different values.}}
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
  Like @nbr[(sort (map P ps) P<?)], id est,
@@ -1081,9 +1116,7 @@ Examples:
  (code:comment "")
  (map P->C S3-list0)
  (code:comment "")
- (define in-rearrangements
-   (procedure-rename in-permutations 'in-rearrangements))
- (code:comment #,permutations-note)
+ (code:line (define in-rearrangements in-permutations) (code:comment #,permutations-note))
  (code:comment "")
  (for/and ((rearranged-S3-list1 (in-rearrangements S3-list1))) (code:comment #,(green "true"))
    (define sorted-rearranged-S3-list1 (P-sort rearranged-S3-list1))
@@ -1177,17 +1210,12 @@ representing the elements of the G (ignoring parameter @nbr[P-print-by-name]).
  group containing all @nber["R" "Rs"]
  represented by the arguments.
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
- If no argument is given, the @nbr[G-identity] is returned.
+ If no argument is given, the @nbr[G-identity] is returned.}
 
- @note{By definition a group, say @bold{X}, recursively includes
-  the composition of every pair of its elements,@(lb)
-  the composition of every element with itself included, id est,
-  @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.
-  @ignore{Hence, to find all elements of a group spanned by a given non-empty base (@nbr[p] ...+),
-   first remove duplicates to obtain a set b and
-   add the compositions of all pairs of the elements of b not yet in b to b,
-   pairs consisting of the same two elements included,
-   and repeat until no more new elements are found.}}}
+@note{By definition a group, say @bold{X}, recursively includes
+ the composition of every pair of its elements,@(lb)
+ the composition of every element with itself included, id est,
+ @nb{∀x,y∈@bold{X}: xy∈@bold{X}}.}
 
 Examples:
 
@@ -1207,13 +1235,13 @@ Examples:
 
 @(example/n (G '(0 1) '(0 1 2)))
 
-@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
-Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
-
 @Interaction[(define X (G '(0 3) '(0 1 2)))
              (G-order X)
              (define in-X (in-G X))
              (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
+
+@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
+Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
 @(color-example green (eq? (P '((0 1) (1 2))) (P '(0 1) '(1 2))))
@@ -1224,53 +1252,7 @@ In particular:@(lb)
 @(lb)and@(lb)
 @(example/n (G '(0 1) '(1 2)))
 
-Let's check that a G with at least one odd element
-has as many odd ones as @nbrl[C-even?]{even} ones:
-
-@Interaction[
- (define (check g)
-   (define in-g (in-G g))
-   (define  odd-set (for/seteq ((p in-g) #:unless (P-even? p)) p))
-   (define even-set (for/seteq ((p in-g) #:when   (P-even? p)) p))
-   (cond
-     ((and (zero? (set-count odd-set)) (equal? (expected) "all even")))
-     ((and
-        (=
-          (set-count  odd-set)
-          (set-count even-set)
-          (/ (G-order g) 2))
-        (for/and ((odd-p (in-set odd-set)))
-          (equal?
-            (for/seteq ((even-p (in-set even-set))) (P odd-p even-p))
-            odd-set))
-        (equal? (expected) "as many odd elements as even ones")))
-     (else (error 'check "this should never happen: ~s" g))))
- (code:comment " ")
- (define expected (make-parameter #f))
- (code:comment " ")
- (and
-   (code:comment " ")
-   (code:comment "Tests on symmetric groups of order greater than 1")
-   (code:comment " ")
-   (parameterize ((expected "as many odd elements as even ones"))
-     (for/and ((n (in-range 2 6)))
-       (check (G-symmetric n))))
-   (code:comment " ")
-   (code:comment "Two checks on non-symmetric groups:")
-   (code:comment " ")
-   (parameterize ((expected "as many odd elements as even ones"))
-     (and
-       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(8 9)))
-       (check (G '((0 1) (2 3)) '((4 5) (6 7)) '(0 1)))))
-   (code:comment "")
-   (code:comment "Checks on groups without odd elements.")
-   (code:comment " ")
-   (parameterize ((expected "all even"))
-     (and
-       (check G-identity)
-       (check (G '(0 1 2)))
-       (check (G '((0 1 2 3) (2 3 4 5))))
-       (check (G '(0 1 2) '(1 2 3))))))]@defidform[#:kind "constant" G-identity]{
+@defidform[#:kind "constant" G-identity]{
  The @(nbsl "G" "G") consisting of the @nbr[P-identity] only.}
 
 @defproc[#:kind "predicate"(G-identity? (x any/c)) boolean?]{
@@ -1454,7 +1436,7 @@ has at least one minimal base of two elements, @nb{for example:}
  (G-base (G-symmetric 0))
  (G-base (G-symmetric 1))
  (G-base (G-symmetric 2))
- (for/and ((n (in-range 3 6)))
+ (for/and ((n (in-range 3 8)))
    (define n-1 (sub1 n))
    (define Sn (G-symmetric n))
    (and (= (set-count (G-base Sn)) 2)
@@ -1470,7 +1452,7 @@ has at least one minimal base of two elements.
 
 @Interaction[
  (if
-   (for/and ((n (in-range 2 7)))
+   (for/and ((n (in-range 2 8)))
      (define n-1 (sub1 n))
      (code:comment "transposition and cycle form a minimal base.")
      (define transposition (P (list 0 n-1)))
@@ -1527,7 +1509,6 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
 @elemtag["simplest base"]{To find one of the simplest bases:}
 
 @Interaction[
- (code:comment "")
  (define (find-simple-base g)
    (define bases (G-bases g))
    (for/fold
@@ -1539,13 +1520,9 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
      (if (< m n) (values b m) (values base n))))
  (code:comment "")
  (find-simple-base (G '(0 1) '((0 1) (2 3)) '((2 3) (4 5))))
- (code:comment "")
  (find-simple-base (G '(0 1) '(0 1 2)))
- (code:comment "")
  (find-simple-base (G-symmetric 3))
- (code:comment "")
  (find-simple-base (G-symmetric 4))
- (code:comment "")
  (find-simple-base (G-symmetric 5))]
 
 @defproc[(G-subg? (g0 G?) (g1 G?)) boolean?]{
@@ -1614,8 +1591,7 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
   of the order of the latter.}}
 
 @defproc[#:kind "predicate" (G-simple? (g G?)) boolean?]{
- A group is simple if none of its non-trivial subgroups is @nbrl[G-invariant-subg?]{invariant}.}
-Examples:
+ A group is simple if none of its non-trivial subgroups is invariant.} Examples:
 
 @example-table[
  (G-simple? G-identity)
@@ -1625,11 +1601,6 @@ Examples:
  (G-simple? (G '(0 1) '(1 2)))
  (G-simple? (G '((0 1) (1 2))))
  (G-simple? (G '(0 1) '(2 3)))]
-
-For example @nbr[(G '(0 1 2 3))] has invariant subgroup @nbr[(G (P '((0 2) (1 3))))]:
-
-@Interaction[
- (G-invariant-subg? (G (P '((0 2) (1 3)))) (G '(0 1 2 3)))] 
 
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
  Returns the conjugation class of @nbr[g] containing element @nbr[p].@(lb)
@@ -1814,7 +1785,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
 @defproc[(G->list (g G?)) (listof P?)]{
  Returns a sorted list of all elements of @nbr[g] using @nbr[P-sort].}
 
-@defproc[(list->G (p-list (listof (or/c P? C?)))) G?]{
+@defproc[(list->G (p-list (listof P?))) G?]{
  If the @nbsl["P" "Ps"] of the argument form a group
  the corresponding G is returned, else an exception is raised.
  Duplicate arguments representing the same @nber["R" "R"] do no harm.
@@ -1866,10 +1837,12 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  (eq? p (P '(1 2 0)))
  (eq? g (G '(0 1) '(0 2)))
  (R-clear-hashes)
- (code:line (equal? p (P '(0 1 2))) (code:comment #,(red "alas:")))
- (code:line (equal? g (G '(0 1 2) '(0 1))) (code:comment #,(red "alas:")))
- (code:line (P-equal? p (P '(2 0 1))) (code:comment #,(green "true")))
- (code:line (G-equal? g (G '(0 1) '(1 2))) (code:comment #,(green "true")))]
+ (define pp (P '(0 1 2)))
+ (define gg (G '(0 1) '(0 2)))
+ (code:line (equal? p pp) (code:comment #,(red "alas:")))
+ (code:line (equal? g gg) (code:comment #,(red "alas:")))
+ (code:line (P-equal? p pp) (code:comment #,(green "true")))
+ (code:line (G-equal? g gg) (code:comment #,(green "true")))]
 
 @section[#:tag "Distinct-instances"]{Distinct instances of @nbhll["R.rkt" "R.rkt"]}
 Two distinct instances of module @nbhll["R.rkt" "R.rkt"]
@@ -1905,7 +1878,7 @@ not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identiti
 @section[#:tag "H"]{Hash representation}
 
 All objects described in this section are defined in module @nbhll["H.rkt" "H.rkt"].
-The H-representation is used internally for operations like application,
+The @nb{H-representation} is used internally for operations like application,
 @nber["composition" "composition"] and @nbrl[P-inverse "inversion"].
 @red{Advice}: avoid explicit use of the H-representation.
 Use the @nbsl["P" "P-representation"].
@@ -1963,7 +1936,7 @@ If there is such key=value pair, the hash is called a pseudo H.
  Returns the @nber["R" "restriction"] of the @nber["R" "R"] represented by @nbr[h].}
 
 @section{Elaborated examples}
-@subsection[#:tag "square"]{Symmetries of a square}
+@subsection{Symmetries of a square}
 
 Number the vertices of a square anticlockwise starting left below with 0, 1, 2 and 3.
 @nested[#:style 'inset (image "square.gif")]
@@ -2076,7 +2049,7 @@ commute with all symmetries of the square:
  (for/or ((p (in-list (remove* (list E R2) C4v-list))))
    (for/and ((q (in-list C4v-list)))
      (P-commute? p q)))]
-@; @(reset-Interaction*)
+@(reset-Interaction*)
 
 @subsection{Symmetries of a cube}
 
@@ -2361,14 +2334,6 @@ of which 30 contain rotations only.
       n))
    (printf line))]
 
-The subgroup spanned by rotation @nbr[((0 1 2 3) (4 5 6 7))]
-and vertical plane of reflection @nbr[((0 1) (2 3) (4 5) (6 7))]
-is isomorph with group @tt{C4v} of the @seclink["square"]{previous subsection}:
-
-@Interaction*[
-(define other-C4v (G '((0 1 2 3) (4 5 6 7)) '((0 1) (2 3) (4 5) (6 7))))
-(G-subg? other-C4v cube-symmetries)
-(and (G-isomorphism other-C4v C4v) #t)]
 @(reset-Interaction*)
 
 @subsection{The quaternion group}
