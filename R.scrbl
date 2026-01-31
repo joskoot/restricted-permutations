@@ -206,8 +206,8 @@ such as to mean a bijection of a set onto the same set.
 
 @elemtag["R" ""]
 Let @bold{N} be the set of all natural numbers, 0 included.@(lb)
-Define a restricted permutation, @nb{say p}, as a permutation of @bold{N} with(lb)
-finite number of non-fixed points, id est, with a restriction as follows:
+Define a restricted permutation, @nb{say p}, as a permutation of @bold{N}@(lb)
+with finite number of non-fixed points, id est, with a restriction as follows:
 
 @inset{@nb{∃m∈@bold{N}: ∀k∈@bold{N}: k≥m ⇒ p(k) = k}}
 
@@ -2592,4 +2592,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
