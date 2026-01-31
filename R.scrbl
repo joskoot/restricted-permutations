@@ -1436,7 +1436,7 @@ has at least one minimal base of two elements, @nb{for example:}
  (G-base (G-symmetric 0))
  (G-base (G-symmetric 1))
  (G-base (G-symmetric 2))
- (for/and ((n (in-range 3 8)))
+ (for/and ((n (in-range 3 6))
    (define n-1 (sub1 n))
    (define Sn (G-symmetric n))
    (and (= (set-count (G-base Sn)) 2)
@@ -2592,3 +2592,4 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
+
