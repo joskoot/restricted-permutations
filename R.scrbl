@@ -11,7 +11,7 @@
      (only-in typed/racket Setof Natural Sequenceof Index))
    (for-syntax racket))
 
-@(define-for-syntax local #f)
+@(define-for-syntax local #t)
 
 @(define-syntax (nbhll stx)
    (syntax-case stx ()
@@ -2592,4 +2592,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
