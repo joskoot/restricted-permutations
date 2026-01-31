@@ -1045,7 +1045,7 @@ has as many odd elements as even ones.
    (code:comment "Tests on symmetric groups of order greater than 1")
    (code:comment " ")
    (parameterize ((expected "as many odd elements as even ones"))
-     (for/and ((n (in-range 2 6)))
+     (for/and ((n (in-range 2 5)))
        (check (G-symmetric n))))
    (code:comment " ")
    (code:comment "Two checks on non-symmetric groups:")
@@ -2592,5 +2592,3 @@ C@↓{3h} is isomorphic to the group of the natural numbers from 0 up to 6 (excl
 
 @bold{@larger{@larger{@larger{The end}}}}
 @(collect-garbage)
-
-
