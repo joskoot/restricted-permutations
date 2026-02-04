@@ -231,7 +231,7 @@ although it is commutative for many subgroups of @bold{R},
 but certainly not for all of them.
 For every finite group there is an isomorphic subgroup of @bold{R}.
 
-@note{One such subgroup consisting of the @nber["id"]{identity of @bold{R}} only
+@note{In fact one such subgroup consisting of the @nber["id"]{identity of @bold{R}} only
  if the order @nb{(= cardinality)} of the group is 1 and
  an infinite number of them if the order is greater than 1.}
 
