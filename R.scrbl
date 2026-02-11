@@ -1074,7 +1074,9 @@ has as many odd elements as even ones.
   3: the number of non-fixed points.@(lb)
   4: the smallest non-fixed point.@(lb)
   5: @nbr[(p k)] for the smallest @nbr[k]
-  for which the two @nber["R" "Rs"] yield different values.}}
+  for which the two @nber["R" "Rs"] yield different values.}
+ In order to avoid an infinite loop on the fifth key when the other keys are equal,
+ procedure @nbr[P<?] immediately returns @nbr[#f] if @nbr[(P-equal? p0 p1)] → @nbr[#t].} 
 
 @defproc[(P-sort (ps (listof (or/c P? C?)))) (listof P?)]{
  Like @nbr[(sort (map P ps) P<?)], id est,
