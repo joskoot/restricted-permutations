@@ -224,11 +224,6 @@ with compatible domain and co-domain:
 In this document @bold{R} always will be associated with this composition,
 thus forming @nb{a @nber["group"]{group}},
 in particular a denumerably infinite group.
-As required, the composition is associative.
-For some groups the composition is commutative.
-For @bold{R} it is not,
-although it is commutative for many subgroups of @bold{R},
-but certainly not for all of them.
 For every finite group there is an isomorphic subgroup of @bold{R}.
 
 @note{In fact one such subgroup consisting of the @nber["id"]{identity of @bold{R}} only
