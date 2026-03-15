@@ -244,8 +244,8 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  @nb{If you} know nothing about quantum mechanics,
  you'd better skip the intro@(-?)duction.
  Quantum mechanics play no role in chapter 1.
- @;@nb{As an} alter@(-?)native see @nbhl["finite-groups.pdf" "finite-groups.pdf"].}
- @nb{As an} alter@(-?)native see @nbhll["finite-groups.pdf" "finite-groups.pdf"].}
+@ignore{
+ @nb{As an} alter@(-?)native see @nbhll["finite-groups.pdf" "finite-groups.pdf"].}}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
@@ -1236,7 +1236,9 @@ Examples:
              (define in-X (in-G X))
              (for*/and ((p in-X) (q in-X)) (G-member? (P p q) X))]
 
-@nbr[(G '(0 1) '(1 2))] yields the same as @nbr[(G '(0 1) '(0 1 2))].@(lb)
+@example/n[(G '(0 1) '(1 2))]@(lb)
+yields the same as@(lb)
+@example/n[(G '(0 1) '(0 1 2))]@(lb)
 Hence: @(example (eq? (G '(0 1) '(1 2)) (G '(0 1) '(0 1 2))))
 
 @red{Warning:} We have:@(lb)
