@@ -244,8 +244,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
  @nb{If you} know nothing about quantum mechanics,
  you'd better skip the intro@(-?)duction.
  Quantum mechanics play no role in chapter 1.
-@ignore{
- @nb{As an} alter@(-?)native see @nbhll["finite-groups.pdf" "finite-groups.pdf"].}}
+ @nb{As an} alter@(-?)native see @nbhll["finite-groups.pdf" "finite-groups.pdf"].}
 
 @ignore{Nevertheless a brief summary:@(lb)
  @bold{Definition:} a group is a system @nb{(@bold{X}, φ)} where:@(↑lb)
