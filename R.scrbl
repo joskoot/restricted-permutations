@@ -344,7 +344,7 @@ H is for internal use behind the screen. @red{Advice}: avoid explicit use of H.
   In this document the word `representation' refers to the way abstract mathematical concepts
   are expressed in terms of Racket objects.
   In group theory the word has quite another meaning
-  (homorphic group of coordinate transformations in a linear space).
+  (homomorphic group of coordinate transformations in a linear space).
   In this document the word is not used with the group theoretical meaning.}}
 
 Notice that:
