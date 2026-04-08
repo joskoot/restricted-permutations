@@ -216,7 +216,7 @@ Let's call the smallest m∈@bold{N} for which this holds,
 @nb{`R' is shorthand for `restricted permutation'.}
 @nb{Let @bold{R} be the set of all Rs.}@(lb)
 @elemtag["composition"]
-Define the composition pq of two Rs p and q as usual for functions@(lb)
+Define the composition pq≡p@smaller{○}q of two Rs p and q as usual for functions@(lb)
 with compatible domain and co-domain:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
