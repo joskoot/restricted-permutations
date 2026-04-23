@@ -498,7 +498,7 @@ The same holds for the following examples:
  (C-normalize '((0 1 2) (0 2)))]
 
 @defproc[#:kind "predicate" (C-identity? (x any/c)) boolean?]{
- Same as @nbr[(and (C? x) (null? (C-normalize x)))].}
+ Same as @nbr[(or (null? x) (and (C? x) (null? (C-normalize x))))].}
 
 @defproc[(C-transpositions (c C?)) (and/c C? (listof (list/c N? N?)))]{
  Returns a list of normalized transpositions
