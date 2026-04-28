@@ -1599,6 +1599,36 @@ where i, j and @nb{n@(minus)1} are three distinct natural numbers.
  (G-simple? (G '((0 1) (1 2))))
  (G-simple? (G '(0 1) '(2 3)))]
 
+For example, @nbr[(G '(0 1 2 3))] is not simple because
+
+@Interaction*[
+ (define (G-non-trivial-invariant-subgs g)
+   (for ((sg (in-set (G-subgroups g)))
+         #:unless (or (eq? sg G-identity) (eq? sg g))
+         #:when (G-invariant-subg? sg g))
+     (printf "~s~n" sg)))
+ (code:comment " ")
+ (G-non-trivial-invariant-subgs (G '(0 1 2 3)))]
+
+@nbr[(G '(0 1) '(1 2))] is not simple because
+
+@Interaction*[(G-non-trivial-invariant-subgs (G '(0 1) '(1 2)))]
+
+@nbr[(G '(0 1) '(2 3))] is not simple because
+
+@Interaction*[(G-non-trivial-invariant-subgs (G '(0 1) '(2 3)))]
+
+Nothing is printed for the other examples:
+
+@Interaction*[
+ (G-non-trivial-invariant-subgs G-identity)
+ (G-non-trivial-invariant-subgs (G '(0 1)))
+ (G-non-trivial-invariant-subgs (G '(0 1 2)))
+ (G-non-trivial-invariant-subgs (G '((0 1) (1 2))))]
+
+@(reset-Interaction*)
+Notice that @nbr[(eq? (G '(0 1 2)) (G '((0 1) (1 2))))] → @nbr[#t].
+
 @defproc[(G-class (p P?) (g G?)) (Setof P?)]{
  Returns the conjugation class of @nbr[g] containing element @nbr[p].@(lb)
  If @nbr[p]∉@nbr[g], @nbr[G-class] returns an empty set.
