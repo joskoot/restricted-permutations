@@ -1604,8 +1604,7 @@ For example, @nbr[(G '(0 1 2 3))] is not simple because
 @Interaction*[
  (define (G-non-trivial-invariant-subgs g)
    (for ((sg (in-set (G-subgroups g)))
-         #:unless (or (eq? sg G-identity) (eq? sg g))
-         #:when (G-invariant-subg? sg g))
+         #:when (and (G-proper-subg? sg g) (G-invariant-subg? sg g)))
      (printf "~s~n" sg)))
  (code:comment " ")
  (G-non-trivial-invariant-subgs (G '(0 1 2 3)))]
