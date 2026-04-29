@@ -1414,7 +1414,7 @@ In particular:@(lb)
 @(random-seed 1)
 
 @Interaction[
- (random-seed 1)
+ (random-seed 0)
  (define g (G '(4 5) '(0 1) '(2 3)))
  (define g-base (G-base g))
  (code:comment #,(list
