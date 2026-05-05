@@ -572,14 +572,15 @@ Example:
 Examples:
 
 @Interaction[
+ (for/and ((n (in-range 5)))
+   (define Sn (G-symmetric n))
+   (G-invariant-subg? (G-even-subg Sn) Sn))]
+
+@Interaction[
  (for/and ((p (in-G (G-symmetric 4))))
    (define c (P->C p))
    (define c-inverse (P->C (P-inverse p)))
    (eq? (C-even? c) (C-even? c-inverse)))]
-@Interaction[
- (for/and ((n (in-range 5)))
-   (define Sn (G-symmetric n))
-   (G-invariant-subg? (G-even-subg Sn) Sn))]
 
 @Interaction[
  (define in-g (in-list (map P->C (G->list (G-symmetric 4)))))
