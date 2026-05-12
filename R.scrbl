@@ -2017,7 +2017,7 @@ Check that @tt{C4v-list} contains all symmetries as generated from base (R Sv) a
 Table of compositions:
 
 @Interaction*[
- (apply (fmt "L5_##W/" 'cur)
+ (apply (fmt "L4_##W/" 'cur)
    (sqr (length C4v-list))
    (length C4v-list)
    (for*/list
