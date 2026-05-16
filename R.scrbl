@@ -198,7 +198,7 @@ such as to mean a bijection of a set onto the same set.
  Rearrangements can represent permutations, though.
  If there is no danger of confusion,
  @nb{a representing} object can be written or talked about
- as though it were the object it represents,
+ as though it were the object it represents
  @nb{but this} is avoided in this document.
  However, no formal distinction will be made between
  exact integer numbers of Racket
@@ -295,8 +295,8 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 @inset{@nb{∀k∈@bold{N}: k → k}}
 
 This is the only R with restriction 0 and order 1.
-For every other R the restriction and order are greater than 1,
-but always finite. They are not necessarily the same.
+For every other R the restriction and order are greater than 1
+but always finite. They are not necessarily the same,
 Inverses of each other have the same order and the same restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
@@ -305,7 +305,7 @@ These form a finite subgroup of @bold{R} isomorphic to the
 @note{In every group the identity is the only element of order 1 and
  inverses of each other have the same order.
  Do not confuse the order of an element with the order of a group.
- The latter is the cardinality of a group, but usually it is called its @italic{order}.
+ The latter is the cardinality of a group but usually it is called its @italic{order}.
  The word `order' also is used for the consecution of elements in a list or vector.
  In most cases it is clear with which meaning the word is used.
  Where appropriate, a phrase is used that avoids confusion.}
@@ -412,7 +412,7 @@ A C represents an @nber["R" "R"] and is one of the following:
    @item{
   A list of Cs.
   Represents the @nber["composition" "composition"] of the @nber["R" "Rs"] represented
-  by its elements. @nb{An element} of a list of Cs can be a list of Cs,
+  by its elements. @nb{An element} of a list of Cs can be a list of Cs
   but superfluous pairs of parentheses can be ignored,
   because the @nber["composition" "composition"] is associative.
   The order in which the single Cs appear in the list can be relevant,
@@ -510,7 +510,7 @@ The same holds for the following examples:
  by the transpositions commute with each other.
  Hence, the order in which the transpositions appear in the list, usually is relevant.
  The list of transpositions is not uniquely defined.
- Procedure @nbr[C-transpositions] returns one only,
+ Procedure @nbr[C-transpositions] returns one only
  but always the same one (in the sense of @nbr[equal?])
  for Cs representing the same @nber["R" "R"]
  and with no more transpositions than necessary.
@@ -614,7 +614,7 @@ It memorizes its  @nber["normalized-C" "normalized C-representation"],
 its @nbrl[P-even? #:style #f]{parity},
 its @nbrl[P-order #:style #f]{order},
 its @nbrl[P-period #:style #f]{period} and
-its @nbrl[P-inverse #:style #f]{inverse},
+its @nbrl[P-inverse #:style #f]{inverse}
 but only after they have been needed for the first time.
 A P can be given a @nbrl[P-set-name!]{name}.
 See parameter @nbr[P-print-by-name] for the way a P is written, printed or displayed.
@@ -711,7 +711,7 @@ Some checks on the properties of @nber["composition" "compositions"] of @nber["R
  (restriction-of-compositions-of p q)]
 
 When composing two or more Ps with Racket's procedure @nbr[compose],
-the result is a procedure that yields the same answers as when made with procedure @nbr[P],
+the result is a procedure that yields the same answers as when made with procedure @nbr[P]
 but the result is not a P. Example:
 
 @Interaction*[
@@ -1444,7 +1444,7 @@ has at least one minimal base of two elements, @nb{for example:}
      (code:comment "numbers from 0 up to and including n-2.")
      (eq? Sn (G (list 0 n-1) (range 0 n-1)))))]
 
-The following example is not a proof,
+The following example is not a proof
 but shows how to prove that every symmetric group S@↓{n} with n≥3
 has at least one minimal base of two elements.
 
@@ -2205,7 +2205,7 @@ also is a conjugation class of the group of all @tt{cube-symmetries}:
 
 The group of all @tt{cube-symmetries} has ten conjugation classes,
 of which five coincide with the conjugation classes of subgroup @tt{cube-rotations}.
-Elements of the same class have the same normalized cycle structure,
+Elements of the same class have the same normalized cycle structure
 but distinct classes can have the same normalized cycle structure.
 @note{In a @nbrl[G-symmetric]{symmetric} group
  every class has distinct normalized cycle structure.
@@ -2215,7 +2215,7 @@ but distinct classes can have the same normalized cycle structure.
 In group @tt{cube-symmetries} the inversion-symmetry,
 rotations about 180° and reflections in the planes
 containing the center of the cube and parallel to a side of the cube
-have the same normalized cycle structure, but form distinct conjugation classes.
+have the same normalized cycle structure but form distinct conjugation classes.
 The @nbr[P-identity] always is the only member of its class.
 
 The inversion-symmetry @nbr[(P '((0 6) (1 7) (2 4) (3 5)))],
@@ -2223,7 +2223,7 @@ which does not occur in subgroup @element['tt "cube-rotations"], is lonesome too
 This implies that it commutes with all elements.
 It maps each vertex to the one in opposit position with respect to the center of the cube.
 
-Possibly you did not expect three-fold rotation axes as symmetries of a cube, but they are there.
+Possibly you did not expect three-fold rotation axes as symmetries of a cube but they are there.
 In particular, @nber["composition" "composition"] of two rotations about 90° with intersecting
 axes orthogonal to each other produces a rotation about 120°, for example:
 
@@ -2250,7 +2250,7 @@ Two minimal bases @nb{{a ...}} and @nb{{b ...}} are symmetrically equivalent
 if the group contains @nb{a symmetry} x such that @nb{{ax ...} = {xb ...}}.
 This is an equality of two sets:
 @nb{the consecution} of @nb{the elements} between the curly brackets is irrelevant.
-Symmetrically equivalent minimal bases have the same normalized cycle structure,
+Symmetrically equivalent minimal bases have the same normalized cycle structure
 but not all bases with the same cycle structure are symmetrically equivalent.
 For group @tt{cube-symmetries}
 the number of collections of symmetrically equivalent minimal bases is one less
@@ -2439,7 +2439,7 @@ We can verify this as follows:
       (eq? (P |-1| p) q))
      (else #f)))]
 
-Group @tt{Q} is not @nbrl[G-abelean?]{abelean},
+Group @tt{Q} is not @nbrl[G-abelean?]{abelean}
 but nevertheless all its subgroup are @nbrl[G-invariant-subg? "invariant"]:
 
 @Interaction*[
@@ -2517,7 +2517,7 @@ Let's check this:
 Procedure correspondence computes the
 @nber["rearrangement" "rearrangements"]
 of C@↓{3v} in the rows/columns of its composition table.
-Use of @nbr[H->P] is @(red "discouraged"), @(green "but here it is useful").
+Use of @nbr[H->P] is @(red "discouraged") @(green "but here it is useful").
 @elemtag{H->P-example}
 
 @Interaction*[
