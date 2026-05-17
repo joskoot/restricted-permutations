@@ -296,7 +296,7 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 
 This is the only R with restriction 0 and order 1.
 For every other R the restriction and order are greater than 1
-but always finite. They are not necessarily the same,
+but always finite. They are not necessarily the same.
 Inverses of each other have the same order and the same restriction.
 There are n! Rs with restriction less than or equal to natural @nb{number n}.
 These form a finite subgroup of @bold{R} isomorphic to the
