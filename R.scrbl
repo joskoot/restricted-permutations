@@ -233,6 +233,10 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
 
+@note{The elements of a group not necessarily are functions.
+ Therefore the composition of two elements p and q is written as pq,
+ omitting composition operator @smaller{○}, even if they are functions.}
+
 @elemtag["group"]
 @note{The present document is not an introduction to group theory.
  It frequently refers to mathematical concepts without their definitions
