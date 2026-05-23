@@ -6,7 +6,7 @@
 ;===================================================================================================
 
 (require "H.rkt" "C.rkt" "N.rkt")
-(provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P)
+(provide P-identity P? P-period P-order P-expt P-inverse P-even? P->C P<? P-sort P P-degree)
 (provide P-clear-hashes P-hashes-count P-equal? P-identity? P-restriction P-non-fixed-points)
 (provide P-fixed-point? P->H H->P P-commute? P-name P-set-name! P-remove-name! P-print-by-name)
 
@@ -198,6 +198,7 @@
 
 (define (P-restriction p) (H-restriction (P-H-field p)))
 (define (P-non-fixed-points p) (sort (hash-keys (P-H-field p)) <))
+(define (P-degree p) (hash-count (P-H-field p)))
 (define (P-fixed-point? p k) (= (p k) k))
 
 (define (P-fixed-points p (m #t))

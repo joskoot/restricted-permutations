@@ -1178,6 +1178,9 @@ Examples:
  including every @nbsl["N"]{natural number} equal to or greater than the
  @nber["R" "restriction"].}
 
+@defproc[(P-degree (p P?)) N?]{
+ Returns the number of non-fixed points of @nbr[p].}
+
 @defproc[(P->H (p P?)) H?]{
  You probably never need this procedure. @red{Advice: avoid it}.}
 
