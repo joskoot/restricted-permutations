@@ -216,7 +216,7 @@ Let's call the smallest m∈@bold{N} for which this holds,
 @nb{`R' is shorthand for `restricted permutation'.}
 @nb{Let @bold{R} be the set of all Rs.}@(lb)
 @elemtag["composition"]
-Define the composition pq (≡ p@smaller{○}q) of two Rs p and q as usual for functions@(lb)
+Define the composition pq of two Rs p and q as usual for functions@(lb)
 with compatible domain and codomain:
 
 @inset{@nb{pq: k∈@bold{N} → p@larger{(}q(k)@larger{)}∈@bold{N}}}
@@ -232,10 +232,6 @@ For every finite group there is an isomorphic subgroup of @bold{R}.
 
 @note{In this document @bold{R} is the group of @nber["R"]{restricted permutations}@(lb)
  and has nothing to do with the set of real numbers.}
-
-@note{The elements of a group not necessarily are functions.
- Therefore the composition of two elements p and q is written as pq,
- omitting composition operator @smaller{○}, even if they are functions.}
 
 @elemtag["group"]
 @note{The present document is not an introduction to group theory.
@@ -1782,7 +1778,7 @@ Check that two isomorphisms returned by @nbr[G-isomorphism] are inverses of each
  (eq? (list->G (map g0->g1 (G->list g0))) g1)
  (eq? (list->G (map g1->g0 (G->list g1))) g0)]
 
-If the two Gs are not isomorphic, G-isomorphism returns @nbr[#f].
+If the two Gs are not isomorphic, @nbr[G-isomorphism] returns @nbr[#f].
 
 @Interaction[
  (code:line (G-isomorphism (G '(0 1) '(2 3)) (G '(0 1 2 3))) (code:comment #,(red "false")))]
