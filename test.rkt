@@ -371,4 +371,75 @@
      (eq? (list->G (map g1->g0 (G->list g1))) g0)))
   '(#t))
 
+(test 64
+  ((define C3v (G '(0 1) '(0 1 2)))
+   (G-print-table C3v)
+   (writeln (eq? C3v (G-symmetric 3)))
+   (define in-C3v (in-G C3v))
+   (define (correspondence g)
+     (define in-g (in-G g))
+     (define h (for/hasheq ((p in-g) (k (in-naturals))) (values p k)))
+     (define (correspondence compose-for-row-or-column)
+       (for/list ((p in-g))
+         (H->P
+           (for/hasheqv ((q in-g))
+             (values
+               (hash-ref h q)
+               (hash-ref h (compose-for-row-or-column p q)))))))
+     (define rows    (correspondence (lambda (p q) (P p q))))
+     (define columns (correspondence (lambda (p q) (P q p))))
+     (values h rows columns))
+   (define-values (h rows columns) (correspondence C3v))
+   (for ((p in-C3v))
+     ((fmt 'cur "L7W NX'is mapped onto'X W'.'/") (P->C p) (hash-ref h p)))
+   (for ((p in-C3v))
+     (for ((q in-C3v)) (printf " ~s" (hash-ref h (P p q))))
+     (newline))
+   (define (print-correspondence name rows/columns)
+     (for ((p in-C3v) (row/column (in-list rows/columns)))
+       ((fmt 'cur "R6DN' of 'L7WN' corresponds to 'W/")
+        name (P->C p) (P->C row/column))))
+   (print-correspondence "row" rows)
+   (print-correspondence "column" columns)
+   (define row-group    (list->G rows))
+   (define column-group (list->G columns))
+   (and
+     (G-isomorphism C3v    row-group)
+     (G-isomorphism C3v column-group)
+     #t))
+  '(#t)
+  #:output "
+()      (0 1 2) (0 2 1) (0 1)   (0 2)   (1 2)   
+(0 1 2) (0 2 1) ()      (0 2)   (1 2)   (0 1)   
+(0 2 1) ()      (0 1 2) (1 2)   (0 1)   (0 2)   
+(0 1)   (1 2)   (0 2)   ()      (0 2 1) (0 1 2) 
+(0 2)   (0 1)   (1 2)   (0 1 2) ()      (0 2 1) 
+(1 2)   (0 2)   (0 1)   (0 2 1) (0 1 2) ()      
+#t
+()      is mapped onto 0.
+(0 1 2) is mapped onto 1.
+(0 2 1) is mapped onto 2.
+(0 1)   is mapped onto 3.
+(0 2)   is mapped onto 4.
+(1 2)   is mapped onto 5.
+ 0 1 2 3 4 5
+ 1 2 0 4 5 3
+ 2 0 1 5 3 4
+ 3 5 4 0 2 1
+ 4 3 5 1 0 2
+ 5 4 3 2 1 0
+   row of ()      corresponds to ()
+   row of (0 1 2) corresponds to ((0 1 2) (3 4 5))
+   row of (0 2 1) corresponds to ((0 2 1) (3 5 4))
+   row of (0 1)   corresponds to ((0 3) (1 5) (2 4))
+   row of (0 2)   corresponds to ((0 4) (1 3) (2 5))
+   row of (1 2)   corresponds to ((0 5) (1 4) (2 3))
+column of ()      corresponds to ()
+column of (0 1 2) corresponds to ((0 1 2) (3 5 4))
+column of (0 2 1) corresponds to ((0 2 1) (3 4 5))
+column of (0 1)   corresponds to ((0 3) (1 4) (2 5))
+column of (0 2)   corresponds to ((0 4) (1 5) (2 3))
+column of (1 2)   corresponds to ((0 5) (1 3) (2 4))
+")
+
 (test-report)
