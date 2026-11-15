@@ -31,50 +31,28 @@
 
 (define (G-hashes-count) (hash-count G-hash))
 
-; Much simpler than the version below, but much slower.
-#;(define (G . base)
-    (define (G old-set)
-      (define new-set
-        (set-union old-set
-          (for*/seteq ((a (in-set old-set)) (b (in-set old-set))) (P a b))))
-      (cond
-        ((equal? new-set old-set) (G-constr old-set))
-        (else (G new-set))))
-    (G (apply seteq (remove-duplicates (map P base) P-equal?))))
-
 (define (G . base)
   (define ps (remove-duplicates (map P base) P-equal?))
-  (define max-order (factorial (length (remove-duplicates (flatten (map P->C ps)) =))))
-  (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
-  (define new
-    (apply *set-union
-      (for/list ((p (in-list ps))) (apply seteq (cdr (vector->list (P-period p)))))))
-  (let loop ((old (seteq)) (new new))
-    (if (set-empty? new) (G-constr (set-add old P-identity))
-      (let ((old+new (set-union new old)))
-        (if (= (set-count old+new) (sub1 max-order))
-          (G-constr (set-add old+new P-identity))
-          (loop old+new
-            (let loop1 ((p old+new) (r (seteq)))
-              (cond
-                ((set-empty? p) r)
-                ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-                (else
-                  (let loop2 ((q new) (r r))
-                    (cond
-                      ((set-empty? q) (loop1 (set-rest p) r))
-                      ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-                      (else
-                        (let loop3
-                          ((pq (cdr (vector->list (P-period (P (set-first p) (set-first q))))))
-                           (r r))
-                          (cond
-                            ((null? pq) (loop2 (set-rest q) r))
-                            ((= (+ (set-count old+new) (set-count r)) (sub1 max-order)) r)
-                            ((or
-                               (set-member? old+new (car pq))
-                               (set-member? r (car pq))) (loop3 (cdr pq) r))
-                            (else (loop3 (cdr pq) (set-add r (car pq))))))))))))))))))
+  (cond
+    ((or
+       (null? ps)
+       (and (= (length ps) 1) (eq? (car ps) P-identity)))
+     G-identity)
+    (else
+      (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
+      (define new
+        (apply *set-union
+          (for/list ((p (in-list ps))) (apply seteq (cdr (vector->list (P-period p)))))))
+      (define (G old new)
+        (define old+new (set-union old new))
+        (define newer
+          (set-union old+new
+            (for*/seteq ((a (in-set old)) (b (in-set new))) (P a b))
+            (for*/seteq ((a (in-set new)) (b (in-set new))) (P a b))))
+        (cond
+          ((equal? newer old+new) (G-constr old+new))
+          (else (G old+new (set-subtract newer old+new)))))
+      (G (seteq) new))))
 
 (define (G->list g) (P-sort (set->list (G-set g))))
 
@@ -126,20 +104,26 @@
     (eq? (P a b) (P b a))))
 
 (define (G-bases g)
-  (define Ps (set->list (set-remove (G-set g) G-identity)))
-  (let loop ((k 1))
-    (define bases
-      (for/list ((base (in-combinations Ps k)) #:when (eq? (apply G base) g))
-        (apply seteq base)))
-    (if (null? bases) (loop (add1 k)) bases)))
+  (cond
+    ((G-identity? g) (list P-identity))
+    (else
+      (define Ps (set->list (set-remove (G-set g) G-identity)))
+      (let loop ((k 1))
+        (define bases
+          (for/list ((base (in-combinations Ps k)) #:when (eq? (apply G base) g))
+            (apply seteq base)))
+        (if (null? bases) (loop (add1 k)) bases)))))
 
 (define (G-base g)
-  (define Ps (set->list (set-remove (G-set g) G-identity)))
-  (let/ec ec
-    (let loop ((k 1))
-      (for/list ((base (in-combinations Ps k)))
-        (when (eq? (apply G base) g) (ec (apply seteq base))))
-      (loop (add1 k)))))
+  (cond
+    ((G-identity? g) (seteq P-identity))
+    (else
+      (define Ps (set->list (set-remove (G-set g) G-identity)))
+      (let/ec ec
+        (let loop ((k 1))
+          (for/list ((base (in-combinations Ps k)))
+            (when (eq? (apply G base) g) (ec (apply seteq base))))
+          (loop (add1 k)))))))
 
 (define (G-order g) (set-count (G-set g)))
 (define (G-subg? g0 g1) (subset? (G-set g0) (G-set g1)))
