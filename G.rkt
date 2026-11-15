@@ -5,8 +5,7 @@
 
 ;===================================================================================================
 
-(require "P.rkt" (only-in "C.rkt" H->C))
-(require (only-in math/number-theory factorial))
+(require "P.rkt")
 
 (provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
   G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
