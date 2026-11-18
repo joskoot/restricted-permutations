@@ -1,9 +1,9 @@
 #lang racket
 
+;=====================================================================================================
 ; Part of R.rkt. Documentation in R.scrbl cq R.html.
 ; By Jacob J. A. Koot
-
-;===================================================================================================
+;=====================================================================================================
 
 (require "P.rkt")
 
@@ -11,6 +11,8 @@
   G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
   G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups G-simple?
   (rename-out (G-abelean? G-commutative?)))
+
+;=====================================================================================================
 
 (define (G-print g port mode) (fprintf port "~s" (cons 'G (G->list g))))
 
@@ -26,32 +28,35 @@
 
 (define (G-clear-hashes)
   (hash-clear! G-hash)
-  (hash-set! G-hash G-identity G-identity))
+  (hash-set! G-hash (seteq P-identity) G-identity))
 
 (define (G-hashes-count) (hash-count G-hash))
 
 (define (G . base)
-  (define ps (remove-duplicates (map P base) P-equal?))
-  (cond
-    ((or
-       (null? ps)
-       (and (= (length ps) 1) (eq? (car ps) P-identity)))
-     G-identity)
-    (else
-      (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
-      (define new
-        (apply *set-union
-          (for/list ((p (in-list ps))) (apply seteq (cdr (vector->list (P-period p)))))))
-      (define (G old new)
-        (define old+new (set-union old new))
-        (define newer
-          (set-union old+new
-            (for*/seteq ((a (in-set old)) (b (in-set new))) (P a b))
-            (for*/seteq ((a (in-set new)) (b (in-set new))) (P a b))))
-        (cond
-          ((equal? newer old+new) (G-constr old+new))
-          (else (G old+new (set-subtract newer old+new)))))
-      (G (seteq) new))))
+  (define (G)
+    (define ps (remove-duplicates (map P base) P-equal?))
+    (cond
+      ((or
+         (null? ps)
+         (and (= (length ps) 1) (eq? (car ps) P-identity)))
+       G-identity)
+      (else
+        (define (*set-union . x) (if (null? x) (seteq) (apply set-union x)))
+        (define new
+          (apply *set-union
+            (for/list ((p (in-list ps))) (apply seteq (cdr (vector->list (P-period p)))))))
+        (define (G old new)
+          (define old+new (set-union old new))
+          (define newer
+            (set-union old+new
+              (for*/seteq ((a (in-set old)) (b (in-set new))) (P a b))
+              (for*/seteq ((a (in-set new)) (b (in-set new))) (P a b))))
+          (define new-new (set-subtract newer old+new))
+          (cond
+            ((equal? newer old+new) (G-constr old+new))
+            (else (G old+new new-new))))
+        (G (seteq) new))))
+  (hash-ref! G-hash base G))
 
 (define (G->list g) (P-sort (set->list (G-set g))))
 
@@ -141,7 +146,8 @@
   (or (eq? g0 g1) (eq? g0 G-identity)
     (and (G-subg? g0 g1)
       (for*/and ((p1 (in-set (G-set g1))))
-        (equal? (for/seteq ((p0 (in-set (G-set g0)))) (P p0 p1))
+        (equal?
+          (for/seteq ((p0 (in-set (G-set g0)))) (P p0 p1))
           (for/seteq ((p0 (in-set (G-set g0)))) (P (P-inverse p1) p0)))))))
 
 (define (G-even-subg g) (G-constr (for/seteq ((p (in-G g)) #:when (P-even? p)) p)))
@@ -239,4 +245,4 @@
   (define in-g (in-G g))
   (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
-;===================================================================================================
+;=====================================================================================================
