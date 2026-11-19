@@ -7,22 +7,26 @@
 
 (require "P.rkt")
 
-(provide G-identity G-identity? G? G G-symmetric G-abelean? G-bases G-base G-order G-equal?
-  G-subg? G-proper-subg? G-invariant-subg? G-even-subg G-class G-classes G->list list->G in-G
-  G-member? G-clear-hashes G-hashes-count G-isomorphism G-table G-print-table G-subgroups G-simple?
+(provide
+  G            G-bases        G-equal?       G-identity?       G-order        G-subg?     G?
+  G->list      G-class        G-even-subg    G-invariant-subg? G-print-table  G-subgroups in-G
+  G-abelean?   G-classes      G-hashes-count G-isomorphism     G-proper-subg? G-symmetric list->G
+  G-base       G-clear-hashes G-identity     G-member?         G-simple?      G-table
   (rename-out (G-abelean? G-commutative?)))
 
 ;=====================================================================================================
 
-(define (G-print g port mode) (fprintf port "~s" (cons 'G (G->list g))))
+(define (G-print g port mode)
+  (parameterize ((P-print-by-name #f))
+    (fprintf port "~s" (cons 'G (G->list g)))))
 
 (struct G (set)
   #:constructor-name make-G
   #:omit-define-syntaxes
   #:property prop:custom-write G-print)
 
-(define (G-constr s) (hash-ref! G-hash s (λ () (make-G s))))
 (define G-hash (make-hash))
+(define (G-constr s) (hash-ref! G-hash s (λ () (make-G s))))
 (define G-identity (G-constr (seteq P-identity)))
 (define (G-identity? x) (eq? x G-identity))
 
@@ -53,7 +57,7 @@
               (for*/seteq ((a (in-set new)) (b (in-set new))) (P a b))))
           (define new-new (set-subtract newer old+new))
           (cond
-            ((equal? newer old+new) (G-constr old+new))
+            ((set-empty? new-new) (G-constr old+new))
             (else (G old+new new-new))))
         (G (seteq) new))))
   (hash-ref! G-hash base G))
@@ -246,3 +250,4 @@
   (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;=====================================================================================================
+

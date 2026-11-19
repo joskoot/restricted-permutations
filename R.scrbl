@@ -1874,7 +1874,7 @@ isomorphisms made before do not recognize newly constructed @nbsl["P" "P"]s:
  (code:line (P-equal? p pp) (code:comment #,(green "true")))
  (code:line (G-equal? g gg) (code:comment #,(green "true")))]
 
-@section[#:tag "Distinct-instances"]{Distinct instances of @nbhll["R.rkt" "R.rkt"]}
+@section[#:tag "Distinct-instances"]{Distinct instances}
 Two distinct instances of module @nbhll["R.rkt" "R.rkt"]
 do not recognize each others @nbsl["P" "Ps"] or @nbsl["G" "Gs"],
 not even their @nbrl[P-identity "P-identities"] and @nbrl[G-identity "G-identities"]:
