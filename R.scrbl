@@ -487,7 +487,7 @@ Therefore procedure @nbr[C-normalize] returns the same normalized C for them
  (C-normalize '(0 1 2))
  (C-normalize '(1 2 0))
  (C-normalize '(2 0 1))
- (C-normalize '((0 1) (1 2) (0 1) (0 1)))]
+ (C-normalize '((0 2) (1 2) (0 1) (0 2)))]
 
 The same holds for the following examples:
 
