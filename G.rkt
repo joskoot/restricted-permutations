@@ -26,6 +26,9 @@
   #:property prop:custom-write G-print)
 
 (define G-hash (make-hash))
+; For procedure G-base        a key of G-hash is a base (listof (or/c C? P?)).
+; Gor procedure list->G       a key of G-hash is a set (set/c P?) for procedure list->G.
+; For procedure G-isomorphism a key of G-hash is a list of two Gs.
 (define (G-constr s) (hash-ref! G-hash s (λ () (make-G s))))
 (define G-identity (G-constr (seteq P-identity)))
 (define (G-identity? x) (eq? x G-identity))
@@ -184,51 +187,65 @@
         (andmap P-equal? a b)))))
 
 (define (G-isomorphism g0 g1 (name0 'no-name) (name1 'no-name))
+  (define (G-isomorphism)
+    (cond
+      ((not (= (G-order g0) (G-order g1))) #f)
+      (else
+        (define (make-prop-hash g)
+          (define hash (make-hash))
+          (define (properties p)
+            (list (P-order p) (set-count (G-class p g))))
+          (for ((p (in-set (G-set g))))
+            (define props (properties p))
+            (hash-set! hash props (cons p (hash-ref hash props '()))))
+          (values hash (apply set (hash-keys hash))))
+        (define-values (hash0 keys0) (make-prop-hash g0))
+        (define-values (hash1 keys1) (make-prop-hash g1))
+        (define (make-iso hash)
+          (define hsah
+            (make-immutable-hasheq (hash-map hash (λ (k v) (cons v k)))))
+          (list
+            (procedure-rename
+              (λ (p)
+                (hash-ref hash p
+                  (λ () (error name0 "arg ~s not in domain of this isomorphism" p)))) name0)
+            (procedure-rename
+              (λ (p)
+                (hash-ref hsah p
+                  (λ () (error name1 "arg ~s not in domain of this isomorphism" p)))) name1)))
+        (cond
+          ((not (equal? keys0 keys1)) #f)
+          (else
+            (define keys (set->list keys0))
+            (define h0 (apply append (for/list ((key (in-list keys))) (hash-ref hash0 key))))
+            (define samples1-list
+              (apply cartesian-product
+                (for/list ((key (in-list keys))) (permutations (hash-ref hash1 key)))))
+            (let loop ((samples1-list samples1-list))
+              (and (pair? samples1-list)
+                (let ((h1 (apply append (car samples1-list))))
+                  (define h0->1 (make-immutable-hasheq (map cons h0 h1)))
+                  (or
+                    (and
+                      (for*/and ((p (in-list h0)) (q (in-list h0)))
+                        (eq?
+                          (hash-ref h0->1 (P p q))
+                          (P (hash-ref h0->1 p) (P (hash-ref h0->1 q)))))
+                      (make-iso h0->1))
+                    (loop (cdr samples1-list)))))))))))
+  (define isomorphism (hash-ref! G-hash (list g0 g1) G-isomorphism))
   (cond
-    ((not (= (G-order g0) (G-order g1))) #f)
-    (else
-      (define (make-prop-hash g)
-        (define hash (make-hash))
-        (define (properties p)
-          (list (P-order p) (set-count (G-class p g))))
-        (for ((p (in-set (G-set g))))
-          (define props (properties p))
-          (hash-set! hash props (cons p (hash-ref hash props '()))))
-        (values hash (apply set (hash-keys hash))))
-      (define-values (hash0 keys0) (make-prop-hash g0))
-      (define-values (hash1 keys1) (make-prop-hash g1))
-      (define (make-iso hash)
-        (define hsah
-          (make-immutable-hasheq (hash-map hash (λ (k v) (cons v k)))))
-        (list
-          (procedure-rename
-            (λ (p)
-              (hash-ref hash p
-                (λ () (error name0 "arg ~s not in domain of this isomorphism" p)))) name0)
-          (procedure-rename
-            (λ (p)
-              (hash-ref hsah p
-                (λ () (error name1 "arg ~s not in domain of this isomorphism" p)))) name1)))
+    (isomorphism
       (cond
-        ((not (equal? keys0 keys1)) #f)
+        ((and
+           (eq? (object-name (car  isomorphism)) name0)
+           (eq? (object-name (cadr isomorphism)) name1))
+         isomorphism)
         (else
-          (define keys (set->list keys0))
-          (define h0 (apply append (for/list ((key (in-list keys))) (hash-ref hash0 key))))
-          (define samples1-list
-            (apply cartesian-product
-              (for/list ((key (in-list keys))) (permutations (hash-ref hash1 key)))))
-          (let loop ((samples1-list samples1-list))
-            (and (pair? samples1-list)
-              (let ((h1 (apply append (car samples1-list))))
-                (define h0->1 (make-immutable-hasheq (map cons h0 h1)))
-                (or
-                  (and
-                    (for*/and ((p (in-list h0)) (q (in-list h0)))
-                      (eq?
-                        (hash-ref h0->1 (P p q))
-                        (P (hash-ref h0->1 p) (P (hash-ref h0->1 q)))))
-                    (make-iso h0->1))
-                  (loop (cdr samples1-list)))))))))))
+          (list
+            (procedure-rename (car  isomorphism) name0)
+            (procedure-rename (cadr isomorphism) name1)))))
+    (else #f)))
 
 (define (in-G g) (in-list (G->list g)))
 (define (G-member? p g) (set-member? (G-set g) (P p)))
@@ -250,4 +267,3 @@
   (for/immutable-vector ((p (in-G g))) (for/immutable-vector ((q in-g)) (P p q))))
 
 ;=====================================================================================================
-
